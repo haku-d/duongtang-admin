@@ -1,16 +1,21 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Route, Switch, withRouter, Redirect, NavLink } from 'react-router-dom'
+import { Route, Switch, withRouter, Redirect } from 'react-router-dom'
 import PrivateRoute from 'components/route/PrivateRoute'
-
-import { hot } from 'react-hot-loader'
 import Navbar from 'components/ui/Navbar'
+import { hot } from 'react-hot-loader'
 import LoginPage from 'components/account/LoginPage'
+import LogoutPage from 'components/account/LogoutPage'
+import VerifyPage from 'components/account/VerifyPage'
 import RegisterPage from 'components/account/RegisterPage'
 import ConfirmEmailPage from 'components/account/ConfirmEmailPage'
 import { getLoginStatus } from 'reducers/UserReducer'
-
-import ListLinkDrive from 'components/ListLinkDrive'
+import HomePage from 'components/index/HomePage'
+import GuestRoute from 'components/route/GuestRoute'
+import DashBoard from 'components/admin/DashBoard'
+import ListLinkDrive from 'components/admin/ListLinkDrive'
+import Users from 'components/admin/Users'
+import UserDetail from 'components/admin/UserDetail'
 
 class App extends React.Component {
   constructor(props) {
@@ -25,14 +30,22 @@ class App extends React.Component {
       <React.Fragment>
         <Navbar isLogged={this.props.user.isLogged} />
         <Switch>
-          <Route exact path="/login" component={LoginPage} />
-          <Route exact path="/register" component={RegisterPage} />
+          <Route exact path="/" component={HomePage} />
+          <GuestRoute exact path="/login" component={LoginPage} />
+          <GuestRoute exact path="/register" component={RegisterPage} />
+          <Route exact path="/verify" component={VerifyPage} />
+
           <Route exact path="/confirm-email" component={ConfirmEmailPage} />
+          <Route exact path="/logout" component={LogoutPage} />
+
+          <PrivateRoute exact path="/dashboard" component={DashBoard} />
           <PrivateRoute
             exact
             path="/list-link-drive"
             component={ListLinkDrive}
           />
+          <PrivateRoute exact path="/users" component={Users} />
+          <PrivateRoute exact path="/users/:id" component={UserDetail} />
           <Redirect to="/login" />
         </Switch>
       </React.Fragment>

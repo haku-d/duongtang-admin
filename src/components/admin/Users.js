@@ -1,5 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Form from 'components/ui/Form'
+import Input from 'components/ui/Input'
 import LayoutSidebar from 'components/layout/LayoutSidebar'
 import LayoutMain from 'components/layout/LayoutMain'
 import LayoutPageHead from 'components/layout/LayoutPageHead'
@@ -10,22 +12,25 @@ import {
   ModalBody,
   ModalFooter
 } from 'components/modals/Modal'
+// helper function
 // import HelperFunction from 'helpers/HelperFunction'
+// data demo
+import getData from 'locals/data-list-user.json'
+const ListUser = getData.data.ListUser
 
-// Get Data Demo
-import getData from '../locals/data-list-link.json'
-const ListLink = getData.data.ListLink
-
-class ListLinkDrive extends React.Component {
+class Users extends React.Component {
   constructor(props) {
     super(props)
     this.state = this.getDefaultState()
   }
   getDefaultState = () => ({
-    modalEmbedVideo: false,
-    limitCount: 5,
-    getDataPaginate: ListLink.slice(0, 5),
-    pageCount: Math.ceil(ListLink.length / 5)
+    modalAddUser: false,
+    modalUpdateUser: false,
+    modalGoogleDrive: false,
+    modalRestMoney: false,
+    getData: ListUser,
+    getDataPaginate: ListUser.slice(0, 5),
+    pageCount: Math.ceil(ListUser.length / 5)
   })
 
   // closeModal all modal target modal name
@@ -39,20 +44,11 @@ class ListLinkDrive extends React.Component {
   }
 
   // showModal with update state Data follow only item and modalName
-  showModal = (prNameTarget, prItemOfData, e) => {
+  showModal = (prNameTarget, prItemOfData, prThis) => {
+    // console.log(prItemOfData)
     this.setState({
       [prNameTarget]: true,
       getData: prItemOfData
-    })
-  }
-
-  // callBack data show pagination table
-  handlePageClick = data => {
-    this.setState({
-      getDataPaginate: ListLink.slice(
-        Math.ceil(data.selected * this.state.limitCount),
-        Math.ceil(data.selected * this.state.limitCount) + this.state.limitCount
-      )
     })
   }
 
@@ -63,16 +59,16 @@ class ListLinkDrive extends React.Component {
         <LayoutMain>
           <React.Fragment>
             <div className="col-sm-12">
-              <LayoutPageHead title={'List Link Google Drive'}>
+              <LayoutPageHead title={'Users'}>
                 <button
                   className="btn btn-success"
                   onClick={() =>
                     this.setState({
-                      modalCreateStream: true
+                      modalAddUser: true
                     })
                   }
                 >
-                  Add File
+                  Add User
                 </button>
               </LayoutPageHead>
             </div>
@@ -85,7 +81,7 @@ class ListLinkDrive extends React.Component {
                       type="text"
                       className="form-control"
                       id="#"
-                      placeholder="Search link ..."
+                      placeholder="Search everythink ..."
                       defaultValue=""
                     />
                   </div>
@@ -104,25 +100,37 @@ class ListLinkDrive extends React.Component {
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>Stream Link</th>
                     <th>Username</th>
-                    <th>Filename</th>
-                    <th>Date</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {this.state.getDataPaginate.map((item, index) => (
-                    <tr key={item.id}>
-                      <td>{item.id.toString()}</td>
+                  {this.state.getDataPaginate.map(item => (
+                    <tr key={item.id.toString()}>
+                      <td>{item.id}</td>
                       <td>
-                        <Link to="`{item.stream_link}`">
-                          {item.stream_link}
+                        <Link
+                          to={`${this.props.match.path}/${item.id}
+                          `}
+                        >
+                          {item.user.username}
                         </Link>
                       </td>
-                      <td>{item.username}</td>
-                      <td>{item.filename}</td>
                       <td>
-                        <span>{item.date}</span>
+                        <button className="btn btn-xs btn-outline-secondary">
+                          Disabled
+                        </button>
+                        |
+                        <button
+                          className="btn btn-xs btn-outline-danger"
+                          onClick={this.showModal.bind(
+                            this,
+                            'modalUpdateKeyName',
+                            item
+                          )}
+                        >
+                          Deleted
+                        </button>
                       </td>
                     </tr>
                   ))}
@@ -130,6 +138,7 @@ class ListLinkDrive extends React.Component {
               </table>
               <hr />
             </div>
+
             <div className="col-sm-12">
               {/*<Pagination />*/}
               <ReactPaginate
@@ -140,7 +149,7 @@ class ListLinkDrive extends React.Component {
                 marginPagesDisplayed={2}
                 pageRangeDisplayed={5}
                 onPageChange={this.handlePageClick}
-                containerClassName={'pagination justify-content-center'}
+                containerClassName={'pagination justify-content-end'}
                 activeClassName={'active'}
                 pageClassName={'page-item'}
                 nextClassName={'page-item'}
@@ -154,52 +163,57 @@ class ListLinkDrive extends React.Component {
             </div>
           </React.Fragment>
         </LayoutMain>
-        {/*modalCreateStream*/}
+
+        {/*modalAddUser*/}
         <Modals
           modalSize={'modal-dialog modal-lg'}
-          modalShow={this.state.modalCreateStream}
-          closeModal={this.closeModal.bind(this, 'modalCreateStream')}
-          targetState={'modalCreateStream'}
+          modalShow={this.state.modalAddUser}
+          closeModal={this.closeModal.bind(this, 'modalAddUser')}
+          targetState={'modalAddUser'}
         >
           <React.Fragment>
             <ModalHead
-              closeModal={this.closeModal.bind(this, 'modalCreateStream')}
-              targetState={'modalCreateStream'}
+              closeModal={this.closeModal.bind(this, 'modalAddUser')}
+              targetState={'modalAddUser'}
             >
-              <h5 className="modal-title">Link Google Drive</h5>
+              <h5 className="modal-title">Add User</h5>
             </ModalHead>
             <ModalBody>
-              <form className="form-add-user" action="">
-                <div className="form-group">
-                  <textarea
-                    className="form-control form-textarea"
-                    rows="3"
-                    placeholder="https://drive.google.com/file/d/0B7MB8rvfJ1jCQjIyOXliUV9OVW8"
-                  />
-                </div>
-                <p>
-                  <small className="form-text text-muted">
-                    Only my link above will work, if you want to use your link
-                    contact me for apikey.
-                  </small>
-                  <small className="form-text text-muted">
-                    e.g: https://yourdrivepublic.google.com/xxx | 5
-                  </small>
-                </p>
-              </form>
+              <Form>
+                <Input
+                  id="js-email"
+                  label={'Username'}
+                  type={'email'}
+                  placeholder={'JohnDoe'}
+                />
+                <Input
+                  id="js-password"
+                  label={'Password'}
+                  type={'password'}
+                  placeholder={'******'}
+                />
+              </Form>
             </ModalBody>
             <ModalFooter>
               <React.Fragment>
+                <button
+                  type="button"
+                  className="btn btn-default"
+                  onClick={this.closeModal.bind(this, 'modalAddUser')}
+                  data-modal={'modalAddUser'}
+                >
+                  Close
+                </button>
                 <button type="button" className="btn btn-success">
-                  Create Stream Link
+                  Create
                 </button>
               </React.Fragment>
             </ModalFooter>
           </React.Fragment>
         </Modals>
-        {/*End modalCreateStream*/}
+        {/*End modalAddUser*/}
       </React.Fragment>
     )
   }
 }
-export default ListLinkDrive
+export default Users

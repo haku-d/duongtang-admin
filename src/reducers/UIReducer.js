@@ -8,56 +8,65 @@ const defaultState = {
   msg: ''
 }
 // factory function
-const createReducer = ({
-  defaultState,
-  loadingState,
-  successState,
-  errorState,
-  loggedState
-}) => (state = defaultState, action) => {
+const createReducer = ({ defaultState, onStart, onSuccess, onError }) => (
+  state = defaultState,
+  action
+) => {
   let nextState = Object.assign({}, state)
 
-  if (action.type === loadingState) {
-    nextState.isInit = false
-    nextState.isLoading = true
+  if (action.type === onStart) {
+    Object.assign(nextState, {
+      isInit: false,
+      isLoading: true
+    })
   }
 
-  if (action.type === successState) {
-    nextState.isLoading = false
-    nextState.isSuccess = true
-    nextState.isError = false
-    nextState.msg = action.data.msg
+  if (action.type === onSuccess) {
+    Object.assign(nextState, {
+      isInit: false,
+      isLoading: false,
+      isSuccess: true,
+      isError: false,
+      msg: action.data ? action.data.msg : ''
+    })
   }
 
-  if (action.type === errorState) {
-    nextState.isLoading = false
-    nextState.isSuccess = false
-    nextState.isError = true
-    nextState.msg = action.data.msg
-  }
-
-  if (action.type === loggedState) {
-    nextState.isLoading = false
-    nextState.isSuccess = false
-    nextState.isError = false
+  if (action.type === onError) {
+    Object.assign(nextState, {
+      isInit: false,
+      isLoading: false,
+      isSuccess: false,
+      isError: true,
+      msg: action.data ? action.data.msg : ''
+    })
   }
 
   return nextState
 }
 
 export default combineReducers({
+  getLoginStatus: createReducer({
+    defaultState: defaultState,
+    onStart: 'getLoginStatus_begin',
+    onSuccess: 'getLoginStatus_success',
+    onError: 'getLoginStatus_error'
+  }),
   login: createReducer({
     defaultState: defaultState,
-    loadingState: 'login_begin',
-    successState: 'login_success',
-    errorState: 'login_error',
-    loggedState: 'logout_success'
+    onStart: 'login_begin',
+    onSuccess: 'login_success',
+    onError: 'login_error'
   }),
   register: createReducer({
     defaultState: defaultState,
-    loadingState: 'register_begin',
-    successState: 'register_success',
-    errorState: 'register_error',
-    loggedState: 'logout_success'
+    onStart: 'register_begin',
+    onSuccess: 'register_success',
+    onError: 'register_error'
+  }),
+  verifyEmail: createReducer({
+    defaultState: defaultState,
+    onStart: 'verifyEmail_begin',
+    onSuccess: 'verifyEmail_success',
+    onError: 'verifyEmail_error'
   })
 })

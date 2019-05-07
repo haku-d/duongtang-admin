@@ -2,6 +2,48 @@ import client from 'client'
 import store from 'store'
 import helper from 'helper'
 
+const defaultState = {
+  isLogged: false,
+  balance: 0,
+  email: '',
+  apikey: ''
+}
+
+export default (state = defaultState, action) => {
+  const nextState = Object.assign({}, state)
+
+  if (action.type === 'getLoginStatus_success') {
+    return Object.assign(nextState, {
+      isLogged: true
+    })
+  }
+
+  if (action.type === 'getLoginStatus_error') {
+    store.remove('token')
+    client.removeToken()
+    return Object.assign(nextState, {
+      isLogged: false
+    })
+  }
+
+  if (action.type === 'login_success') {
+    store.set('token', action.data.token)
+    client.addTokenToHeader(action.data.token)
+    return Object.assign(nextState, {
+      isLogged: true
+    })
+  }
+
+  if (action.type === 'logout_success') {
+    store.remove('token')
+    return Object.assign(nextState, {
+      isLogged: false
+    })
+  }
+
+  return nextState
+}
+
 const login = ({ email, password }) => {
   return dispatch => {
     dispatch({
@@ -65,6 +107,22 @@ const logout = () => {
   }
 }
 
+const verifyEmail = query => {
+  return dispatch => {
+    dispatch({ type: 'verifyEmail_begin' })
+
+    client
+      .api('/verify-code' + query, 'post')
+      .then(res => dispatch({ type: 'verifyEmail_success' }))
+      .catch(err =>
+        dispatch({
+          type: 'verifyEmail_error',
+          data: { msg: 'Could not verify your email, please try again later!' }
+        })
+      )
+  }
+}
+
 // return the authentication of current user
 const getLoginStatus = () => {
   return dispatch => {
@@ -74,63 +132,24 @@ const getLoginStatus = () => {
       return dispatch({ type: 'getLoginStatus_error' })
     }
 
-    // show loading if needed
     dispatch({
       type: 'getLoginStatus_begin'
     })
 
     client.addTokenToHeader(token)
     client
-      .api('/user/apps')
-      .then(res => dispatch({ type: 'getLoginStatus_success' }))
+      .api('/me')
+      .then(res =>
+        dispatch({
+          type: 'getLoginStatus_success'
+        })
+      )
       .catch(err =>
         dispatch({
-          type: 'getLoginStatus_error',
-          data: {
-            msg: helper.formatError(err)
-          }
+          type: 'getLoginStatus_error'
         })
       )
   }
 }
 
-// user reducer
-const defaultState = {
-  isLogged: false
-}
-export default (state = defaultState, action) => {
-  const nextState = Object.assign({}, state)
-
-  if (action.type === 'getLoginStatus_success') {
-    return Object.assign(nextState, {
-      isLogged: true
-    })
-  }
-
-  if (action.type === 'getLoginStatus_error') {
-    store.remove('token')
-    client.removeToken()
-    return Object.assign(nextState, {
-      isLogged: false
-    })
-  }
-
-  if (action.type === 'login_success') {
-    store.set('token', action.data.token)
-    client.addTokenToHeader(action.data.token)
-    return Object.assign(nextState, {
-      isLogged: true
-    })
-  }
-
-  if (action.type === 'logout_success') {
-    store.remove('token')
-    return Object.assign(nextState, {
-      isLogged: false
-    })
-  }
-
-  return nextState
-}
-
-export { getLoginStatus, login, register, logout }
+export { getLoginStatus, login, register, logout, verifyEmail }

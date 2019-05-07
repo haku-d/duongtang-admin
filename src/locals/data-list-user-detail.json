@@ -1,0 +1,29 @@
+{
+  "data": {
+    "ListUser": [
+      {
+        "id": 1330,
+        "user": {
+          "username": "test01test01",
+          "password": "0B7MB8rvfJ1jCQjIyOXliUV9OVW8",
+          "restmoney": 100000,
+          "apikey": [
+            {
+              "appkeyname": "name_key",
+              "appid": "AAdcasdAADadFF9812937",
+              "appkey": "52352adasdad123z123ac"
+            },
+            {
+              "appkeyname": "name_chautintin",
+              "appid": "TTfasaddAADadFF9812937",
+              "appkey": "66fafadasdad123z123ac"
+            }
+          ]
+        },
+        "stream_link": "https://drive.google.com/file/d/0B7MB8rvfJ1jCQjIyOXliUV9OVW8",
+        "filename": "ChauTinTin",
+        "date": "12/04/2019"
+      }
+    ]
+  }
+}
