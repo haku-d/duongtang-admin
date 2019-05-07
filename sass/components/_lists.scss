@@ -1,0 +1,31 @@
+.list-group-link {
+  padding: 0 15px;
+  .list-group-item {
+    padding: 0;
+    display: inherit;
+  }
+}
+.list-group-item {
+  position: relative;
+  font-size: 12px;
+  .badge-success {
+    font-size: 12px;
+    background: $main-color;
+    margin-right: 5px;
+  }
+  &-text {
+    height: 40px;
+    overflow: auto;
+    padding: 10px 15px;
+    white-space: nowrap;
+  }
+  &-right {
+    text-align: right;
+    padding-top: 8px;
+    padding-right: 10px;
+  }
+  .btn-sm {
+    font-size: 12px;
+    line-height: 1;
+  }
+}

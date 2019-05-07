@@ -1,0 +1,67 @@
+@import 'core/variables';
+html,
+body {
+  font-family: monospace, Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+@import 'layout/sidebar';
+@import 'layout/main';
+
+@import 'components/boxs';
+@import 'components/buttons';
+@import 'components/cards';
+@import 'components/navbar';
+@import 'components/pagination';
+@import 'components/modals';
+@import 'components/lists';
+@import 'components/tables';
+
+@import 'helps/auto';
+
+.sign {
+  height: 70vh;
+  &-title {
+    margin-bottom: 30px;
+  }
+}
+.home-pages {
+  height: 55vh;
+  a {
+    color: $main-color;
+  }
+}
+a {
+  &,
+  &:hover {
+    color: $main-color;
+  }
+}
+// textarea
+.form-textarea {
+  min-width: 100%;
+  min-height: 120px;
+}
+.copy {
+  position: fixed;
+  left: 0;
+  bottom: 5px;
+  font-size: 12px;
+  background: #fff;
+  width: 239px;
+  padding: 15px 15px 15px 25px;
+  .user {
+    font-size: 14px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+  }
+}
+.brand {
+  width: 100%;
+  font-size: 22px;
+  display: inline-block;
+  padding: 5px 15px 18px 25px;
+  border-bottom: 1px solid #eee;
+}
+.is-invalid + .form-text {
+  color: #dc3545;
+}

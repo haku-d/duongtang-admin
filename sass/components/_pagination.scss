@@ -1,0 +1,18 @@
+.pagination {
+  .page-link {
+    color: $text-color;
+    &:focus {
+      box-shadow: none;
+    }
+  }
+  .active {
+    .page-link {
+      &,
+      &:focus,
+      &:hover {
+        border-color: $main-color;
+        background: $main-color;
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+.sidebar + .main {
+  padding: 0 15px 0 250px;
+  height: 100%;
+  .container {
+    width: 100%;
+    // background: #ddd;
+  }
+}
+.page-header {
+  padding-bottom: 9px;
+  margin: 27px 0 20px;
+  border-bottom: 1px solid #eee;
+  position: relative;
+  .btn {
+    right: 0;
+    bottom: 15px;
+    position: absolute;
+  }
+  &-title {
+    margin-top: 0;
+    font-size: 24px;
+  }
+}

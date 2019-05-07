@@ -1,0 +1,44 @@
+.sidebar {
+  width: 240px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  overflow-y: auto;
+  height: 100%;
+  // background: #eee;
+  border-right: 1px solid #eee;
+  padding: 15px 0 30px;
+  &-item {
+    color: $text-color;
+    width: 100%;
+    padding: 15px 15px 15px 25px;
+    display: inline-block;
+    position: relative;
+    &::after {
+      content: '';
+      position: absolute;
+      left: 25px;
+      bottom: 0;
+      height: 2px;
+      width: 20%;
+    }
+    &:hover,
+    &.active {
+      color: $main-color;
+      text-decoration: none;
+      &::after {
+        background-color: $main-color;
+      }
+    }
+  }
+}
+
+.logout {
+  text-align: left;
+  background: none;
+  border: 0;
+  &:focus {
+    outline: none;
+  }
+}

@@ -1,0 +1,27 @@
+.table {
+  font-size: 14px;
+  border-top: 0;
+  th {
+    border-top: 0;
+  }
+  .btn-xs {
+    padding: 0 5px;
+    font-size: 12px;
+  }
+  .badge {
+    padding: 5px 8px;
+  }
+  &-align-right {
+    thead th:last-child,
+    tbody td:last-child {
+      text-align: right;
+    }
+  }
+  // &-fix-height {
+  //   min-height: 80vh;
+  // }
+}
+.table-auto-scroll {
+  max-height: 300px;
+  overflow-y: auto;
+}
