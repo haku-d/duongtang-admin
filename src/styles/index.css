@@ -1,0 +1,296 @@
+html,
+body {
+  font-family: monospace, Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+
+.sidebar {
+  width: 240px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  overflow-y: auto;
+  height: 100%;
+  border-right: 1px solid #eee;
+  padding: 15px 0 30px;
+}
+.sidebar-item {
+  color: #333;
+  width: 100%;
+  padding: 15px 15px 15px 25px;
+  display: inline-block;
+  position: relative;
+}
+.sidebar-item::after {
+  content: "";
+  position: absolute;
+  left: 25px;
+  bottom: 0;
+  height: 2px;
+  width: 20%;
+}
+.sidebar-item:hover, .sidebar-item.active {
+  color: #88b04b;
+  text-decoration: none;
+}
+.sidebar-item:hover::after, .sidebar-item.active::after {
+  background-color: #88b04b;
+}
+
+.logout {
+  text-align: left;
+  background: none;
+  border: 0;
+}
+.logout:focus {
+  outline: none;
+}
+
+.sidebar + .main {
+  padding: 0 15px 0 250px;
+  height: 100%;
+}
+.sidebar + .main .container {
+  width: 100%;
+}
+
+.page-header {
+  padding-bottom: 9px;
+  margin: 27px 0 20px;
+  border-bottom: 1px solid #eee;
+  position: relative;
+}
+.page-header .btn {
+  right: 0;
+  bottom: 15px;
+  position: absolute;
+}
+.page-header-title {
+  margin-top: 0;
+  font-size: 24px;
+}
+
+.btn-link {
+  padding: 0;
+}
+.btn-link:focus {
+  outline: none;
+}
+.btn-link:hover {
+  text-decoration: none;
+}
+
+.btn-min-width {
+  min-width: 120px;
+}
+
+.btn-default {
+  border-color: #ccc;
+}
+
+.btn-success {
+  background: #88b04b;
+  border-color: #88b04b;
+}
+
+.badge {
+  border: 0;
+}
+
+.card-title {
+  margin-top: 0;
+  font-size: 16px;
+}
+.card-number {
+  font-size: 30px;
+}
+.card-money {
+  padding: 15px;
+  margin-bottom: 15px;
+}
+.card-money-num {
+  font-size: 30px;
+  text-align: right;
+  border-left: 1px solid #ddd;
+}
+
+.nav-item {
+  padding: 10px;
+  font-size: 16px;
+  color: #333;
+  position: relative;
+}
+.nav-item::after {
+  content: "";
+  left: 0;
+  bottom: 0;
+  position: absolute;
+  margin: 0 auto;
+  width: 100%;
+  height: 2px;
+  background-color: transparent;
+}
+.nav-item:hover, .nav-item.active {
+  color: #88b04b;
+  text-decoration: none;
+}
+.nav-item:hover::after, .nav-item.active::after {
+  background-color: #88b04b;
+}
+
+.pagination .page-link {
+  color: #333;
+}
+.pagination .page-link:focus {
+  box-shadow: none;
+}
+.pagination .active .page-link, .pagination .active .page-link:focus, .pagination .active .page-link:hover {
+  border-color: #88b04b;
+  background: #88b04b;
+}
+
+.btn-min-width {
+  min-width: 120px;
+}
+
+.show {
+  display: block;
+}
+
+.list-group-link {
+  padding: 0 15px;
+}
+.list-group-link .list-group-item {
+  padding: 0;
+  display: inherit;
+}
+
+.list-group-item {
+  position: relative;
+  font-size: 12px;
+}
+.list-group-item .badge-success {
+  font-size: 12px;
+  background: #88b04b;
+  margin-right: 5px;
+}
+.list-group-item-text {
+  height: 40px;
+  overflow: auto;
+  padding: 10px 15px;
+  white-space: nowrap;
+}
+.list-group-item-right {
+  text-align: right;
+  padding-top: 8px;
+  padding-right: 10px;
+}
+.list-group-item .btn-sm {
+  font-size: 12px;
+  line-height: 1;
+}
+
+.table {
+  font-size: 14px;
+  border-top: 0;
+}
+.table th {
+  border-top: 0;
+}
+.table .btn-xs {
+  padding: 0 5px;
+  font-size: 12px;
+}
+.table .badge {
+  padding: 5px 8px;
+}
+.table-align-right thead th:last-child,
+.table-align-right tbody td:last-child {
+  text-align: right;
+}
+
+.table-auto-scroll {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.main-color {
+  color: #88b04b;
+}
+
+.mg-t-5 {
+  margin-top: 5px;
+}
+
+.mg-t-10 {
+  margin-top: 10px;
+}
+
+.mg-t-30 {
+  margin-top: 30px;
+}
+
+.mg-bt-0 {
+  margin-bottom: 0;
+}
+
+.mg-bt-15 {
+  margin-bottom: 15px;
+}
+
+.mg-bt-20 {
+  margin-bottom: 20px;
+}
+
+.sign {
+  height: 70vh;
+}
+.sign-title {
+  margin-bottom: 30px;
+}
+
+.home-pages {
+  height: 55vh;
+}
+.home-pages a {
+  color: #88b04b;
+}
+
+a, a:hover {
+  color: #88b04b;
+}
+
+.form-textarea {
+  min-width: 100%;
+  min-height: 120px;
+}
+
+.copy {
+  position: fixed;
+  left: 0;
+  bottom: 5px;
+  font-size: 12px;
+  background: #fff;
+  width: 239px;
+  padding: 15px 15px 15px 25px;
+}
+.copy .user {
+  font-size: 14px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.brand {
+  width: 100%;
+  font-size: 22px;
+  display: inline-block;
+  padding: 5px 15px 18px 25px;
+  border-bottom: 1px solid #eee;
+}
+
+.is-invalid + .form-text {
+  color: #dc3545;
+}
+
+/*# sourceMappingURL=index.css.map */
