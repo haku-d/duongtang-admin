@@ -10,16 +10,17 @@
   border-right: 1px solid #eee;
   padding: 15px 0 30px;
   &-item {
-    color: $text-color;
     width: 100%;
-    padding: 15px 15px 15px 25px;
-    display: inline-block;
+    font-size: 14px;
+    color: $text-color;
     position: relative;
+    display: inline-block;
+    padding: 13px 15px 13px 25px;
     &::after {
       content: '';
       position: absolute;
       left: 25px;
-      bottom: 0;
+      bottom: 5px;
       height: 2px;
       width: 20%;
     }

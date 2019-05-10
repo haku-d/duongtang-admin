@@ -74,7 +74,7 @@ class Users extends React.Component {
             </div>
 
             <div className="col-sm-12">
-              <form className="mg-bt-20">
+              <form className="form-search">
                 <div className="row">
                   <div className="col-sm-9">
                     <input
@@ -92,7 +92,6 @@ class Users extends React.Component {
                   </div>
                 </div>
               </form>
-              <hr />
             </div>
 
             <div className="col-sm-12">
