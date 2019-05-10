@@ -60,6 +60,7 @@ class LayoutSidebar extends React.Component {
           </nav>
           <div className="copy">
             <div className="user">
+              Welcome <strong>Username</strong>
               {/*Welcome <strong>{localStore.get('author').username}</strong>*/}
             </div>
             Copyright @2019, Clgt

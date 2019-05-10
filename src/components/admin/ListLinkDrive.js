@@ -85,7 +85,7 @@ class ListLinkDrive extends React.Component {
                       type="text"
                       className="form-control"
                       id="#"
-                      placeholder="Search link ..."
+                      placeholder="Search stream id ..."
                       defaultValue=""
                     />
                   </div>
@@ -103,7 +103,7 @@ class ListLinkDrive extends React.Component {
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>Stream Link</th>
+                    <th>Stream id</th>
                     <th>Username</th>
                     <th>Filename</th>
                     <th>Date</th>
