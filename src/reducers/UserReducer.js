@@ -2,46 +2,43 @@ import client from 'client'
 import store from 'store'
 import helper from 'helper'
 
+import * as actions from 'actions/user'
+
 const defaultState = {
   isLogged: false,
-  balance: 0,
-  email: '',
-  apikey: ''
+  isAddingUser: false
 }
 
 export default (state = defaultState, action) => {
-  const nextState = Object.assign({}, state)
-
-  if (action.type === 'getLoginStatus_success') {
-    return Object.assign(nextState, {
-      isLogged: true
-    })
+  switch(action.type) {
+    case actions.SIGNIN_SUCCESS:
+      return {
+        ...state,
+        isLogged: true
+      }
+    case actions.LOGOUT:
+      return {
+        ...state,
+        isLogged: false
+      }
+    case actions.ADD_USER:
+      return {
+        ...state,
+        isAddingUser: true
+      }
+    case actions.ADD_USER_CANCELED:
+      return {
+        ...state,
+        isAddingUser: false
+      }
+    case actions.ADD_USER_COMPLETED:
+      return {
+        ...state,
+        isAddingUser: false
+      }
+    default:
+      return state
   }
-
-  if (action.type === 'getLoginStatus_error') {
-    store.remove('token')
-    client.removeToken()
-    return Object.assign(nextState, {
-      isLogged: false
-    })
-  }
-
-  if (action.type === 'login_success') {
-    store.set('token', action.data.token)
-    client.addTokenToHeader(action.data.token)
-    return Object.assign(nextState, {
-      isLogged: true
-    })
-  }
-
-  if (action.type === 'logout_success') {
-    store.remove('token')
-    return Object.assign(nextState, {
-      isLogged: false
-    })
-  }
-
-  return nextState
 }
 
 const login = ({ email, password }) => {
@@ -136,7 +133,7 @@ const getLoginStatus = () => {
       type: 'getLoginStatus_begin'
     })
 
-    client.addTokenToHeader(token)
+    client.updateToken(token)
     client
       .api('/me')
       .then(res =>

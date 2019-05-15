@@ -3,7 +3,7 @@ import axios from 'axios'
 class Client {
   constructor(opt = {}) {
     this.opt = Object.assign(this._getDefaultOption(), opt)
-    this.request = axios.create(this.opt)
+    this.request = this._create()
   }
 
   _getDefaultOption() {
@@ -16,28 +16,29 @@ class Client {
     this.request = axios.create(this._getDefaultOption())
   }
 
-  _update(opt) {
-    this.request = axios.create(Object.assign(this.opt, opt))
+  _create(opt) {
+    const request = axios.create(Object.assign(this.opt, opt))
+    request.interceptors.response.use(this.handleUnauthorized.bind(this), this.handleError.bind(this))
+    return request
   }
 
-  addTokenToHeader(token) {
-    this._update({
-      headers: {
-        'X-Token': token
-      }
-    })
-  }
-
-  removeToken() {
-    if (this.opt.headers && this.opt.headers['X-Token']) {
-      delete this.opt.headers['X-Token']
+  handleUnauthorized(response) {
+    if (response.data && response.data.status === 401) {
+      // Should be redirected to logout page
+      window.location.href = '/logout'
+      return
     }
 
-    this._update(this.opt)
+    return response
+  }
+  handleError(error) {}
+
+  removeToken() {
+    this.request.defaults.headers.common['X-Token'] = undefined;
   }
 
   updateToken(token) {
-    this.addTokenToHeader(token)
+    this.request.defaults.headers.common['X-Token'] = token;
   }
 
   login({ email, password }) {
@@ -95,6 +96,14 @@ class Client {
         .then(resolve)
         .catch(reject)
     })
+  }
+
+  get(path, params = {}) {
+    return this.api(path, 'get', params)
+  }
+
+  post(path, data = {}) {
+    return this.api(path, 'post', data)
   }
 }
 

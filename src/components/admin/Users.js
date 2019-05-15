@@ -1,21 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Form from 'components/ui/Form'
-import Input from 'components/ui/Input'
+import { connect } from 'react-redux'
 import LayoutSidebar from 'components/layout/LayoutSidebar'
 import LayoutMain from 'components/layout/LayoutMain'
 import LayoutPageHead from 'components/layout/LayoutPageHead'
 import ReactPaginate from 'react-paginate'
-import {
-  Modals,
-  ModalHead,
-  ModalBody,
-  ModalFooter
-} from 'components/modals/Modal'
-// helper function
-// import HelperFunction from 'helpers/HelperFunction'
-// data demo
+import AddUserModal from './AddUserModal'
+import { ADD_USER } from 'actions/user'
+
 import getData from 'locals/data-list-user.json'
+
 const ListUser = getData.data.ListUser
 
 class Users extends React.Component {
@@ -52,6 +46,14 @@ class Users extends React.Component {
     })
   }
 
+  showModalAddUser() {
+    this.setState({
+      modalAddUser: true
+    })
+  }
+
+  addNewUser() {}
+
   render() {
     return (
       <React.Fragment>
@@ -62,12 +64,7 @@ class Users extends React.Component {
               <LayoutPageHead title={'Users'}>
                 <button
                   className="btn btn-success"
-                  onClick={() =>
-                    this.setState({
-                      modalAddUser: true
-                    })
-                  }
-                >
+                  onClick={() => this.props.showAddUserModal()}>
                   Add User
                 </button>
               </LayoutPageHead>
@@ -162,57 +159,23 @@ class Users extends React.Component {
             </div>
           </React.Fragment>
         </LayoutMain>
-
-        {/*modalAddUser*/}
-        <Modals
-          modalSize={'modal-dialog modal-lg'}
-          modalShow={this.state.modalAddUser}
-          closeModal={this.closeModal.bind(this, 'modalAddUser')}
-          targetState={'modalAddUser'}
-        >
-          <React.Fragment>
-            <ModalHead
-              closeModal={this.closeModal.bind(this, 'modalAddUser')}
-              targetState={'modalAddUser'}
-            >
-              <h5 className="modal-title">Add User</h5>
-            </ModalHead>
-            <ModalBody>
-              <Form>
-                <Input
-                  id="js-email"
-                  label={'Username'}
-                  type={'email'}
-                  placeholder={'JohnDoe'}
-                />
-                <Input
-                  id="js-password"
-                  label={'Password'}
-                  type={'password'}
-                  placeholder={'******'}
-                />
-              </Form>
-            </ModalBody>
-            <ModalFooter>
-              <React.Fragment>
-                <button
-                  type="button"
-                  className="btn btn-default"
-                  onClick={this.closeModal.bind(this, 'modalAddUser')}
-                  data-modal={'modalAddUser'}
-                >
-                  Close
-                </button>
-                <button type="button" className="btn btn-success">
-                  Create
-                </button>
-              </React.Fragment>
-            </ModalFooter>
-          </React.Fragment>
-        </Modals>
-        {/*End modalAddUser*/}
+        <AddUserModal/>
       </React.Fragment>
     )
   }
 }
-export default Users
+
+const mapStateToProps = state => {
+  return state.user
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    showAddUserModal: () => dispatch({ type: ADD_USER })
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Users)
