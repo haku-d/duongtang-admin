@@ -1,25 +1,7 @@
 .form-search {
-  margin-top: -20px;
+  margin-top: -5px;
   margin-bottom: 10px;
-  border-bottom: 1px solid #eee;
-  .form-control {
-    border: 0;
-    height: 51px;
-    border-radius: 0;
-    &:focus {
-      outline: none;
-      box-shadow: none;
-      border-bottom: 2px solid #88b04b;
-    }
-  }
-  .btn-light {
-    padding: 13px 12px 12px;
-    border-radius: 0;
-    &:focus {
-      outline: none;
-      box-shadow: none;
-      background: #dae0e5;
-      border-color: #dae0e5;
-    }
+  .form-group {
+    margin: 0;
   }
 }

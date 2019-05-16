@@ -49,19 +49,17 @@ class LayoutSidebar extends React.Component {
             >
               Log out
             </Link>*/}
-            <button
-              className="sidebar-item logout"
-              onClick={() => {
-                this.props.logout()
-              }}
-            >
-              Log out
-            </button>
           </nav>
           <div className="copy">
             <div className="user">
-              Welcome <strong>Username</strong>
-              {/*Welcome <strong>{localStore.get('author').username}</strong>*/}
+              <button
+                className="logout"
+                onClick={() => {
+                  this.props.logout()
+                }}
+              >
+                Log out
+              </button>
             </div>
             Copyright @2019, Clgt
           </div>
