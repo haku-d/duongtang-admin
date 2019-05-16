@@ -29,6 +29,7 @@ class Input extends React.Component {
           type={this.props.type}
           className={this.displayInvalid()}
           placeholder={this.props.placeholder || ''}
+          value={this.props.value}
           onChange={this.props.onChange}
           disabled={this.props.disabled}
         />

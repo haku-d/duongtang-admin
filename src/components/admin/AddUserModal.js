@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom';
 import {
   Modals,
   ModalHead,
@@ -35,6 +36,7 @@ class AddUserModal extends React.Component {
       if (rs.data.status === 200) {
         this.reset()
         this.props.complete()
+        this.props.history.push(`/users/${rs.data.user_id}`)
       } else {
         this.setState({
           msg: rs.data.message,
@@ -102,7 +104,10 @@ class AddUserModal extends React.Component {
           </ModalBody>
           <ModalFooter>
             <React.Fragment>
-              <button type="button" className="btn btn-default">
+              <button
+                type="button"
+                className="btn btn-default"
+                onClick={this.cancel.bind(this)}>
                 Cancel
               </button>
               <button type="submit" className="btn btn-success">
@@ -130,4 +135,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AddUserModal)
+)(withRouter(AddUserModal))
