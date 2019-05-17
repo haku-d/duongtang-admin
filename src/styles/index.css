@@ -39,12 +39,16 @@ body {
 }
 
 .logout {
+  padding-left: 0;
   text-align: left;
   background: none;
   border: 0;
 }
 .logout:focus {
   outline: none;
+}
+.logout:hover {
+  color: #88b04b;
 }
 
 .sidebar + .main {
@@ -116,29 +120,11 @@ body {
 }
 
 .form-search {
-  margin-top: -20px;
+  margin-top: -5px;
   margin-bottom: 10px;
-  border-bottom: 1px solid #eee;
 }
-.form-search .form-control {
-  border: 0;
-  height: 51px;
-  border-radius: 0;
-}
-.form-search .form-control:focus {
-  outline: none;
-  box-shadow: none;
-  border-bottom: 2px solid #88b04b;
-}
-.form-search .btn-light {
-  padding: 13px 12px 12px;
-  border-radius: 0;
-}
-.form-search .btn-light:focus {
-  outline: none;
-  box-shadow: none;
-  background: #dae0e5;
-  border-color: #dae0e5;
+.form-search .form-group {
+  margin: 0;
 }
 
 .nav-item {

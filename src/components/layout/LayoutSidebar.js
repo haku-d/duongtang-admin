@@ -36,18 +36,17 @@ class LayoutSidebar extends React.Component {
             >
               Users
             </NavLink>
-            <button
-              className="sidebar-item logout"
-              onClick={() => {
-                this.props.logout()
-              }}
-            >
-              Log out
-            </button>
           </nav>
           <div className="copy">
             <div className="user">
-              Welcome <strong>Username</strong>
+              <button
+                className="logout"
+                onClick={() => {
+                  this.props.logout()
+                }}
+              >
+                Log out
+              </button>
             </div>
             Copyright @2019, Clgt
           </div>
