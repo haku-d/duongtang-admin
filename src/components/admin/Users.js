@@ -7,6 +7,7 @@ import LayoutPageHead from 'components/layout/LayoutPageHead'
 import ReactPaginate from 'react-paginate'
 import AddUserModal from './AddUserModal'
 import { ADD_USER } from 'actions/user'
+import { getUsers } from 'reducers/UserReducer'
 
 import getData from 'locals/data-list-user.json'
 
@@ -16,6 +17,7 @@ class Users extends React.Component {
   constructor(props) {
     super(props)
     this.state = this.getDefaultState()
+    this.props.getUsers()
   }
   getDefaultState = () => ({
     modalAddUser: false,
@@ -101,7 +103,7 @@ class Users extends React.Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.state.getDataPaginate.map(item => (
+                  {this.props.list_users && this.props.list_users.users.map(item => (
                     <tr key={item.id.toString()}>
                       <td>{item.id}</td>
                       <td>
@@ -109,13 +111,19 @@ class Users extends React.Component {
                           to={`${this.props.match.path}/${item.id}
                           `}
                         >
-                          {item.user.username}
+                          {item.email ? item.email : 'No email found'}
                         </Link>
                       </td>
                       <td>
-                        <button className="btn btn-xs btn-outline-secondary">
-                          Disabled
-                        </button>
+                        {
+                          item.is_active ?
+                          <button className="btn btn-xs btn-outline-secondary">
+                            Disable
+                          </button> :
+                          <button className="btn btn-xs btn-outline-secondary">
+                            Enable
+                          </button>
+                        }
                         |
                         <button
                           className="btn btn-xs btn-outline-danger"
@@ -171,7 +179,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    showAddUserModal: () => dispatch({ type: ADD_USER })
+    showAddUserModal: () => dispatch({ type: ADD_USER }),
+    getUsers: () => dispatch(getUsers())
   }
 }
 

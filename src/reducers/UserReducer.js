@@ -12,6 +12,7 @@ const defaultState = {
 export default (state = defaultState, action) => {
   switch(action.type) {
     case actions.SIGNIN_SUCCESS:
+    case actions.LOGGED_IN:
       return {
         ...state,
         isLogged: true
@@ -27,14 +28,15 @@ export default (state = defaultState, action) => {
         isAddingUser: true
       }
     case actions.ADD_USER_CANCELED:
-      return {
-        ...state,
-        isAddingUser: false
-      }
     case actions.ADD_USER_COMPLETED:
       return {
         ...state,
         isAddingUser: false
+      }
+    case actions.LOADED_ALL_USERS:
+      return {
+        ...state,
+        list_users: action.payload
       }
     default:
       return state
@@ -51,7 +53,7 @@ const login = ({ email, password }) => {
       .login({ email, password })
       .then(res => {
         dispatch({
-          type: 'login_success',
+          type: actions.SIGNIN_SUCCESS,
           data: {
             msg: 'success!',
             token: res.data.access_token
@@ -61,34 +63,7 @@ const login = ({ email, password }) => {
       .catch(err => {
         console.log('login', err)
         dispatch({
-          type: 'login_error',
-          data: {
-            msg: helper.formatError(err)
-          }
-        })
-      })
-  }
-}
-
-const register = ({ email, password }) => {
-  return dispatch => {
-    dispatch({
-      type: 'register_begin'
-    })
-    client
-      .api('/register', 'post', { email, password })
-      .then(res => {
-        dispatch({
-          type: 'register_success',
-          data: {
-            msg: 'success!'
-          }
-        })
-      })
-      .catch(err => {
-        console.log('register:', err)
-        dispatch({
-          type: 'register_error',
+          type: actions.SIGNIN_FAILURE,
           data: {
             msg: helper.formatError(err)
           }
@@ -100,7 +75,7 @@ const register = ({ email, password }) => {
 const logout = () => {
   return dispatch => {
     client.logout()
-    dispatch({ type: 'logout_success' })
+    dispatch({ type: actions.LOGOUT })
   }
 }
 
@@ -122,31 +97,28 @@ const verifyEmail = query => {
 
 // return the authentication of current user
 const getLoginStatus = () => {
+  const token = store.get('token')
+
+  if (token === undefined) {
+    return dispatch => dispatch({ type: actions.LOGOUT })
+  }
+
+  client.updateToken(token)
+
   return dispatch => {
-    // if token not found -> user is not logged
-    const token = store.get('token')
-    if (!token) {
-      return dispatch({ type: 'getLoginStatus_error' })
-    }
-
-    dispatch({
-      type: 'getLoginStatus_begin'
-    })
-
-    client.updateToken(token)
     client
-      .api('/me')
-      .then(res =>
-        dispatch({
-          type: 'getLoginStatus_success'
-        })
-      )
-      .catch(err =>
-        dispatch({
-          type: 'getLoginStatus_error'
-        })
+      .get('/me')
+      .then(
+        res => dispatch({type: res.status === 401 ? actions.LOGOUT  : actions.LOGGED_IN }),
       )
   }
 }
 
-export { getLoginStatus, login, register, logout, verifyEmail }
+const getUsers = (id, email) => {
+  return dispatch => {
+    return client.get('/admin/users')
+      .then((rs) => dispatch({ type: actions.LOADED_ALL_USERS, payload: rs.data }))
+  }
+}
+
+export { getLoginStatus, login, logout, verifyEmail, getUsers }

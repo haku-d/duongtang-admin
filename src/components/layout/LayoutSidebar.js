@@ -2,12 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link, NavLink } from 'react-router-dom'
 import { logout } from 'reducers/UserReducer'
-// import localStore from 'store'
 
 class LayoutSidebar extends React.Component {
-  // handleLogout = () => {
-  //   this.props.logout()
-  // }
   render() {
     return (
       <React.Fragment>
@@ -40,15 +36,6 @@ class LayoutSidebar extends React.Component {
             >
               Users
             </NavLink>
-            {/*<Link
-              to="/login"
-              className="sidebar-item logout"
-              onClick={() => {
-                this.props.logout()
-              }}
-            >
-              Log out
-            </Link>*/}
             <button
               className="sidebar-item logout"
               onClick={() => {
@@ -61,7 +48,6 @@ class LayoutSidebar extends React.Component {
           <div className="copy">
             <div className="user">
               Welcome <strong>Username</strong>
-              {/*Welcome <strong>{localStore.get('author').username}</strong>*/}
             </div>
             Copyright @2019, Clgt
           </div>

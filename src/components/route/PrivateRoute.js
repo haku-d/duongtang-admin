@@ -3,7 +3,6 @@ import { Route, Redirect } from 'react-router-dom'
 import store from 'store'
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
-  // const authen = { ...rest }
   return (
     <Route
       {...rest}
@@ -11,7 +10,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         if (store.get('token') !== undefined) {
           return <Component {...props} />
         }
-        return <Redirect to="/login" />
+        return <Redirect to="/" />
       }}
     />
   )

@@ -1,7 +1,9 @@
 import React from 'react'
 import Form from 'components/ui/Form'
 import Input from 'components/ui/Input'
-import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { Link, Redirect } from 'react-router-dom'
+
 class HomePage extends React.Component {
   render() {
     return (
@@ -45,8 +47,19 @@ class HomePage extends React.Component {
             </div>
           </div>
         </div>
+        { this.props.isLogged ? <Redirect to="/dashboard" /> : null }
       </React.Fragment>
     )
   }
 }
-export default HomePage
+
+const mapStateToProps = state => {
+  return {
+    isLogged: state.user.isLogged
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(HomePage)

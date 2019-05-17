@@ -4,7 +4,7 @@ import Input from 'components/ui/Input'
 import { connect } from 'react-redux'
 import { login } from 'reducers/UserReducer'
 import BlockUi from 'react-block-ui'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 
 class LoginPage extends React.Component {
   constructor(props) {
@@ -44,54 +44,57 @@ class LoginPage extends React.Component {
 
   render() {
     return (
-      <div className="main">
-        <div className="container">
-          <div className="row justify-content-center align-items-center sign">
-            <div className="col-sm-6">
-              <BlockUi blocking={this.props.ui.login.isLoading}>
-                <h1 className="main-color">Login</h1>
-                <Form
-                  isSuccess={this.props.ui.login.isSuccess}
-                  isError={this.props.ui.login.isError}
-                  msg={this.props.ui.login.msg}
-                  onSubmit={this.handleSubmit}
-                >
-                  <Input
-                    id="js-email"
-                    type="text"
-                    label="Email"
-                    placeholder="Enter Email..."
-                    onChange={this.handleEmailChange}
-                  />
+      <React.Fragment>
+        { this.props.isLogged ? <Redirect to="/dashboard" /> : null }
+        <div className="main">
+          <div className="container">
+            <div className="row justify-content-center align-items-center sign">
+              <div className="col-sm-6">
+                <BlockUi blocking={this.props.ui.login.isLoading}>
+                  <h1 className="main-color">Login</h1>
+                  <Form
+                    isSuccess={this.props.ui.login.isSuccess}
+                    isError={this.props.ui.login.isError}
+                    msg={this.props.ui.login.msg}
+                    onSubmit={this.handleSubmit}
+                  >
+                    <Input
+                      id="js-email"
+                      type="text"
+                      label="Email"
+                      placeholder="Enter Email..."
+                      onChange={this.handleEmailChange}
+                    />
 
-                  <Input
-                    id="js-password"
-                    type="password"
-                    label="Password"
-                    placeholder="Enter password..."
-                    onChange={this.handlePasswordChange}
-                  />
-                  <div className="form-group">
-                    <button type="submit" className="btn btn-success btn-block">
-                      Login
-                    </button>
-                  </div>
-                </Form>
-              </BlockUi>
-              <div className="well">
-                Don't have account? <Link to="/register">Register</Link>
+                    <Input
+                      id="js-password"
+                      type="password"
+                      label="Password"
+                      placeholder="Enter password..."
+                      onChange={this.handlePasswordChange}
+                    />
+                    <div className="form-group">
+                      <button type="submit" className="btn btn-success btn-block">
+                        Login
+                      </button>
+                    </div>
+                  </Form>
+                </BlockUi>
+                <div className="well">
+                  Don't have account? <Link to="/register">Register</Link>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </React.Fragment>
     )
   }
 }
 const mapStateToProps = state => {
-  // console.log(state)
   return {
-    ui: state.ui
+    ui: state.ui,
+    isLogged: state.user.isLogged
   }
 }
 

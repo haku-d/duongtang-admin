@@ -7,7 +7,6 @@ import { hot } from 'react-hot-loader'
 import LoginPage from 'components/account/LoginPage'
 import LogoutPage from 'components/account/LogoutPage'
 import VerifyPage from 'components/account/VerifyPage'
-import RegisterPage from 'components/account/RegisterPage'
 import ConfirmEmailPage from 'components/account/ConfirmEmailPage'
 import { getLoginStatus } from 'reducers/UserReducer'
 import HomePage from 'components/index/HomePage'
@@ -20,24 +19,16 @@ import UserDetail from 'components/admin/UserDetail'
 class App extends React.Component {
   constructor(props) {
     super(props)
-
-    // check if the current user is logged or not
     this.props.getLoginStatus()
   }
 
   render() {
     return (
       <React.Fragment>
-        <Navbar isLogged={this.props.user.isLogged} />
+        <Navbar isLogged={this.props.isLogged} />
         <Switch>
-          <Route exact path="/" component={HomePage} />
-          <GuestRoute exact path="/login" component={LoginPage} />
-          <GuestRoute exact path="/register" component={RegisterPage} />
-          <Route exact path="/verify" component={VerifyPage} />
-
-          <Route exact path="/confirm-email" component={ConfirmEmailPage} />
+          <Route exact path="/" component={LoginPage} />
           <Route exact path="/logout" component={LogoutPage} />
-
           <PrivateRoute exact path="/dashboard" component={DashBoard} />
           <PrivateRoute
             exact
@@ -46,7 +37,7 @@ class App extends React.Component {
           />
           <PrivateRoute exact path="/users" component={Users} />
           <PrivateRoute exact path="/users/:id" component={UserDetail} />
-          <Redirect to="/login" />
+          { this.props.isLogged ? <Redirect to="/dashboard" /> : null }
         </Switch>
       </React.Fragment>
     )
@@ -54,10 +45,8 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => {
-  // console.log(state)
   return {
-    ui: state.ui,
-    user: state.user
+    isLogged: state.user.isLogged
   }
 }
 const mapDispatchToProps = dispatch => {

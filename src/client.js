@@ -1,4 +1,5 @@
 import axios from 'axios'
+import store from 'store'
 
 class Client {
   constructor(opt = {}) {
@@ -23,22 +24,19 @@ class Client {
   }
 
   handleUnauthorized(response) {
-    if (response.data && response.data.status === 401) {
-      // Should be redirected to logout page
-      window.location.href = '/logout'
-      return
-    }
-
     return response
   }
+
   handleError(error) {}
 
   removeToken() {
     this.request.defaults.headers.common['X-Token'] = undefined;
+    store.remove('token')
   }
 
   updateToken(token) {
     this.request.defaults.headers.common['X-Token'] = token;
+    store.set('token', token)
   }
 
   login({ email, password }) {
@@ -50,7 +48,7 @@ class Client {
 
   logout() {
     return this.api('/logout', 'get').then(res => {
-      this._reset()
+      this.removeToken()
       return res
     })
   }
