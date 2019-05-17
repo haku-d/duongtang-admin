@@ -38,6 +38,32 @@ export default (state = defaultState, action) => {
         ...state,
         list_users: action.payload
       }
+    case actions.DISABLED_USER:
+      return {
+        ...state,
+        list_users: Object.assign({
+          ...state.list_users,
+          users: state.list_users.users.map(user => {
+            if (user.id === action.payload) {
+              user.is_active = false
+            }
+            return user
+          })
+        })
+      }
+    case actions.ENABLED_USER:
+      return {
+        ...state,
+        list_users: Object.assign({
+          ...state.list_users,
+          users: state.list_users.users.map(user => {
+            if (user.id === action.payload) {
+              user.is_active = true
+            }
+            return user
+          })
+        })
+      }
     default:
       return state
   }
@@ -96,7 +122,7 @@ const verifyEmail = query => {
 }
 
 // return the authentication of current user
-const getLoginStatus = () => {
+const checkLoginStatus = () => {
   const token = store.get('token')
 
   if (token === undefined) {
@@ -121,4 +147,26 @@ const getUsers = (id, email) => {
   }
 }
 
-export { getLoginStatus, login, logout, verifyEmail, getUsers }
+const disableUser = (id) => {
+  return dispatch => {
+    return client.get(`/admin/user/${id}/disable`)
+      .then(rs => {
+        if (rs.data.status === 200) {
+          dispatch({ type: actions.DISABLED_USER, payload: id })
+        }
+      })
+  }
+}
+
+const enabledUser = (id) => {
+  return dispatch => {
+    return client.get(`/admin/user/${id}/enable`)
+      .then(rs => {
+        if (rs.data.status === 200) {
+          dispatch({ type: actions.ENABLED_USER, payload: id })
+        }
+      })
+  }
+}
+
+export { checkLoginStatus, login, logout, verifyEmail, getUsers, disableUser, enabledUser }

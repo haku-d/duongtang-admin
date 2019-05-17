@@ -7,7 +7,7 @@ import LayoutPageHead from 'components/layout/LayoutPageHead'
 import ReactPaginate from 'react-paginate'
 import AddUserModal from './AddUserModal'
 import { ADD_USER } from 'actions/user'
-import { getUsers } from 'reducers/UserReducer'
+import { getUsers, disableUser, enabledUser } from 'reducers/UserReducer'
 
 import getData from 'locals/data-list-user.json'
 
@@ -75,19 +75,14 @@ class Users extends React.Component {
             <div className="col-sm-12">
               <form className="form-search">
                 <div className="row">
-                  <div className="col-sm-9">
+                  <div className="col-sm-12">
                     <input
                       type="text"
                       className="form-control"
                       id="#"
-                      placeholder="Search everythink ..."
+                      placeholder="Search by id or email"
                       defaultValue=""
                     />
-                  </div>
-                  <div className="col-sm-3">
-                    <button type="submit" className="btn btn-block btn-light">
-                      Search
-                    </button>
                   </div>
                 </div>
               </form>
@@ -97,8 +92,9 @@ class Users extends React.Component {
               <table className="table table-align-right">
                 <thead>
                   <tr>
-                    <th>#</th>
+                    <th>Id</th>
                     <th>Username</th>
+                    <th>Created date</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -114,27 +110,19 @@ class Users extends React.Component {
                           {item.email ? item.email : 'No email found'}
                         </Link>
                       </td>
+                      <td>{item.created_date}</td>
                       <td>
                         {
                           item.is_active ?
-                          <button className="btn btn-xs btn-outline-secondary">
+                          <button className="btn btn-xs btn-outline-danger"
+                            onClick={this.props.disableUser.bind(this, item.id)}>
                             Disable
                           </button> :
-                          <button className="btn btn-xs btn-outline-secondary">
+                          <button className="btn btn-xs btn-outline-success"
+                            onClick={this.props.enabledUser.bind(this, item.id)}>
                             Enable
                           </button>
                         }
-                        |
-                        <button
-                          className="btn btn-xs btn-outline-danger"
-                          onClick={this.showModal.bind(
-                            this,
-                            'modalUpdateKeyName',
-                            item
-                          )}
-                        >
-                          Deleted
-                        </button>
                       </td>
                     </tr>
                   ))}
@@ -180,7 +168,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     showAddUserModal: () => dispatch({ type: ADD_USER }),
-    getUsers: () => dispatch(getUsers())
+    getUsers: () => dispatch(getUsers()),
+    disableUser: (id) => dispatch(disableUser(id)),
+    enabledUser: (id) => dispatch(enabledUser(id))
   }
 }
 

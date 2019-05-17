@@ -1,9 +1,6 @@
 import React from 'react'
 
 import client from 'client'
-import Form from 'components/ui/Form'
-import Input from 'components/ui/Input'
-import Textarea from 'components/ui/Textarea'
 import LayoutSidebar from 'components/layout/LayoutSidebar'
 import LayoutMain from 'components/layout/LayoutMain'
 import LayoutPageHead from 'components/layout/LayoutPageHead'
@@ -80,22 +77,24 @@ class UserDetail extends React.Component {
               </tr>
             </thead>
             <tbody>
-              {apps.map((item, index) => (
-                <tr key={index.toString()}>
-                  <td>{item.label}</td>
-                  <td>{item.api_key}</td>
-                  <td>
-                    <button className="btn btn-xs btn-outline-danger">
-                      Delete
-                    </button>
-                    |
-                    <button
-                      className="btn btn-xs btn-success">
-                      Edit
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {
+                apps.length > 0 ? apps.map((item, index) => (
+                  <tr key={index.toString()}>
+                    <td>{item.label}</td>
+                    <td>{item.api_key}</td>
+                    <td>
+                      <button className="btn btn-xs btn-outline-danger">
+                        Delete
+                      </button>
+                      |
+                      <button
+                        className="btn btn-xs btn-success">
+                        Edit
+                      </button>
+                    </td>
+                  </tr>
+                )): <tr><td colSpan="3">No app found</td></tr>
+              }
             </tbody>
           </table>
           <hr />

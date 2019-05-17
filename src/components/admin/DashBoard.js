@@ -6,15 +6,7 @@ import LayoutMain from 'components/layout/LayoutMain'
 import LayoutPageHead from 'components/layout/LayoutPageHead'
 import Card from 'components/ui/Card'
 
-// import { logoutUser } from 'actions/user'
-
 class DashBoard extends React.Component {
-  // componentWillReceiveProps(nextProps) {
-  //   if (!nextProps.user.user) {
-  //     this.props.history.push('/login')
-  //   }
-  // }
-
   render() {
     return (
       <React.Fragment>
