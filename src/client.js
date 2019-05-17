@@ -24,6 +24,9 @@ class Client {
   }
 
   handleUnauthorized(response) {
+    if (response.data.status === 401) {
+      window.location.reload(true)
+    }
     return response
   }
 
