@@ -147,26 +147,20 @@ const getUsers = (id, email) => {
   }
 }
 
-const disableUser = (id) => {
+const updateStatus = (id, status) => {
   return dispatch => {
-    return client.get(`/admin/user/${id}/disable`)
+    const data = {
+      user_id: id,
+      status: status
+    }
+    return client.post('/admin/user/update_status', data)
       .then(rs => {
         if (rs.data.status === 200) {
-          dispatch({ type: actions.DISABLED_USER, payload: id })
+          dispatch({ type: status ? actions.ENABLED_USER : actions.DISABLED_USER, payload: id })
         }
       })
   }
 }
 
-const enabledUser = (id) => {
-  return dispatch => {
-    return client.get(`/admin/user/${id}/enable`)
-      .then(rs => {
-        if (rs.data.status === 200) {
-          dispatch({ type: actions.ENABLED_USER, payload: id })
-        }
-      })
-  }
-}
 
-export { checkLoginStatus, login, logout, verifyEmail, getUsers, disableUser, enabledUser }
+export { checkLoginStatus, login, logout, verifyEmail, getUsers, updateStatus }

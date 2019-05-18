@@ -7,7 +7,7 @@ import LayoutPageHead from 'components/layout/LayoutPageHead'
 import ReactPaginate from 'react-paginate'
 import AddUserModal from './AddUserModal'
 import { ADD_USER } from 'actions/user'
-import { getUsers, disableUser, enabledUser } from 'reducers/UserReducer'
+import { getUsers, updateStatus } from 'reducers/UserReducer'
 
 import getData from 'locals/data-list-user.json'
 
@@ -107,7 +107,7 @@ class Users extends React.Component {
                           to={`${this.props.match.path}/${item.id}
                           `}
                         >
-                          {item.email ? item.email : 'No email found'}
+                          {item.email ? item.email : 'No email'}
                         </Link>
                       </td>
                       <td>{item.created_date}</td>
@@ -115,11 +115,11 @@ class Users extends React.Component {
                         {
                           item.is_active ?
                           <button className="btn btn-xs btn-outline-danger"
-                            onClick={this.props.disableUser.bind(this, item.id)}>
+                            onClick={this.props.updateStatus.bind(this, item.id, false)}>
                             Disable
                           </button> :
                           <button className="btn btn-xs btn-outline-success"
-                            onClick={this.props.enabledUser.bind(this, item.id)}>
+                            onClick={this.props.updateStatus.bind(this, item.id, true)}>
                             Enable
                           </button>
                         }
@@ -169,8 +169,7 @@ const mapDispatchToProps = dispatch => {
   return {
     showAddUserModal: () => dispatch({ type: ADD_USER }),
     getUsers: () => dispatch(getUsers()),
-    disableUser: (id) => dispatch(disableUser(id)),
-    enabledUser: (id) => dispatch(enabledUser(id))
+    updateStatus: (id, status) => dispatch(updateStatus(id, status))
   }
 }
 
