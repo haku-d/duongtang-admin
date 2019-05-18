@@ -52,8 +52,8 @@ class Client {
 
   login({ email, password }) {
     return this.api('/login', 'post', { email, password }).then(res => {
-      this.updateToken(res.data.access_token)
-      return res
+      this.updateToken(res.access_token)
+      return res.access_token
     })
   }
 

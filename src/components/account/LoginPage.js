@@ -45,12 +45,12 @@ class LoginPage extends React.Component {
   render() {
     return (
       <React.Fragment>
-        { this.props.isLogged ? <Redirect to="/dashboard" /> : null }
+        {this.props.isLogged ? <Redirect to="/" /> : null}
         <div className="main">
           <div className="container">
             <div className="row justify-content-center align-items-center sign">
               <div className="col-sm-6">
-                <BlockUi blocking={this.props.ui.login.isLoading}>
+                <BlockUi>
                   <h1 className="main-color">Login</h1>
                   <Form
                     isSuccess={this.props.ui.login.isSuccess}
@@ -74,7 +74,10 @@ class LoginPage extends React.Component {
                       onChange={this.handlePasswordChange}
                     />
                     <div className="form-group">
-                      <button type="submit" className="btn btn-success btn-block">
+                      <button
+                        type="submit"
+                        className="btn btn-success btn-block"
+                      >
                         Login
                       </button>
                     </div>

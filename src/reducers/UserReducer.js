@@ -96,17 +96,16 @@ const login = ({ email, password }) => {
 
     client
       .login({ email, password })
-      .then(res => {
+      .then(access_token => {
         dispatch({
           type: actions.SIGNIN_SUCCESS,
           data: {
             msg: 'success!',
-            token: res.data.access_token
+            token: access_token
           }
         })
       })
       .catch(err => {
-        console.log('login', err)
         dispatch({
           type: actions.SIGNIN_FAILURE,
           data: {

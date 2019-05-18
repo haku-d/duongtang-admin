@@ -8,14 +8,14 @@ class LayoutSidebar extends React.Component {
     return (
       <React.Fragment>
         <div className="sidebar">
-          <Link className="brand" to="/dashboard">
+          <Link className="brand" to="/">
             DUONGTANG
           </Link>
           <nav className="nav">
             <NavLink
               exact
               className="sidebar-item"
-              to="/dashboard"
+              to="/"
               activeClassName="active"
             >
               Dashboard
@@ -42,7 +42,7 @@ class LayoutSidebar extends React.Component {
               <NavLink
                 exact
                 className="sidebar-item"
-                to="/logout"
+                to="/account/logout"
                 activeClassName="active"
               >
                 Logout

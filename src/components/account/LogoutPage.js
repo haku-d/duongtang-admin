@@ -7,7 +7,7 @@ import client from 'client'
 const Logout = props => {
   props.logout()
   client.logout()
-  return <Redirect to="/" />
+  return <Redirect to="/account/login" />
 }
 
 export default connect(
