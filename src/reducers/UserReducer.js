@@ -64,6 +64,10 @@ export default (state = defaultState, action) => {
           })
         })
       }
+    case actions.UPDATE_BILLING_COMPLETED:
+      return {
+        ...state
+      }
     default:
       return state
   }
@@ -162,5 +166,20 @@ const updateStatus = (id, status) => {
   }
 }
 
+const addBilling = (id, amount) => {
+  return dispatch => {
+    const data = {
+      'user_id': id,
+      'amount': amount
+    }
+    return client.post('admin/billing', data)
+      .then((rs) => {
+        if (rs.data.status === 200) {
+          dispatch({ type: 'UPDATE_BILLING_COMPLETED', payload: data })
+        }
+      })
+  }
+}
 
-export { checkLoginStatus, login, logout, verifyEmail, getUsers, updateStatus }
+
+export { checkLoginStatus, login, logout, verifyEmail, getUsers, updateStatus, addBilling }

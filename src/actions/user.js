@@ -10,3 +10,5 @@ export const ADD_USER_CANCELED = '[User] Adding new user canceled'
 export const LOADED_ALL_USERS = '[User] Load all users'
 export const DISABLED_USER = '[User] Disabled user'
 export const ENABLED_USER = '[User] Enabled user'
+export const UPDATE_BILLING_COMPLETED = '[User] Update billing completed'
+

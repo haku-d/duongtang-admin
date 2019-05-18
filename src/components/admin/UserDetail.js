@@ -1,15 +1,19 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
 import client from 'client'
 import LayoutSidebar from 'components/layout/LayoutSidebar'
 import LayoutMain from 'components/layout/LayoutMain'
 import LayoutPageHead from 'components/layout/LayoutPageHead'
 
+import AddBillingModal from './AddBillingModal'
+
 class UserDetail extends React.Component {
 
   initialState = {
     user: null,
-    user_apps : []
+    user_apps : [],
+    isUpdateBilling: false
   }
 
   constructor(props) {
@@ -37,6 +41,18 @@ class UserDetail extends React.Component {
       })
   }
 
+  openAddBillingModal() {
+    this.setState({
+      isUpdateBilling: true
+    })
+  }
+
+  closeAddBillingModal() {
+    this.setState({
+      isUpdateBilling: false
+    })
+  }
+
   userInfo(user) {
     return (
       <React.Fragment>
@@ -55,7 +71,8 @@ class UserDetail extends React.Component {
             </div>
           </div>
           <button
-            className="btn btn-success float-right">
+            className="btn btn-success float-right"
+              onClick={this.openAddBillingModal.bind(this)}>
             Add Money
           </button>
         </div>
@@ -113,8 +130,25 @@ class UserDetail extends React.Component {
             {this.state.user_apps ? this.userApp(this.state.user_apps) : null}
           </div>
         </LayoutMain>
+        <AddBillingModal
+          userId={this.props.match.params.id}
+          isOpening={this.state.isUpdateBilling}
+          closeHandler={this.closeAddBillingModal.bind(this)} />
       </React.Fragment>
     )
   }
 }
-export default UserDetail
+
+const mapStateToProps = state => {
+  return state.user
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UserDetail)
