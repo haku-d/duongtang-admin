@@ -10,7 +10,7 @@ const defaultState = {
 }
 
 export default (state = defaultState, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case actions.SIGNIN_SUCCESS:
     case actions.LOGGED_IN:
       return {
@@ -65,8 +65,23 @@ export default (state = defaultState, action) => {
         })
       }
     case actions.UPDATE_BILLING_COMPLETED:
+      const user = Object.assign({}, state.user)
+      if (user.id === action.payload.user_id) {
+        user.balance += action.payload.amount
+      }
       return {
-        ...state
+        ...state,
+        user: user
+      }
+    case actions.LOAD_USER_COMPLETED:
+      return {
+        ...state,
+        user: action.payload
+      }
+    case actions.LOAD_USER_APP_COMPLETED:
+      return {
+        ...state,
+        user_apps: action.payload
       }
     default:
       return state
@@ -136,18 +151,35 @@ const checkLoginStatus = () => {
   client.updateToken(token)
 
   return dispatch => {
-    client
-      .get('/me')
-      .then(
-        res => dispatch({type: res.status === 401 ? actions.LOGOUT  : actions.LOGGED_IN }),
-      )
+    client.get('/me').then(res =>
+      dispatch({
+        type: res.status === 401 ? actions.LOGOUT : actions.LOGGED_IN
+      })
+    )
   }
 }
 
-const getUsers = (id, email) => {
+const getUsers = filter => {
+  const params = {}
+  const isEmail = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/.test(
+    filter
+  )
+  const isId = !isNaN(parseInt(filter))
+
+  if (isEmail) {
+    params['email'] = filter
+  }
+
+  if (isId) {
+    params['id'] = filter
+  }
+
   return dispatch => {
-    return client.get('/admin/users')
-      .then((rs) => dispatch({ type: actions.LOADED_ALL_USERS, payload: rs.data }))
+    return client
+      .get('/admin/users', params)
+      .then(rs =>
+        dispatch({ type: actions.LOADED_ALL_USERS, payload: rs.data })
+      )
   }
 }
 
@@ -157,29 +189,52 @@ const updateStatus = (id, status) => {
       user_id: id,
       status: status
     }
-    return client.post('/admin/user/update_status', data)
-      .then(rs => {
-        if (rs.data.status === 200) {
-          dispatch({ type: status ? actions.ENABLED_USER : actions.DISABLED_USER, payload: id })
-        }
-      })
+    return client.post('/admin/user/update_status', data).then(rs => {
+      if (rs.status === 200) {
+        dispatch({
+          type: status ? actions.ENABLED_USER : actions.DISABLED_USER,
+          payload: id
+        })
+      }
+    })
   }
 }
 
 const addBilling = (id, amount) => {
   return dispatch => {
     const data = {
-      'user_id': id,
-      'amount': amount
+      user_id: id,
+      amount: amount
     }
-    return client.post('admin/billing', data)
-      .then((rs) => {
-        if (rs.data.status === 200) {
-          dispatch({ type: 'UPDATE_BILLING_COMPLETED', payload: data })
-        }
-      })
+    return client.post('admin/billing', data).then(rs => {
+      if (rs.status === 200) {
+        dispatch({ type: actions.UPDATE_BILLING_COMPLETED, payload: data })
+      }
+    })
   }
 }
 
+const getUserInfo = id => {
+  const userReq = client.get(`/user/${id}`)
+  const appsReq = client.get(`/admin/user/${id}/apps`).then(rs => rs.data)
 
-export { checkLoginStatus, login, logout, verifyEmail, getUsers, updateStatus, addBilling }
+  return dispatch => {
+    return client.all([userReq, appsReq]).then(
+      client.spread((user, apps) => {
+        dispatch({ type: actions.LOAD_USER_COMPLETED, payload: user })
+        dispatch({ type: actions.LOAD_USER_APP_COMPLETED, payload: apps })
+      })
+    )
+  }
+}
+
+export {
+  checkLoginStatus,
+  login,
+  logout,
+  verifyEmail,
+  getUsers,
+  updateStatus,
+  addBilling,
+  getUserInfo
+}

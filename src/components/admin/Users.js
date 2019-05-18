@@ -9,9 +9,7 @@ import AddUserModal from './AddUserModal'
 import { ADD_USER } from 'actions/user'
 import { getUsers, updateStatus } from 'reducers/UserReducer'
 
-import getData from 'locals/data-list-user.json'
-
-const ListUser = getData.data.ListUser
+const ENTER_KEY = 13
 
 class Users extends React.Component {
   constructor(props) {
@@ -20,13 +18,8 @@ class Users extends React.Component {
     this.props.getUsers()
   }
   getDefaultState = () => ({
-    modalAddUser: false,
-    modalUpdateUser: false,
-    modalGoogleDrive: false,
-    modalRestMoney: false,
-    getData: ListUser,
-    getDataPaginate: ListUser.slice(0, 5),
-    pageCount: Math.ceil(ListUser.length / 5)
+    pageCount: 0,
+    filter: ''
   })
 
   // closeModal all modal target modal name
@@ -54,7 +47,20 @@ class Users extends React.Component {
     })
   }
 
-  addNewUser() {}
+  handleSearchKeyDown(e) {
+    if (e.keyCode !== ENTER_KEY) {
+      return
+    }
+
+    e.preventDefault()
+    this.props.getUsers(this.state.filter)
+  }
+
+  handleSearchQueryChanged(e) {
+    this.setState({
+      filter: e.target.value
+    })
+  }
 
   render() {
     return (
@@ -66,7 +72,8 @@ class Users extends React.Component {
               <LayoutPageHead title={'Users'}>
                 <button
                   className="btn btn-success"
-                  onClick={() => this.props.showAddUserModal()}>
+                  onClick={() => this.props.showAddUserModal()}
+                >
                   Add User
                 </button>
               </LayoutPageHead>
@@ -81,7 +88,9 @@ class Users extends React.Component {
                       className="form-control"
                       id="#"
                       placeholder="Search by id or email"
-                      defaultValue=""
+                      value={this.state.filter}
+                      onKeyDown={this.handleSearchKeyDown.bind(this)}
+                      onChange={this.handleSearchQueryChanged.bind(this)}
                     />
                   </div>
                 </div>
@@ -99,33 +108,46 @@ class Users extends React.Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.props.list_users && this.props.list_users.users.map(item => (
-                    <tr key={item.id.toString()}>
-                      <td>{item.id}</td>
-                      <td>
-                        <Link
-                          to={`${this.props.match.path}/${item.id}
+                  {this.props.list_users &&
+                    this.props.list_users.users.map(item => (
+                      <tr key={item.id.toString()}>
+                        <td>{item.id}</td>
+                        <td>
+                          <Link
+                            to={`${this.props.match.path}/${item.id}
                           `}
-                        >
-                          {item.email ? item.email : 'No email'}
-                        </Link>
-                      </td>
-                      <td>{item.created_date}</td>
-                      <td>
-                        {
-                          item.is_active ?
-                          <button className="btn btn-xs btn-outline-danger"
-                            onClick={this.props.updateStatus.bind(this, item.id, false)}>
-                            Disable
-                          </button> :
-                          <button className="btn btn-xs btn-outline-success"
-                            onClick={this.props.updateStatus.bind(this, item.id, true)}>
-                            Enable
-                          </button>
-                        }
-                      </td>
-                    </tr>
-                  ))}
+                          >
+                            {item.email ? item.email : 'No email'}
+                          </Link>
+                        </td>
+                        <td>{item.created_date}</td>
+                        <td>
+                          {item.is_active ? (
+                            <button
+                              className="btn btn-xs btn-outline-danger"
+                              onClick={this.props.updateStatus.bind(
+                                this,
+                                item.id,
+                                false
+                              )}
+                            >
+                              Disable
+                            </button>
+                          ) : (
+                            <button
+                              className="btn btn-xs btn-outline-success"
+                              onClick={this.props.updateStatus.bind(
+                                this,
+                                item.id,
+                                true
+                              )}
+                            >
+                              Enable
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
               <hr />
@@ -155,7 +177,7 @@ class Users extends React.Component {
             </div>
           </React.Fragment>
         </LayoutMain>
-        <AddUserModal/>
+        <AddUserModal />
       </React.Fragment>
     )
   }
@@ -168,7 +190,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     showAddUserModal: () => dispatch({ type: ADD_USER }),
-    getUsers: () => dispatch(getUsers()),
+    getUsers: filter => dispatch(getUsers(filter)),
     updateStatus: (id, status) => dispatch(updateStatus(id, status))
   }
 }

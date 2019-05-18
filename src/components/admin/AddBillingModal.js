@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom';
 import {
   Modals,
   ModalHead,
@@ -13,7 +12,6 @@ import Input from 'components/ui/Input'
 import { addBilling } from 'reducers/UserReducer'
 
 class AddBillingModal extends React.Component {
-
   initialState = {
     amount: 0
   }
@@ -27,8 +25,7 @@ class AddBillingModal extends React.Component {
     e.preventDefault()
     const userId = parseInt(this.props.userId, 10)
     const amount = parseInt(this.state.amount)
-    this.props.addBilling(userId, amount)
-      .then(rs => this.props.closeHandler())
+    this.props.addBilling(userId, amount).then(rs => this.props.closeHandler())
   }
 
   handleAmountChanged(e) {
@@ -44,7 +41,7 @@ class AddBillingModal extends React.Component {
   }
 
   reset() {
-    this.setState({...this.initialState})
+    this.setState({ ...this.initialState })
   }
 
   render() {
@@ -77,7 +74,8 @@ class AddBillingModal extends React.Component {
               <button
                 type="button"
                 className="btn btn-default"
-                onClick={this.cancel.bind(this)}>
+                onClick={this.cancel.bind(this)}
+              >
                 Cancel
               </button>
               <button type="submit" className="btn btn-success">

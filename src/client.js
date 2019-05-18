@@ -19,8 +19,16 @@ class Client {
 
   _create(opt) {
     const request = axios.create(Object.assign(this.opt, opt))
-    request.interceptors.response.use(this.handleUnauthorized.bind(this), this.handleError.bind(this))
+    request.interceptors.response.use(
+      this.responseInterceptor.bind(this),
+      this.handleError.bind(this)
+    )
     return request
+  }
+
+  // Transform reponse data
+  responseInterceptor(response) {
+    return response.data
   }
 
   handleUnauthorized(response) {
@@ -33,12 +41,12 @@ class Client {
   handleError(error) {}
 
   removeToken() {
-    this.request.defaults.headers.common['X-Token'] = undefined;
+    this.request.defaults.headers.common['X-Token'] = undefined
     store.remove('token')
   }
 
   updateToken(token) {
-    this.request.defaults.headers.common['X-Token'] = token;
+    this.request.defaults.headers.common['X-Token'] = token
     store.set('token', token)
   }
 
@@ -92,8 +100,13 @@ class Client {
           )
         )
       }
+
+      if (method === 'get') {
+        params = { params: params }
+      }
+
       /*eslint no-unexpected-multiline: 0*/
-      this.request[method.toLowerCase()](path, params)
+      this.request[method](path, params)
         .then(resolve)
         .catch(reject)
     })
@@ -105,6 +118,16 @@ class Client {
 
   post(path, data = {}) {
     return this.api(path, 'post', data)
+  }
+
+  // Wrapper of axios's helper
+  all(requests) {
+    return axios.all(requests)
+  }
+
+  // Wrapper of axios's helper
+  spread(cb) {
+    return axios.spread(cb)
   }
 }
 

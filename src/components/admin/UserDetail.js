@@ -7,38 +7,35 @@ import LayoutMain from 'components/layout/LayoutMain'
 import LayoutPageHead from 'components/layout/LayoutPageHead'
 
 import AddBillingModal from './AddBillingModal'
+import { getUserInfo } from 'reducers/UserReducer'
 
 class UserDetail extends React.Component {
-
   initialState = {
     user: null,
-    user_apps : [],
+    user_apps: [],
     isUpdateBilling: false
   }
 
   constructor(props) {
     super(props)
     this.state = this.initialState
-    this.getUserInfo()
-    this.getUserApps()
+    this.props.getUserInfo(this.props.match.params.id)
   }
 
   getUserInfo() {
-    client.get(`/user/${this.props.match.params.id}`)
-      .then(rs => {
-        this.setState({
-          user: rs.data
-        })
+    client.get(`/user/${this.props.match.params.id}`).then(rs => {
+      this.setState({
+        user: rs.data
       })
+    })
   }
 
   getUserApps() {
-    client.get(`/admin/user/${this.props.match.params.id}/apps`)
-      .then(rs => {
-        this.setState({
-          user_apps: rs.data.apps
-        })
+    client.get(`/admin/user/${this.props.match.params.id}/apps`).then(rs => {
+      this.setState({
+        user_apps: rs.data.apps
       })
+    })
   }
 
   openAddBillingModal() {
@@ -58,7 +55,7 @@ class UserDetail extends React.Component {
       <React.Fragment>
         <div className="col-sm-12">
           <LayoutPageHead
-            title={`User: ${user.email}`}
+            title={`Email: ${user.email ? user.email : 'No email'}`}
           />
         </div>
         <div className="col-sm-12 mg-bt-15">
@@ -67,12 +64,15 @@ class UserDetail extends React.Component {
               <div className="col-6">
                 <h4>Balance</h4>
               </div>
-              <div className="col-6 card-money-num">{user.balance} <small>vnđ</small></div>
+              <div className="col-6 card-money-num">
+                {user.balance} <small>vnđ</small>
+              </div>
             </div>
           </div>
           <button
             className="btn btn-success float-right"
-              onClick={this.openAddBillingModal.bind(this)}>
+            onClick={this.openAddBillingModal.bind(this)}
+          >
             Add Money
           </button>
         </div>
@@ -94,8 +94,8 @@ class UserDetail extends React.Component {
               </tr>
             </thead>
             <tbody>
-              {
-                apps.length > 0 ? apps.map((item, index) => (
+              {apps.length > 0 ? (
+                apps.map((item, index) => (
                   <tr key={index.toString()}>
                     <td>{item.label}</td>
                     <td>{item.api_key}</td>
@@ -103,15 +103,15 @@ class UserDetail extends React.Component {
                       <button className="btn btn-xs btn-outline-danger">
                         Delete
                       </button>
-                      |
-                      <button
-                        className="btn btn-xs btn-success">
-                        Edit
-                      </button>
+                      |<button className="btn btn-xs btn-success">Edit</button>
                     </td>
                   </tr>
-                )): <tr><td colSpan="3">No app found</td></tr>
-              }
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="3">No app found</td>
+                </tr>
+              )}
             </tbody>
           </table>
           <hr />
@@ -126,14 +126,15 @@ class UserDetail extends React.Component {
         <LayoutSidebar />
         <LayoutMain>
           <div className="row">
-            {this.state.user ? this.userInfo(this.state.user) : null}
-            {this.state.user_apps ? this.userApp(this.state.user_apps) : null}
+            {this.props.user ? this.userInfo(this.props.user) : null}
+            {this.props.user_apps ? this.userApp(this.props.user_apps) : null}
           </div>
         </LayoutMain>
         <AddBillingModal
           userId={this.props.match.params.id}
           isOpening={this.state.isUpdateBilling}
-          closeHandler={this.closeAddBillingModal.bind(this)} />
+          closeHandler={this.closeAddBillingModal.bind(this)}
+        />
       </React.Fragment>
     )
   }
@@ -145,6 +146,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    getUserInfo: id => dispatch(getUserInfo(id))
   }
 }
 

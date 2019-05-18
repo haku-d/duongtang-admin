@@ -11,4 +11,5 @@ export const LOADED_ALL_USERS = '[User] Load all users'
 export const DISABLED_USER = '[User] Disabled user'
 export const ENABLED_USER = '[User] Enabled user'
 export const UPDATE_BILLING_COMPLETED = '[User] Update billing completed'
-
+export const LOAD_USER_COMPLETED = '[User] Load user completed'
+export const LOAD_USER_APP_COMPLETED = "[User] Load user's app completed"
