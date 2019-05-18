@@ -10,7 +10,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         if (store.get('token') !== undefined) {
           return <Component {...props} />
         }
-        return <Redirect to="/" />
+        return <Redirect to="/account/login" />
       }}
     />
   )

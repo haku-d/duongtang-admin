@@ -10,7 +10,7 @@ const defaultState = {
 }
 
 export default (state = defaultState, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case actions.SIGNIN_SUCCESS:
     case actions.LOGGED_IN:
       return {
@@ -136,18 +136,27 @@ const checkLoginStatus = () => {
   client.updateToken(token)
 
   return dispatch => {
-    client
-      .get('/me')
-      .then(
-        res => dispatch({type: res.status === 401 ? actions.LOGOUT  : actions.LOGGED_IN }),
-      )
+    client.get('/me').then(res =>
+      dispatch({
+        type: res.status === 401 ? actions.LOGOUT : actions.LOGGED_IN
+      })
+    )
   }
 }
 
 const getUsers = (id, email) => {
   return dispatch => {
-    return client.get('/admin/users')
-      .then((rs) => dispatch({ type: actions.LOADED_ALL_USERS, payload: rs.data }))
+    return client
+      .get('/admin/users')
+      .then(rs =>
+        dispatch({ type: actions.LOADED_ALL_USERS, payload: rs.data })
+      )
+      .catch(err => {
+        dispatch({
+          type: 'getUsers_error',
+          payload: helper.formatError(err)
+        })
+      })
   }
 }
 
@@ -157,29 +166,37 @@ const updateStatus = (id, status) => {
       user_id: id,
       status: status
     }
-    return client.post('/admin/user/update_status', data)
-      .then(rs => {
-        if (rs.data.status === 200) {
-          dispatch({ type: status ? actions.ENABLED_USER : actions.DISABLED_USER, payload: id })
-        }
-      })
+    return client.post('/admin/user/update_status', data).then(rs => {
+      if (rs.data.status === 200) {
+        dispatch({
+          type: status ? actions.ENABLED_USER : actions.DISABLED_USER,
+          payload: id
+        })
+      }
+    })
   }
 }
 
 const addBilling = (id, amount) => {
   return dispatch => {
     const data = {
-      'user_id': id,
-      'amount': amount
+      user_id: id,
+      amount: amount
     }
-    return client.post('admin/billing', data)
-      .then((rs) => {
-        if (rs.data.status === 200) {
-          dispatch({ type: 'UPDATE_BILLING_COMPLETED', payload: data })
-        }
-      })
+    return client.post('admin/billing', data).then(rs => {
+      if (rs.data.status === 200) {
+        dispatch({ type: 'UPDATE_BILLING_COMPLETED', payload: data })
+      }
+    })
   }
 }
 
-
-export { checkLoginStatus, login, logout, verifyEmail, getUsers, updateStatus, addBilling }
+export {
+  checkLoginStatus,
+  login,
+  logout,
+  verifyEmail,
+  getUsers,
+  updateStatus,
+  addBilling
+}

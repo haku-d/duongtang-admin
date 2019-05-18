@@ -6,7 +6,6 @@ import { hot } from 'react-hot-loader'
 import LoginPage from 'components/account/LoginPage'
 import LogoutPage from 'components/account/LogoutPage'
 import { checkLoginStatus } from 'reducers/UserReducer'
-import HomePage from 'components/index/HomePage'
 import DashBoard from 'components/admin/DashBoard'
 import ListLinkDrive from 'components/admin/ListLinkDrive'
 import Users from 'components/admin/Users'
@@ -20,21 +19,15 @@ class App extends React.Component {
 
   render() {
     return (
-      <React.Fragment>
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route exact path="/login" component={LoginPage} />
-          <Route exact path="/logout" component={LogoutPage} />
-          <PrivateRoute exact path="/dashboard" component={DashBoard} />
-          <PrivateRoute
-            exact
-            path="/list-link-drive"
-            component={ListLinkDrive}
-          />
-          <PrivateRoute exact path="/users" component={Users} />
-          <PrivateRoute exact path="/users/:id" component={UserDetail} />
-        </Switch>
-      </React.Fragment>
+      <Switch>
+        <PrivateRoute exact path="/" component={DashBoard} />
+        <PrivateRoute exact path="/list-link-drive" component={ListLinkDrive} />
+        <PrivateRoute exact path="/users" component={Users} />
+        <PrivateRoute exact path="/users/:id" component={UserDetail} />
+
+        <Route exact path="/account/login" component={LoginPage} />
+        <Route exact path="/account/logout" component={LogoutPage} />
+      </Switch>
     )
   }
 }
