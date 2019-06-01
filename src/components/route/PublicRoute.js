@@ -2,31 +2,6 @@ import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-// const PrivateRoute = props => {
-//   const { component: Component } = props
-//   return (
-//     <Route
-//       {...props.routeProps}
-//       render={() => {
-//         // render component if user logged
-//         if (props.user.isLogged) {
-//           return <Component location={props.routeProps.location} />
-//         }
-
-//         // user is not logged redirect to login page
-//         return (
-//           <Redirect
-//             to={{
-//               pathname: '/',
-//               state: { from: props.location }
-//             }}
-//           />
-//         )
-//       }}
-//     />
-//   )
-// }
-
 const PublicRoute = ({ component: Component, ...rest }) => {
   const auth = { ...rest }
   return (
@@ -42,7 +17,6 @@ const PublicRoute = ({ component: Component, ...rest }) => {
   )
 }
 const mapStateToProps = state => {
-  // console.log(state)
   return {
     ui: state.ui
   }

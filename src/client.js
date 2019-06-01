@@ -1,10 +1,9 @@
 import axios from 'axios'
-import store from 'store'
 
 class Client {
   constructor(opt = {}) {
     this.opt = Object.assign(this._getDefaultOption(), opt)
-    this.request = this._create()
+    this.request = axios.create(this.opt)
   }
 
   _getDefaultOption() {
@@ -18,50 +17,15 @@ class Client {
   }
 
   _create(opt) {
-    const request = axios.create(Object.assign(this.opt, opt))
-    request.interceptors.response.use(
-      this.responseInterceptor.bind(this),
-      this.handleError.bind(this)
-    )
-    return request
+    return axios.create(Object.assign(this.opt, opt))
   }
-
-  // Transform reponse data
-  responseInterceptor(response) {
-    return response.data
-  }
-
-  handleUnauthorized(response) {
-    if (response.data.status === 401) {
-      window.location.reload(true)
-    }
-    return response
-  }
-
-  handleError(error) {}
 
   removeToken() {
     this.request.defaults.headers.common['X-Token'] = undefined
-    store.remove('token')
   }
 
   updateToken(token) {
     this.request.defaults.headers.common['X-Token'] = token
-    store.set('token', token)
-  }
-
-  login({ email, password }) {
-    return this.api('/login', 'post', { email, password }).then(res => {
-      this.updateToken(res.access_token)
-      return res.access_token
-    })
-  }
-
-  logout() {
-    return this.api('/logout', 'get').then(res => {
-      this.removeToken()
-      return res
-    })
   }
 
   // call api endpoint
@@ -113,11 +77,11 @@ class Client {
   }
 
   get(path, params = {}) {
-    return this.api(path, 'get', params)
+    return this.api(path, 'get', params).then(res => res.data)
   }
 
   post(path, data = {}) {
-    return this.api(path, 'post', data)
+    return this.api(path, 'post', data).then(res => res.data)
   }
 
   // Wrapper of axios's helper

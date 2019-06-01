@@ -1,15 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Route, Switch, withRouter } from 'react-router-dom'
+import { Switch, withRouter } from 'react-router-dom'
 import PrivateRoute from 'components/route/PrivateRoute'
+import GuestRoute from 'components/route/GuestRoute'
 import { hot } from 'react-hot-loader'
 import LoginPage from 'components/account/LoginPage'
 import LogoutPage from 'components/account/LogoutPage'
 import { checkLoginStatus } from 'reducers/UserReducer'
-import DashBoard from 'components/admin/DashBoard'
-import ListLinkDrive from 'components/admin/ListLinkDrive'
 import Users from 'components/admin/Users'
 import UserDetail from 'components/admin/UserDetail'
+import DashBoard from 'components/index/DashBoard'
 
 class App extends React.Component {
   constructor(props) {
@@ -20,13 +20,11 @@ class App extends React.Component {
   render() {
     return (
       <Switch>
+        <GuestRoute exact path="/account/login" component={LoginPage} />
+        <PrivateRoute exact path="/account/logout" component={LogoutPage} />
         <PrivateRoute exact path="/" component={DashBoard} />
-        <PrivateRoute exact path="/list-link-drive" component={ListLinkDrive} />
         <PrivateRoute exact path="/users" component={Users} />
         <PrivateRoute exact path="/users/:id" component={UserDetail} />
-
-        <Route exact path="/account/login" component={LoginPage} />
-        <Route exact path="/account/logout" component={LogoutPage} />
       </Switch>
     )
   }

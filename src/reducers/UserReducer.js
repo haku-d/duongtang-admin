@@ -1,113 +1,54 @@
 import client from 'client'
 import store from 'store'
 import helper from 'helper'
-
 import * as actions from 'actions/user'
 
 const defaultState = {
   isLogged: false,
-  isAddingUser: false
+  apps: [],
+  balance: 0,
+  email: ''
 }
 
 export default (state = defaultState, action) => {
   switch (action.type) {
-    case actions.SIGNIN_SUCCESS:
-    case actions.LOGGED_IN:
+    case 'login_success':
+    case 'checkLoginStatus_success':
+      return Object.assign({}, state, {
+        isLogged: true,
+        apps: action.data.apps,
+        balance: action.data.balance,
+        email: action.data.email
+      })
+    case 'user_logout':
       return {
-        ...state,
-        isLogged: true
-      }
-    case actions.LOGOUT:
-      return {
-        ...state,
-        isLogged: false
-      }
-    case actions.ADD_USER:
-      return {
-        ...state,
-        isAddingUser: true
-      }
-    case actions.ADD_USER_CANCELED:
-    case actions.ADD_USER_COMPLETED:
-      return {
-        ...state,
-        isAddingUser: false
-      }
-    case actions.LOADED_ALL_USERS:
-      return {
-        ...state,
-        list_users: action.payload
-      }
-    case actions.DISABLED_USER:
-      return {
-        ...state,
-        list_users: Object.assign({
-          ...state.list_users,
-          users: state.list_users.users.map(user => {
-            if (user.id === action.payload) {
-              user.is_active = false
-            }
-            return user
-          })
-        })
-      }
-    case actions.ENABLED_USER:
-      return {
-        ...state,
-        list_users: Object.assign({
-          ...state.list_users,
-          users: state.list_users.users.map(user => {
-            if (user.id === action.payload) {
-              user.is_active = true
-            }
-            return user
-          })
-        })
-      }
-    case actions.UPDATE_BILLING_COMPLETED:
-      const user = Object.assign({}, state.user)
-      if (user.id === action.payload.user_id) {
-        user.balance += action.payload.amount
-      }
-      return {
-        ...state,
-        user: user
-      }
-    case actions.LOAD_USER_COMPLETED:
-      return {
-        ...state,
-        user: action.payload
-      }
-    case actions.LOAD_USER_APP_COMPLETED:
-      return {
-        ...state,
-        user_apps: action.payload
+        ...defaultState
       }
     default:
-      return state
+      return { ...state }
   }
 }
 
 const login = ({ email, password }) => {
   return dispatch => {
-    dispatch({
-      type: 'login_begin'
-    })
-
+    dispatch({ type: 'login_begin' })
     client
-      .login({ email, password })
-      .then(access_token => {
+      .api('/login', 'post', { email, password })
+      .then(res => {
+        if (res.data.status !== 200 || res.headers['x-token'] === undefined) {
+          throw new Error(res.data.message)
+        }
+
+        client.updateToken(res.headers['x-token'])
+        store.set('token', res.headers['x-token'])
         dispatch({
-          type: actions.SIGNIN_SUCCESS,
-          data: {
-            msg: 'success!',
-            token: access_token
-          }
+          type: 'login_success',
+          data: res.data.data
         })
       })
       .catch(err => {
         dispatch({
-          type: actions.SIGNIN_FAILURE,
+          type: 'login_error',
           data: {
             msg: helper.formatError(err)
           }
@@ -118,85 +59,73 @@ const login = ({ email, password }) => {
 
 const logout = () => {
   return dispatch => {
-    client.logout()
-    dispatch({ type: actions.LOGOUT })
+    client.api('/logout', 'get').then(res => {
+      client.removeToken()
+      store.remove('token')
+      dispatch({ type: 'user_logout' })
+    })
   }
 }
 
-const verifyEmail = query => {
+const changePassword = ({ current_pw, new_pw }) => {
   return dispatch => {
-    dispatch({ type: 'verifyEmail_begin' })
-
+    dispatch({
+      type: 'changePassword_begin'
+    })
     client
-      .api('/verify-code' + query, 'post')
-      .then(res => dispatch({ type: 'verifyEmail_success' }))
-      .catch(err =>
+      .api('change-password', 'post', { current_pw, new_pw })
+      .then(res => {
+        // api chổ này trả về status nằm trong data: {}
+        if (res.data.status !== 200) {
+          throw new Error(res.data.message)
+        }
         dispatch({
-          type: 'verifyEmail_error',
-          data: { msg: 'Could not verify your email, please try again later!' }
+          type: 'changePassword_success',
+          data: {
+            msg: 'Your password has been changed successfully!'
+          }
         })
-      )
+      })
+      .catch(err => {
+        dispatch({
+          type: 'changePassword_error',
+          data: {
+            msg: helper.formatError(err)
+          }
+        })
+      })
   }
 }
 
 // return the authentication of current user
-const checkLoginStatus = () => {
+const checkLoginStatus = () => dispatch => {
+  dispatch({
+    type: 'checkLoginStatus_begin'
+  })
+
   const token = store.get('token')
 
   if (token === undefined) {
-    return dispatch => dispatch({ type: actions.LOGOUT })
+    return dispatch({ type: 'checkLoginStatus_error' })
   }
 
   client.updateToken(token)
 
-  return dispatch => {
-    client.get('/me').then(res =>
-      dispatch({
-        type: res.status === 401 ? actions.LOGOUT : actions.LOGGED_IN
-      })
-    )
-  }
-}
-
-const getUsers = filter => {
-  const params = {}
-  const isEmail = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/.test(
-    filter
-  )
-  const isId = !isNaN(parseInt(filter))
-
-  if (isEmail) {
-    params['email'] = filter
-  }
-
-  if (isId) {
-    params['id'] = filter
-  }
-
-  return dispatch => {
-    return client
-      .get('/admin/users', params)
-      .then(rs =>
-        dispatch({ type: actions.LOADED_ALL_USERS, payload: rs.data })
-      )
-  }
-}
-
-const updateStatus = (id, status) => {
-  return dispatch => {
-    const data = {
-      user_id: id,
-      status: status
-    }
-    return client.post('/admin/user/update_status', data).then(rs => {
-      if (rs.status === 200) {
-        dispatch({
-          type: status ? actions.ENABLED_USER : actions.DISABLED_USER,
-          payload: id
-        })
+  client
+    .get('/me')
+    .then(data => {
+      if (data.status !== 200) {
+        throw new Error('token invalid')
       }
+      dispatch({
+        type: 'checkLoginStatus_success',
+        data: data.data
+      })
     })
-  }
+    .catch(err => {
+      store.remove('token')
+      dispatch({ type: 'checkLoginStatus_error' })
+    })
 }
 
 const addBilling = (id, amount) => {
@@ -230,10 +159,8 @@ const getUserInfo = id => {
 export {
   checkLoginStatus,
   login,
+  changePassword,
   logout,
-  verifyEmail,
-  getUsers,
-  updateStatus,
   addBilling,
-  getUserInfo
+  getUserInfo,
 }

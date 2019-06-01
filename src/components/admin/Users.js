@@ -1,13 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import BlockUi from 'react-block-ui'
 import LayoutSidebar from 'components/layout/LayoutSidebar'
 import LayoutMain from 'components/layout/LayoutMain'
 import LayoutPageHead from 'components/layout/LayoutPageHead'
 import ReactPaginate from 'react-paginate'
 import AddUserModal from './AddUserModal'
-import { ADD_USER } from 'actions/user'
-import { getUsers, updateStatus } from 'reducers/UserReducer'
+import { getUsers, showAddUserModal } from 'reducers/UsersReducer'
 
 const ENTER_KEY = 13
 
@@ -15,36 +15,13 @@ class Users extends React.Component {
   constructor(props) {
     super(props)
     this.state = this.getDefaultState()
-    this.props.getUsers()
+    props.getUsers()
   }
-  getDefaultState = () => ({
-    pageCount: 0,
-    filter: ''
-  })
 
-  // closeModal all modal target modal name
-  closeModal = (prTarget, e) => {
-    let targetModal = e.target
-    if (targetModal.getAttribute('data-modal') === prTarget) {
-      this.setState({
-        [prTarget]: false
-      })
+  getDefaultState() {
+    return {
+      filter: ''
     }
-  }
-
-  // showModal with update state Data follow only item and modalName
-  showModal = (prNameTarget, prItemOfData, prThis) => {
-    // console.log(prItemOfData)
-    this.setState({
-      [prNameTarget]: true,
-      getData: prItemOfData
-    })
-  }
-
-  showModalAddUser() {
-    this.setState({
-      modalAddUser: true
-    })
   }
 
   handleSearchKeyDown(e) {
@@ -60,6 +37,10 @@ class Users extends React.Component {
     this.setState({
       filter: e.target.value
     })
+  }
+
+  handlePageClick = data => {
+    this.props.getUsers(this.state.filter, data.selected + 1)
   }
 
   render() {
@@ -98,18 +79,18 @@ class Users extends React.Component {
             </div>
 
             <div className="col-sm-12">
-              <table className="table table-align-right">
-                <thead>
-                  <tr>
-                    <th>Id</th>
-                    <th>Username</th>
-                    <th>Created date</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.props.list_users &&
-                    this.props.list_users.users.map(item => (
+              <BlockUi blocking={this.props.isLoading}>
+                <table className="table table-align-right">
+                  <thead>
+                    <tr>
+                      <th>Id</th>
+                      <th>Username</th>
+                      <th>Created date</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.props.list.map(item => (
                       <tr key={item.id.toString()}>
                         <td>{item.id}</td>
                         <td>
@@ -149,7 +130,8 @@ class Users extends React.Component {
                       </tr>
                     ))}
                 </tbody>
-              </table>
+                </table>
+              </BlockUi>
               <hr />
             </div>
 
@@ -159,7 +141,7 @@ class Users extends React.Component {
                 previousLabel={'«'}
                 nextLabel={'»'}
                 breakLabel={'...'}
-                pageCount={this.state.pageCount}
+                pageCount={this.props.pagination.total_pages}
                 marginPagesDisplayed={2}
                 pageRangeDisplayed={5}
                 onPageChange={this.handlePageClick}
@@ -184,14 +166,17 @@ class Users extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return state.user
+  return {
+    ...state.ui.getUsers,
+    ...state.users
+  }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    showAddUserModal: () => dispatch({ type: ADD_USER }),
-    getUsers: filter => dispatch(getUsers(filter)),
-    updateStatus: (id, status) => dispatch(updateStatus(id, status))
+    showAddUserModal: () => dispatch(showAddUserModal()),
+    getUsers: (filter, page) => dispatch(getUsers(filter, page)),
+    updateStatus: () => {}
   }
 }
 

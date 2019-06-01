@@ -23,14 +23,6 @@ class LayoutSidebar extends React.Component {
             <NavLink
               exact
               className="sidebar-item"
-              to="/list-link-drive"
-              activeClassName="active"
-            >
-              List Link Google Drive
-            </NavLink>
-            <NavLink
-              exact
-              className="sidebar-item"
               to="/users"
               activeClassName="active"
             >

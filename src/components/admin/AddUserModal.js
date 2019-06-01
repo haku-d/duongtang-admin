@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom'
+import BlockUi from 'react-block-ui'
 import {
   Modals,
   ModalHead,
@@ -8,16 +9,16 @@ import {
   ModalFooter
 } from 'components/modals/Modal'
 
-import client from 'client'
 import Form from 'components/ui/Form'
 import Input from 'components/ui/Input'
-import { ADD_USER_CANCELED, ADD_USER_COMPLETED } from 'actions/user'
+
+import { addUser, hideAddUserModal } from 'reducers/UsersReducer'
 
 class AddUserModal extends React.Component {
-
   initialState = {
     email: '',
     password: '',
+    facebook: '',
     hasError: false,
     msg: ''
   }
@@ -29,19 +30,13 @@ class AddUserModal extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault()
-    client.post('/admin/add_user', {
+    this.props.addUser({
       email: this.state.email,
-      password: this.state.password
-    }).then(rs => {
-      if (rs.data.status === 200) {
-        this.reset()
-        this.props.complete()
-        this.props.history.push(`/users/${rs.data.user_id}`)
-      } else {
-        this.setState({
-          msg: rs.data.message,
-          hasError: true
-        })
+      password: this.state.password,
+      facebook: this.state.facebook
+    }).then(action => {
+      if (action.type === 'ADD_USER_COMPLETE') {
+        this.props.history.push(`/users/${action.data}`)
       }
     })
   }
@@ -58,14 +53,20 @@ class AddUserModal extends React.Component {
     })
   }
 
+  handleFacebookChanged(e) {
+    this.setState({
+      facebook: e.target.value
+    })
+  }
+
   cancel(e) {
     e.preventDefault()
     this.reset()
-    this.props.cancel()
+    this.props.hideAddUserModal()
   }
 
   reset() {
-    this.setState({...this.initialState})
+    this.setState({ ...this.initialState })
   }
 
   render() {
@@ -74,61 +75,75 @@ class AddUserModal extends React.Component {
         modalSize={'modal-dialog modal-lg'}
         modalShow={this.props.isAddingUser}
       >
-        <Form
-          isError={this.state.hasError}
-          msg={this.state.msg}
-          onSubmit={this.handleSubmit.bind(this)}
-        >
-          <ModalHead closeModal={this.cancel.bind(this)}>
-            <h5 className="modal-title">Add User</h5>
-          </ModalHead>
-          <ModalBody>
-            <React.Fragment>
-              <Input
-                id="js-email"
-                label={'Email'}
-                type={'email'}
-                placeholder={'Email'}
-                value={this.state.email}
-                onChange={this.handleEmailChanged.bind(this)}
-              />
-              <Input
-                id="js-password"
-                label={'Password'}
-                type={'password'}
-                placeholder={'******'}
-                value={this.state.password}
-                onChange={this.handlePasswordChanged.bind(this)}
-              />
-            </React.Fragment>
-          </ModalBody>
-          <ModalFooter>
-            <React.Fragment>
-              <button
-                type="button"
-                className="btn btn-default"
-                onClick={this.cancel.bind(this)}>
-                Cancel
-              </button>
-              <button type="submit" className="btn btn-success">
-                Create
-              </button>
-            </React.Fragment>
-          </ModalFooter>
-        </Form>
+        <BlockUi blocking={this.props.isLoading}>
+          <Form
+            isError={this.props.hasError}
+            msg={this.props.msg}
+            onSubmit={this.handleSubmit.bind(this)}
+          >
+            <ModalHead closeModal={this.cancel.bind(this)}>
+              <h5 className="modal-title">Add User</h5>
+            </ModalHead>
+            <ModalBody>
+              <React.Fragment>
+                <Input
+                  id="js-email"
+                  label={'Email'}
+                  type={'email'}
+                  placeholder={'Email'}
+                  value={this.state.email}
+                  onChange={this.handleEmailChanged.bind(this)}
+                />
+                <Input
+                  id="js-password"
+                  label={'Password'}
+                  type={'password'}
+                  placeholder={'******'}
+                  value={this.state.password}
+                  onChange={this.handlePasswordChanged.bind(this)}
+                />
+                <Input
+                  id="js-facebook"
+                  label={'Facebook'}
+                  type={'text'}
+                  placeholder={'Account facebook'}
+                  value={this.state.facebook}
+                  onChange={this.handleFacebookChanged.bind(this)}
+                />
+              </React.Fragment>
+            </ModalBody>
+            <ModalFooter>
+              <React.Fragment>
+                <button
+                  type="button"
+                  className="btn btn-default"
+                  onClick={this.cancel.bind(this)}
+                >
+                  Cancel
+                </button>
+                <button type="submit" className="btn btn-success">
+                  Create
+                </button>
+              </React.Fragment>
+            </ModalFooter>
+          </Form>
+        </BlockUi>
       </Modals>
     )
   }
 }
 
 const mapStateToProps = state => {
-  return state.user
+  return {
+    ...state.ui.addUser,
+    ...state.users
+  }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    cancel: () => dispatch({ type: ADD_USER_CANCELED }),
-    complete: () => dispatch({ type: ADD_USER_COMPLETED })
+    addUser: user => dispatch(addUser(user)),
+    hideAddUserModal: () => dispatch(hideAddUserModal())
   }
 }
 

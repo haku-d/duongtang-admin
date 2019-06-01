@@ -8,7 +8,12 @@ const defaultState = {
   msg: ''
 }
 // factory function
-const createReducer = ({ defaultState, onStart, onSuccess, onError }) => (
+const createReducer = ({
+  defaultState,
+  onStart,
+  onSuccess,
+  onError
+}) => (
   state = defaultState,
   action
 ) => {
@@ -57,16 +62,16 @@ export default combineReducers({
     onSuccess: 'login_success',
     onError: 'login_error'
   }),
-  register: createReducer({
+  getUsers: createReducer({
     defaultState: defaultState,
-    onStart: 'register_begin',
-    onSuccess: 'register_success',
-    onError: 'register_error'
+    onStart: 'GET_LIST_USER_BEGIN',
+    onSuccess: 'GET_LIST_USER_COMPLETE',
+    onError: 'GET_LIST_USER_ERROR'
   }),
-  verifyEmail: createReducer({
+  addUser: createReducer({
     defaultState: defaultState,
-    onStart: 'verifyEmail_begin',
-    onSuccess: 'verifyEmail_success',
-    onError: 'verifyEmail_error'
+    onStart: 'ADD_USER_BEGIN',
+    onSuccess: 'ADD_USER_COMPLETE',
+    onError: 'ADD_USER_ERROR'
   })
 })
