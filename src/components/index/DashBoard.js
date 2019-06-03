@@ -30,19 +30,11 @@ class DashBoard extends React.Component {
 }
 
 const mapStateToProps = state => {
-  // console.log(state)
   return {}
 }
 
 const mapDispatchToProps = dispatch => {
   return {}
-  // return {
-  //   logout: () => {
-  //     sessionStorage.removeItem('jwtToken')
-  //     sessionStorage.removeItem('user')
-  //     dispatch(logoutUser())
-  //   }
-  // }
 }
 
 export default connect(

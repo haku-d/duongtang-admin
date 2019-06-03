@@ -1,23 +1,23 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import BlockUi from 'react-block-ui'
 
 class LayoutMain extends React.Component {
   render() {
     return (
-      <div className={this.props.addClass}>
-        <div className="container">{this.props.children}</div>
+      <div className="main">
+        <BlockUi blocking={this.props.isLoading}>
+          <div className="container">{this.props.children}</div>
+        </BlockUi>
       </div>
     )
   }
 }
-// Validator values props
-LayoutMain.propTypes = {
-  addClass: PropTypes.string.isRequired,
-  children: PropTypes.element.isRequired
+
+const mapStateToProps = state => {
+  return {
+    ...state.ui
+  }
 }
-// Default propTypes
-LayoutMain.defaultProps = {
-  addClass: 'main',
-  children: <React.Fragment />
-}
-export default LayoutMain
+
+export default connect(mapStateToProps)(LayoutMain)

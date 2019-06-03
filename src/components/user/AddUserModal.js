@@ -2,17 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import BlockUi from 'react-block-ui'
-import {
-  Modals,
-  ModalHead,
-  ModalBody,
-  ModalFooter
-} from 'components/modals/Modal'
+import { Modal, ModalHead, ModalBody, ModalFooter } from 'components/modal'
 
 import Form from 'components/ui/Form'
 import Input from 'components/ui/Input'
 
-import { addUser, hideAddUserModal } from 'reducers/UsersReducer'
+import { addUser, toggleAddUserModal } from 'reducers/UserReducer'
 
 class AddUserModal extends React.Component {
   initialState = {
@@ -30,15 +25,23 @@ class AddUserModal extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault()
-    this.props.addUser({
-      email: this.state.email,
-      password: this.state.password,
-      facebook: this.state.facebook
-    }).then(action => {
-      if (action.type === 'ADD_USER_COMPLETE') {
-        this.props.history.push(`/users/${action.data}`)
-      }
-    })
+    this.props
+      .addUser({
+        email: this.state.email,
+        password: this.state.password,
+        facebook: this.state.facebook
+      })
+      .then(userId => {
+        if (userId) {
+          this.props.history.push(`/users/${userId}`)
+        }
+      })
+      .catch(err => {
+        this.setState({
+          hasError: true,
+          msg: err.toString()
+        })
+      })
   }
 
   handleEmailChanged(e) {
@@ -59,29 +62,22 @@ class AddUserModal extends React.Component {
     })
   }
 
-  cancel(e) {
+  close(e) {
     e.preventDefault()
-    this.reset()
-    this.props.hideAddUserModal()
-  }
-
-  reset() {
-    this.setState({ ...this.initialState })
+    this.setState(this.initialState)
+    this.props.toggleAddUserModal()
   }
 
   render() {
     return (
-      <Modals
-        modalSize={'modal-dialog modal-lg'}
-        modalShow={this.props.isAddingUser}
-      >
+      <Modal isOpen={this.props.isOpen}>
         <BlockUi blocking={this.props.isLoading}>
           <Form
-            isError={this.props.hasError}
-            msg={this.props.msg}
+            isError={this.state.hasError}
+            msg={this.state.msg}
             onSubmit={this.handleSubmit.bind(this)}
           >
-            <ModalHead closeModal={this.cancel.bind(this)}>
+            <ModalHead close={this.close.bind(this)}>
               <h5 className="modal-title">Add User</h5>
             </ModalHead>
             <ModalBody>
@@ -117,7 +113,7 @@ class AddUserModal extends React.Component {
                 <button
                   type="button"
                   className="btn btn-default"
-                  onClick={this.cancel.bind(this)}
+                  onClick={this.close.bind(this)}
                 >
                   Cancel
                 </button>
@@ -128,22 +124,22 @@ class AddUserModal extends React.Component {
             </ModalFooter>
           </Form>
         </BlockUi>
-      </Modals>
+      </Modal>
     )
   }
 }
 
 const mapStateToProps = state => {
   return {
-    ...state.ui.addUser,
-    ...state.users
+    isLoading: state.ui.isLoading,
+    ...state.user
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     addUser: user => dispatch(addUser(user)),
-    hideAddUserModal: () => dispatch(hideAddUserModal())
+    toggleAddUserModal: () => dispatch(toggleAddUserModal())
   }
 }
 

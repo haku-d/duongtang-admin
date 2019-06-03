@@ -1,32 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import ModalHead from 'components/modals/ModalHead'
-import ModalBody from 'components/modals/ModalBody'
-import ModalFooter from 'components/modals/ModalFooter'
+import ModalHead from 'components/modal/ModalHead'
+import ModalBody from 'components/modal/ModalBody'
+import ModalFooter from 'components/modal/ModalFooter'
 
-// function handleShow() {
-//   let node = document.createElement('div')
-//   node.className = 'fade modal-backdrop show'
-//   document.getElementsByTagName('body')[0].appendChild(node)
-// }
-
-// function handleHide(pr, e) {
-//   // console.log(e.target)
-//   // console.log(pr)
-//   let i = 0
-//   let targetModal = e.target
-//   while (targetModal.getAttribute('data-modal') !== pr) {
-//     i++
-//     targetModal = targetModal.parentElement
-//     if (i > 100) {
-//       return
-//     }
-//   }
-//   targetModal.className = 'modal fade'
-//   document.getElementsByClassName('modal-backdrop')[0].remove()
-// }
-
-class Modals extends Component {
+class Modal extends Component {
   displayBackdrop() {
     if (this.props.modalShow) {
       return <div className={'fade modal-backdrop show'} />
@@ -60,14 +38,13 @@ class Modals extends Component {
   }
 }
 // Validator Value Props
-Modals.propTypes = {
-  children: PropTypes.element.isRequired,
+Modal.propTypes = {
+  // children: PropTypes.element.isRequired,
   targetState: PropTypes.string.isRequired,
   modalSize: PropTypes.string.isRequired
 }
 // Default Value Props
-Modals.defaultProps = {
-  children: <React.Fragment />,
+Modal.defaultProps = {
   targetState: '',
   modalSize: 'modal-dialog'
 }
@@ -75,5 +52,5 @@ Modals.defaultProps = {
 // handleShow.bind(this, 'jsTaget02')
 // jsTaget02 -> name, id target show hide modal
 
-export default Modals
-export { Modals, ModalHead, ModalBody, ModalFooter }
+export default Modal
+export { Modal, ModalHead, ModalBody, ModalFooter }

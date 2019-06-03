@@ -5,10 +5,9 @@ import PrivateRoute from 'components/route/PrivateRoute'
 import GuestRoute from 'components/route/GuestRoute'
 import { hot } from 'react-hot-loader'
 import LoginPage from 'components/account/LoginPage'
-import LogoutPage from 'components/account/LogoutPage'
-import { checkLoginStatus } from 'reducers/UserReducer'
-import Users from 'components/admin/Users'
-import UserDetail from 'components/admin/UserDetail'
+import { checkLoginStatus } from 'reducers/MeReducer'
+import ListUserPage from 'components/user/ListUserPage'
+import DetailUserPage from 'components/user/DetailUserPage'
 import DashBoard from 'components/index/DashBoard'
 
 class App extends React.Component {
@@ -21,10 +20,9 @@ class App extends React.Component {
     return (
       <Switch>
         <GuestRoute exact path="/account/login" component={LoginPage} />
-        <PrivateRoute exact path="/account/logout" component={LogoutPage} />
         <PrivateRoute exact path="/" component={DashBoard} />
-        <PrivateRoute exact path="/users" component={Users} />
-        <PrivateRoute exact path="/users/:id" component={UserDetail} />
+        <PrivateRoute exact path="/users" component={ListUserPage} />
+        <PrivateRoute exact path="/users/:id" component={DetailUserPage} />
       </Switch>
     )
   }
@@ -32,7 +30,7 @@ class App extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    isLogged: state.user.isLogged
+    isLogged: state.me.isLogged
   }
 }
 

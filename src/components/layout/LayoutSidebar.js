@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link, NavLink } from 'react-router-dom'
-import { logout } from 'reducers/UserReducer'
+import { logout } from 'reducers/MeReducer'
 
 class LayoutSidebar extends React.Component {
   render() {
