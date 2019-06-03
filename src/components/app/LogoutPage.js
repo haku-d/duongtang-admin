@@ -1,5 +1,5 @@
 import React from 'react'
-import { logout } from 'reducers/UserReducer'
+import { logout } from 'reducers/AppReducer'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 

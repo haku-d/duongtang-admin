@@ -4,46 +4,44 @@ import { Switch, withRouter } from 'react-router-dom'
 import PrivateRoute from 'components/route/PrivateRoute'
 import GuestRoute from 'components/route/GuestRoute'
 import { hot } from 'react-hot-loader'
-import LoginPage from 'components/account/LoginPage'
-import { checkLoginStatus } from 'reducers/MeReducer'
+import LoginPage from 'components/app/LoginPage'
+import LogoutPage from 'components/app/LogoutPage'
+import ChangePasswordPage from 'components/app/ChangePasswordPage'
 import ListUserPage from 'components/user/ListUserPage'
 import DetailUserPage from 'components/user/DetailUserPage'
-import DashBoard from 'components/index/DashBoard'
+import DashBoard from 'components/app/DashBoard'
+import { initialize } from 'reducers/AppReducer'
 
 class App extends React.Component {
   constructor(props) {
     super(props)
-    this.props.checkLoginStatus()
+    this.props.initialize()
   }
 
   render() {
     return (
       <Switch>
-        <GuestRoute exact path="/account/login" component={LoginPage} />
         <PrivateRoute exact path="/" component={DashBoard} />
+        <PrivateRoute exact path="/account/logout" component={LogoutPage} />
+        <PrivateRoute exact path="/account/change-password" component={ChangePasswordPage} />
         <PrivateRoute exact path="/users" component={ListUserPage} />
         <PrivateRoute exact path="/users/:id" component={DetailUserPage} />
+        <GuestRoute exact path="/account/login" component={LoginPage} />
       </Switch>
     )
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    isLogged: state.me.isLogged
-  }
-}
-
 const mapDispatchToProps = dispatch => {
   return {
-    checkLoginStatus: () => dispatch(checkLoginStatus())
+    initialize: () => dispatch(initialize())
   }
 }
 
 export default hot(module)(
   withRouter(
     connect(
-      mapStateToProps,
+      null,
       mapDispatchToProps
     )(App)
   )

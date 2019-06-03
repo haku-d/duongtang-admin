@@ -5,23 +5,22 @@ import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-const GuestRoute = props => {
-  const { component: Component } = props
-  if (props.ui.getLoginStatus.isLoading === true) return <span />
-
+const GuestRoute = ({component: Component, isLogged, ...rest}) => {
   return (
     <Route
-      {...props.routeProps}
-      render={() => (props.user.isLogged ? <Redirect to="/" /> : <Component />)}
+      {...rest}
+      render={props =>
+        isLogged ? (
+          <Redirect to="/" />
+        ) : (
+          <Component {...props} />
+        )
+      }
     />
   )
 }
-const mapStateToProps = (state, props) => {
-  return {
-    component: props.component,
-    ui: state.ui,
-    user: state.user
-  }
+const mapStateToProps = (state) => {
+  return {...state.app}
 }
 export default connect(
   mapStateToProps,

@@ -1,18 +1,37 @@
 import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
-import store from 'store'
+import { connect } from 'react-redux'
 
-const PrivateRoute = ({ component: Component, ...rest }) => {
+
+function PrivateRoute({ component: Component, isInit, isLogged, ...rest }) {
+
+  if (isInit) {
+    return <span>Loading</span>
+  }
+
   return (
     <Route
       {...rest}
-      render={props => {
-        if (store.get('token') !== undefined) {
-          return <Component {...props} />
-        }
-        return <Redirect to="/account/login" />
-      }}
+      render={props =>
+        isLogged ? (
+          <Component {...props} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/account/login",
+              state: { from: props.location }
+            }}
+          />
+        )
+      }
     />
   )
 }
-export default PrivateRoute
+
+const mapStateToProps = (state) => {
+  return {...state.app}
+}
+export default connect(
+  mapStateToProps,
+  null
+)(PrivateRoute)

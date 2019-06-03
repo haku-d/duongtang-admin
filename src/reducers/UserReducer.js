@@ -1,8 +1,8 @@
 import client from 'client'
 
-const initialState = {}
+const defaultState = {}
 
-export default (state = initialState, action) => {
+export default (state = defaultState, action) => {
   switch (action.type) {
     case 'TOGGLE_ADD_USER_MODAL':
       return {

@@ -1,10 +1,9 @@
 import React from 'react'
-import Form from 'components/ui/Form'
-import Input from 'components/ui/Input'
 import { connect } from 'react-redux'
-import { login } from 'reducers/MeReducer'
 import BlockUi from 'react-block-ui'
-import { Link } from 'react-router-dom'
+import { login } from 'reducers/AppReducer'
+import Input from 'components/ui/Input'
+import Form from 'components/ui/Form'
 
 class LoginPage extends React.Component {
   constructor(props) {
@@ -18,7 +17,8 @@ class LoginPage extends React.Component {
   getDefaultState() {
     return {
       email: '',
-      password: ''
+      password: '',
+      errorMsg: ''
     }
   }
 
@@ -39,6 +39,10 @@ class LoginPage extends React.Component {
     this.props.login({
       email: this.state.email,
       password: this.state.password
+    }).catch(err => {
+      this.setState({
+        errorMsg: err.toString()
+      })
     })
   }
 
@@ -48,12 +52,11 @@ class LoginPage extends React.Component {
         <div className="container">
           <div className="row justify-content-center align-items-center sign">
             <div className="col-sm-6">
-              <BlockUi blocking={this.props.ui.login.isLoading}>
+              <BlockUi blocking={this.props.ui.isLoading}>
                 <h1 className="main-color">Login</h1>
                 <Form
-                  isSuccess={this.props.ui.login.isSuccess}
-                  isError={this.props.ui.login.isError}
-                  msg={this.props.ui.login.msg}
+                  isError={this.state.errorMsg !== ''}
+                  msg={this.state.errorMsg}
                   onSubmit={this.handleSubmit}
                 >
                   <Input
@@ -78,9 +81,6 @@ class LoginPage extends React.Component {
                   </div>
                 </Form>
               </BlockUi>
-              <div className="well">
-                Don't have account? <Link to="/account/register">Register</Link>
-              </div>
             </div>
           </div>
         </div>

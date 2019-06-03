@@ -1,9 +1,7 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { Link, NavLink } from 'react-router-dom'
-import { logout } from 'reducers/MeReducer'
 
-class LayoutSidebar extends React.Component {
+export default class LayoutSidebar extends React.Component {
   render() {
     return (
       <React.Fragment>
@@ -34,6 +32,15 @@ class LayoutSidebar extends React.Component {
               <NavLink
                 exact
                 className="sidebar-item"
+                to="/account/change-password"
+              >
+                Change password
+              </NavLink>
+            </div>
+            <div className="user">
+              <NavLink
+                exact
+                className="sidebar-item"
                 to="/account/logout"
                 activeClassName="active"
               >
@@ -47,12 +54,3 @@ class LayoutSidebar extends React.Component {
     )
   }
 }
-const mapDispatchToProps = dispatch => {
-  return {
-    logout: () => dispatch(logout())
-  }
-}
-export default connect(
-  null,
-  mapDispatchToProps
-)(LayoutSidebar)

@@ -28,6 +28,18 @@ class Client {
     this.request.defaults.headers.common['X-Token'] = token
   }
 
+  addHeader(key, value) {
+    this.request.defaults.headers.common[key] = value
+    return this
+  }
+
+  addHeaders(headers) {
+    headers.forEach(({key, value}) => {
+      this.addHeader(key, value)
+    })
+    return this
+  }
+
   // call api endpoint
   api(path, method = 'get', params = {}) {
     return new window.Promise((resolve, reject) => {
@@ -77,11 +89,15 @@ class Client {
   }
 
   get(path, params = {}) {
-    return this.api(path, 'get', params).then(res => res.data)
+    return this.api(path, 'get', params)
+      .then(response => this.isSucessResponse(response))
+      .then(response => response.data)
   }
 
   post(path, data = {}) {
-    return this.api(path, 'post', data).then(res => res.data)
+    return this.api(path, 'post', data)
+      .then(response => this.isSucessResponse(response))
+      .then(response => response.data)
   }
 
   // Wrapper of axios's helper
@@ -92,6 +108,13 @@ class Client {
   // Wrapper of axios's helper
   spread(cb) {
     return axios.spread(cb)
+  }
+
+  isSucessResponse(response) {
+    if (response.data.status !== 200) {
+      throw new Error(response.data.message)
+    }
+    return response
   }
 }
 
