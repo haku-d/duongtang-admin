@@ -31,7 +31,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "sass": "sass --watch ./sass/style.scss:./src/styles/index.css",
-    "build:scss": "sass ./sass/style.scss:./src/styles/index.css"
+    "build:scss": "sass ./sass/style.scss:./src/styles/index.css",
+    "deploy": "netlify deploy --dir=build"
   },
   "eslintConfig": {
     "extends": "react-app"
