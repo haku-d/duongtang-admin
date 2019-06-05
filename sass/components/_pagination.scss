@@ -4,12 +4,16 @@
     &:focus {
       box-shadow: none;
     }
+    &:hover {
+      cursor: pointer;
+    }
   }
   .active {
     .page-link {
       &,
       &:focus,
       &:hover {
+        cursor: auto;
         border-color: $main-color;
         background: $main-color;
       }

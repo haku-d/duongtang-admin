@@ -157,7 +157,11 @@ body {
 .pagination .page-link:focus {
   box-shadow: none;
 }
+.pagination .page-link:hover {
+  cursor: pointer;
+}
 .pagination .active .page-link, .pagination .active .page-link:focus, .pagination .active .page-link:hover {
+  cursor: auto;
   border-color: #88b04b;
   background: #88b04b;
 }
