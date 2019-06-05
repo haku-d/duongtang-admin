@@ -1,22 +1,29 @@
 .main-color {
   color: $main-color;
 }
-.mg-t-5 {
-  margin-top: 5px;
+// Function Auto CSS Modules
+@mixin fn_auto_css($name, $property) {
+  @each $number in (0, 5, 10, 15, 20, 30) {
+    $unit: px;
+    @if (#{$number} == '0') {
+      $unit: '';
+      #{$name}-#{$number} {
+        #{$property}: #{$number};
+      }
+    }
+    #{$name}-t-#{$number} {
+      #{$property}-top: #{$number}#{$unit};
+    }
+    #{$name}-r-#{$number} {
+      #{$property}-right: #{$number}#{$unit};
+    }
+    #{$name}-bt-#{$number} {
+      #{$property}-bottom: #{$number}#{$unit};
+    }
+    #{$name}-l-#{$number} {
+      #{$property}-left: #{$number}#{$unit};
+    }
+  }
 }
-.mg-t-10 {
-  margin-top: 10px;
-}
-.mg-t-30 {
-  margin-top: 30px;
-}
-
-.mg-bt-0 {
-  margin-bottom: 0;
-}
-.mg-bt-15 {
-  margin-bottom: 15px;
-}
-.mg-bt-20 {
-  margin-bottom: 20px;
-}
+@include fn_auto_css('.mg', 'margin');
+@include fn_auto_css('.pd', 'padding');

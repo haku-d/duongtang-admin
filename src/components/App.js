@@ -11,6 +11,7 @@ import ListUserPage from 'components/user/ListUserPage'
 import DetailUserPage from 'components/user/DetailUserPage'
 import DashBoard from 'components/app/DashBoard'
 import { initialize } from 'reducers/AppReducer'
+import Sidebar from 'components/ui/Sidebar'
 
 class App extends React.Component {
   constructor(props) {
@@ -20,14 +21,21 @@ class App extends React.Component {
 
   render() {
     return (
-      <Switch>
-        <PrivateRoute exact path="/" component={DashBoard} />
-        <PrivateRoute exact path="/account/logout" component={LogoutPage} />
-        <PrivateRoute exact path="/account/change-password" component={ChangePasswordPage} />
-        <PrivateRoute exact path="/users" component={ListUserPage} />
-        <PrivateRoute exact path="/users/:id" component={DetailUserPage} />
-        <GuestRoute exact path="/account/login" component={LoginPage} />
-      </Switch>
+      <React.Fragment>
+        <Sidebar />
+        <Switch>
+          <PrivateRoute exact path="/" component={DashBoard} />
+          <PrivateRoute exact path="/account/logout" component={LogoutPage} />
+          <PrivateRoute
+            exact
+            path="/account/change-password"
+            component={ChangePasswordPage}
+          />
+          <PrivateRoute exact path="/users" component={ListUserPage} />
+          <PrivateRoute exact path="/users/:id" component={DetailUserPage} />
+          <GuestRoute exact path="/account/login" component={LoginPage} />
+        </Switch>
+      </React.Fragment>
     )
   }
 }

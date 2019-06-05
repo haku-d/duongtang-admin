@@ -1,9 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import LayoutSidebar from 'components/layout/LayoutSidebar'
-import LayoutMain from 'components/layout/LayoutMain'
-import LayoutPageHead from 'components/layout/LayoutPageHead'
+import Main from 'components/ui/Main'
+import Header from 'components/ui/Header'
 import ReactPaginate from 'react-paginate'
 import CreateUserModal from './CreateUserModal'
 import {
@@ -59,21 +58,16 @@ class ListUserPage extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <LayoutSidebar />
-        <CreateUserModal />
-        <LayoutMain>
-          <React.Fragment>
-            <div className="col-sm-12">
-              <LayoutPageHead title={'Users'}>
-                <button
-                  className="btn btn-success"
-                  onClick={() => this.props.toggleCreateUserModal(true)}
-                >
-                  Add User
-                </button>
-              </LayoutPageHead>
-            </div>
-
+        <Main>
+          <Header title={'Users'}>
+            <button
+              className="btn btn-success"
+              onClick={() => this.props.toggleCreateUserModal(true)}
+            >
+              Add User
+            </button>
+          </Header>
+          <div className="row">
             <div className="col-sm-12">
               <form className="form-search">
                 <div className="row">
@@ -156,8 +150,9 @@ class ListUserPage extends React.Component {
                 previousLinkClassName={'page-link'}
               />
             </div>
-          </React.Fragment>
-        </LayoutMain>
+          </div>
+        </Main>
+        <CreateUserModal />
       </React.Fragment>
     )
   }

@@ -5,9 +5,8 @@ import BlockUi from 'react-block-ui'
 import Form from 'components/ui/Form'
 import Input from 'components/ui/Input'
 import { changePassword } from 'reducers/AppReducer'
-import LayoutSidebar from 'components/layout/LayoutSidebar'
-import LayoutMain from 'components/layout/LayoutMain'
-import LayoutPageHead from 'components/layout/LayoutPageHead'
+import Main from 'components/ui/Main'
+import Header from 'components/ui/Header'
 
 class ChangePasswordPage extends React.Component {
   constructor(props) {
@@ -41,68 +40,64 @@ class ChangePasswordPage extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault()
-    this.props.changePassword({
-      current_pw: this.state.current_pw,
-      new_pw: this.state.new_pw
-    })
-    .then(() => {
-      this.setState({
-        isSuccess: true,
-        isError: false,
-        msg: 'Your password has been updated!'
+    this.props
+      .changePassword({
+        current_pw: this.state.current_pw,
+        new_pw: this.state.new_pw
       })
-    })
-    .catch(err => {
-      this.setState({
-        isError: true,
-        isSuccess: false,
-        msg: err.toString()
+      .then(() => {
+        this.setState({
+          isSuccess: true,
+          isError: false,
+          msg: 'Your password has been updated!'
+        })
       })
-    })
+      .catch(err => {
+        this.setState({
+          isError: true,
+          isSuccess: false,
+          msg: err.toString()
+        })
+      })
   }
 
   render() {
     return (
-      <React.Fragment>
-        <LayoutSidebar />
-        <LayoutMain>
-          <div className="row">
-            <div className="col-sm-12">
-              <LayoutPageHead title="Change password" />
-            </div>
-            <div className="col-sm-12">
-              <BlockUi blocking={this.props.ui.isLoading}>
-                <Form
-                  isError={this.state.isError}
-                  isSuccess={this.state.isSuccess}
-                  msg={this.state.msg}
-                  onSubmit={this.handleSubmit}
-                >
-                  <Input
-                    id="current_pw"
-                    type="password"
-                    label="Old password"
-                    placeholder="Old password"
-                    onChange={this.handleCurrentPw}
-                  />
-                  <Input
-                    id="new_pw"
-                    type="password"
-                    label="New password"
-                    placeholder="New password"
-                    onChange={this.handleNewPw}
-                  />
-                  <div className="form-group">
-                    <button type="submit" className="btn btn-success">
-                      Submit Change
-                    </button>
-                  </div>
-                </Form>
-              </BlockUi>
-            </div>
+      <Main>
+        <Header title="Change password" />
+        <div className="row">
+          <div className="col-sm-6">
+            <BlockUi blocking={this.props.ui.isLoading}>
+              <Form
+                isError={this.state.isError}
+                isSuccess={this.state.isSuccess}
+                msg={this.state.msg}
+                onSubmit={this.handleSubmit}
+              >
+                <Input
+                  id="current_pw"
+                  type="password"
+                  label="Old password"
+                  placeholder="Old password"
+                  onChange={this.handleCurrentPw}
+                />
+                <Input
+                  id="new_pw"
+                  type="password"
+                  label="New password"
+                  placeholder="New password"
+                  onChange={this.handleNewPw}
+                />
+                <div className="form-group">
+                  <button type="submit" className="btn btn-success">
+                    Submit Change
+                  </button>
+                </div>
+              </Form>
+            </BlockUi>
           </div>
-        </LayoutMain>
-      </React.Fragment>
+        </div>
+      </Main>
     )
   }
 }

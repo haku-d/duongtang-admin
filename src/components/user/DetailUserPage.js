@@ -6,9 +6,8 @@ import {
   getUserInfo,
   updateUserStatus
 } from 'reducers/UserReducer'
-import LayoutSidebar from 'components/layout/LayoutSidebar'
-import LayoutMain from 'components/layout/LayoutMain'
-import LayoutPageHead from 'components/layout/LayoutPageHead'
+import Main from 'components/ui/Main'
+import Header from 'components/ui/Header'
 import AddBillingModal from 'components/user/AddBillingModal'
 
 class DetailUserPage extends React.Component {
@@ -24,7 +23,7 @@ class DetailUserPage extends React.Component {
     return (
       <React.Fragment>
         <div className="col-sm-12">
-          <LayoutPageHead
+          <Header
             title={`User: ${user.email ? user.email : 'No email'}`}
           >
             <button
@@ -35,7 +34,7 @@ class DetailUserPage extends React.Component {
             >
               {user.is_active ? 'Disable' : 'Active'}
             </button>
-          </LayoutPageHead>
+          </Header>
         </div>
         <div className="col-sm-12 mg-bt-15">
           <div className="card card-money">
@@ -101,16 +100,13 @@ class DetailUserPage extends React.Component {
 
   render() {
     return (
-      <React.Fragment>
-        <LayoutSidebar />
-        <LayoutMain>
-          <div className="row">
-            {this.renderUserInfo(this.props.user)}
-            {this.renderUserApps(this.props.userApps)}
-          </div>
-        </LayoutMain>
+      <Main>
+        <div className="row">
+          {this.renderUserInfo(this.props.user)}
+          {this.renderUserApps(this.props.userApps)}
+        </div>
         <AddBillingModal userId={this.props.user.id} />
-      </React.Fragment>
+      </Main>
     )
   }
 }

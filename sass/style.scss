@@ -16,8 +16,6 @@ body {
 @import 'components/lists';
 @import 'components/tables';
 
-@import 'helps/auto';
-
 .sign {
   height: 70vh;
   &-title {
@@ -52,8 +50,13 @@ a {
   .user {
     font-size: 14px;
     margin-bottom: 10px;
-    padding-bottom: 10px;
+    padding: 0 0 10px 0;
     border-bottom: 1px solid #eee;
+    &:hover {
+      &::after {
+        display: none;
+      }
+    }
   }
 }
 .brand {
@@ -66,3 +69,5 @@ a {
 .is-invalid + .form-text {
   color: #dc3545;
 }
+
+@import 'helps/auto';
