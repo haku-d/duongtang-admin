@@ -1,46 +1,39 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { getUser, getUserApps } from 'reducers/UserReducer'
+import {
+  toggleAddBillingModal,
+  getUserInfo,
+  updateUserStatus
+} from 'reducers/UserReducer'
 import LayoutSidebar from 'components/layout/LayoutSidebar'
 import LayoutMain from 'components/layout/LayoutMain'
 import LayoutPageHead from 'components/layout/LayoutPageHead'
 import AddBillingModal from 'components/user/AddBillingModal'
 
 class DetailUserPage extends React.Component {
-  constructor(props) {
-    super(props)
-    const userId = this.props.match.params.id
-    this.state = this.getDefaultState()
-    props.getUser(userId).then(user => {
-      if (user) {
-        this.setState({ user })
-      }
-    })
-    props.getUserApps(userId).then(user_apps => {
-      if (user_apps) {
-        this.setState({ user_apps })
-      }
-    })
+  componentDidMount() {
+    this.props.getUserInfo(this.props.match.params.id)
   }
 
-  getDefaultState() {
-    return {
-      user: {},
-      user_apps: []
-    }
+  componentWillUnmount() {
+    this.props.toggleAddBillingModal(false)
   }
 
-  userInfo(user) {
+  renderUserInfo(user) {
     return (
       <React.Fragment>
         <div className="col-sm-12">
           <LayoutPageHead
-            title={`Usser: ${user.email ? user.email : 'No email'}`}
+            title={`User: ${user.email ? user.email : 'No email'}`}
           >
             <button
-              className="btn btn-success">
-              Active
+              className={`btn ${user.is_active ? 'btn-danger' : 'btn-success'}`}
+              onClick={() =>
+                this.props.updateUserStatus(user.id, !user.is_active)
+              }
+            >
+              {user.is_active ? 'Disable' : 'Active'}
             </button>
           </LayoutPageHead>
         </div>
@@ -55,13 +48,18 @@ class DetailUserPage extends React.Component {
               </div>
             </div>
           </div>
-          <button className="btn btn-success float-right">Add Money</button>
+          <button
+            className="btn btn-success float-right"
+            onClick={() => this.props.toggleAddBillingModal(true)}
+          >
+            Add Money
+          </button>
         </div>
       </React.Fragment>
     )
   }
 
-  userApp(apps) {
+  renderUserApps(apps) {
     return (
       <React.Fragment>
         <div className="col-sm-12">
@@ -107,21 +105,25 @@ class DetailUserPage extends React.Component {
         <LayoutSidebar />
         <LayoutMain>
           <div className="row">
-            {this.state.user ? this.userInfo(this.state.user) : null}
-            {this.state.user_apps ? this.userApp(this.state.user_apps) : null}
+            {this.renderUserInfo(this.props.user)}
+            {this.renderUserApps(this.props.userApps)}
           </div>
         </LayoutMain>
-        <AddBillingModal/>
+        <AddBillingModal userId={this.props.user.id} />
       </React.Fragment>
     )
   }
 }
 
-const mapStateToProps = () => ({})
+const mapStateToProps = state => ({
+  ...state.user
+})
 const mapDispatchToProps = dispatch => {
   return {
-    getUser: id => dispatch(getUser(id)),
-    getUserApps: id => dispatch(getUserApps(id))
+    getUserInfo: id => dispatch(getUserInfo(id)),
+    toggleAddBillingModal: isOpen => dispatch(toggleAddBillingModal(isOpen)),
+    updateUserStatus: (id, is_active) =>
+      dispatch(updateUserStatus(id, is_active))
   }
 }
 

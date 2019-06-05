@@ -5,8 +5,12 @@ import LayoutSidebar from 'components/layout/LayoutSidebar'
 import LayoutMain from 'components/layout/LayoutMain'
 import LayoutPageHead from 'components/layout/LayoutPageHead'
 import ReactPaginate from 'react-paginate'
-import AddUserModal from './AddUserModal'
-import { getUsers, toggleAddUserModal } from 'reducers/UserReducer'
+import CreateUserModal from './CreateUserModal'
+import {
+  getUsers,
+  toggleCreateUserModal,
+  updateUserStatus
+} from 'reducers/UserReducer'
 
 const ENTER_KEY = 13
 
@@ -14,7 +18,14 @@ class ListUserPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = this.getDefaultState()
-    props.getUsers().then(this.handleGetUserResponse.bind(this))
+  }
+
+  componentDidMount() {
+    this.props.getUsers()
+  }
+
+  componentWillUnmount() {
+    this.props.toggleCreateUserModal(false)
   }
 
   getDefaultState() {
@@ -22,7 +33,7 @@ class ListUserPage extends React.Component {
       filter: '',
       meta: {},
       users: [],
-      addingUser: false
+      isOpenCreateUserModal: false
     }
   }
 
@@ -32,9 +43,7 @@ class ListUserPage extends React.Component {
     }
 
     e.preventDefault()
-    this.props
-      .getUsers(this.state.filter)
-      .then(this.handleGetUserResponse.bind(this))
+    this.props.getUsers(this.state.filter)
   }
 
   handleSearchQueryChanged(e) {
@@ -44,34 +53,21 @@ class ListUserPage extends React.Component {
   }
 
   handlePageClick = data => {
-    this.props
-      .getUsers(this.state.filter, data.selected + 1)
-      .then(this.handleGetUserResponse.bind(this))
-  }
-
-  toggleAddUserModal() {
-    this.setState({addingUser: false})
-  }
-
-  handleGetUserResponse(result) {
-    if (!result) {
-      return
-    }
-    const { meta, users } = result
-    this.setState({ meta, users })
+    this.props.getUsers(this.state.filter, data.selected + 1)
   }
 
   render() {
     return (
       <React.Fragment>
         <LayoutSidebar />
+        <CreateUserModal />
         <LayoutMain>
           <React.Fragment>
             <div className="col-sm-12">
               <LayoutPageHead title={'Users'}>
                 <button
                   className="btn btn-success"
-                  onClick={this.toggleAddUserModal.bind(this)}
+                  onClick={() => this.props.toggleCreateUserModal(true)}
                 >
                   Add User
                 </button>
@@ -107,7 +103,7 @@ class ListUserPage extends React.Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.state.users.map(item => (
+                  {this.props.users.map(item => (
                     <tr key={item.id.toString()}>
                       <td>{item.id}</td>
                       <td>
@@ -117,29 +113,19 @@ class ListUserPage extends React.Component {
                       </td>
                       <td>{item.created_date}</td>
                       <td>
-                        {item.is_active ? (
-                          <button
-                            className="btn btn-xs btn-outline-danger"
-                            onClick={this.props.updateStatus.bind(
-                              this,
+                        <button
+                          className={`btn btn-xs btn-outline-${
+                            item.is_active ? 'danger' : 'success'
+                          }`}
+                          onClick={() =>
+                            this.props.updateUserStatus(
                               item.id,
-                              false
-                            )}
-                          >
-                            Disable
-                          </button>
-                        ) : (
-                          <button
-                            className="btn btn-xs btn-outline-success"
-                            onClick={this.props.updateStatus.bind(
-                              this,
-                              item.id,
-                              true
-                            )}
-                          >
-                            Enable
-                          </button>
-                        )}
+                              !item.is_active
+                            )
+                          }
+                        >
+                          {item.is_active ? 'Disable' : 'Enable'}
+                        </button>
                       </td>
                     </tr>
                   ))}
@@ -154,7 +140,7 @@ class ListUserPage extends React.Component {
                 previousLabel={'«'}
                 nextLabel={'»'}
                 breakLabel={'...'}
-                pageCount={this.state.meta.total_pages}
+                pageCount={this.props.meta.total_pages}
                 marginPagesDisplayed={2}
                 pageRangeDisplayed={5}
                 onPageChange={this.handlePageClick}
@@ -177,12 +163,18 @@ class ListUserPage extends React.Component {
   }
 }
 
-const mapStateToProps = () => ({})
+const mapStateToProps = state => {
+  return {
+    users: state.user.users,
+    meta: state.user.pagination
+  }
+}
 const mapDispatchToProps = dispatch => {
   return {
-    toggleAddUserModal: () => dispatch(toggleAddUserModal()),
     getUsers: (filter, page) => dispatch(getUsers(filter, page)),
-    updateStatus: () => {}
+    toggleCreateUserModal: isOpen => dispatch(toggleCreateUserModal(isOpen)),
+    updateUserStatus: (id, is_active) =>
+      dispatch(updateUserStatus(id, is_active))
   }
 }
 

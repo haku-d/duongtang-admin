@@ -5,6 +5,7 @@ class ModalHead extends Component {
     return (
       <div className="modal-header">
         <button
+          type="button"
           className="close"
           onClick={this.props.close}
         >
