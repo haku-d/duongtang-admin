@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import ModalHead from 'components/modal/ModalHead'
-import ModalBody from 'components/modal/ModalBody'
-import ModalFooter from 'components/modal/ModalFooter'
+import ModalHead from './ModalHead'
+import ModalBody from './ModalBody'
+import ModalFooter from './ModalFooter'
 
 class Modal extends Component {
   displayBackdrop() {

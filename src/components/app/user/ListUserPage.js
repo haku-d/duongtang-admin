@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import Main from 'components/ui/Main'
-import Header from 'components/ui/Header'
+import Main from 'components/common/ui/Main'
+import Header from 'components/common/ui/Header'
 import ReactPaginate from 'react-paginate'
 import CreateUserModal from './CreateUserModal'
 import {
@@ -17,6 +17,7 @@ class ListUserPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = this.getDefaultState()
+    this.handleUpdateUserStatus.bind(this)
   }
 
   componentDidMount() {
@@ -54,6 +55,8 @@ class ListUserPage extends React.Component {
   handlePageClick = data => {
     this.props.getUsers(this.state.filter, data.selected + 1)
   }
+
+  handleUpdateUserStatus(id) {}
 
   render() {
     return (

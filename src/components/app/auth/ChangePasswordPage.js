@@ -2,11 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import BlockUi from 'react-block-ui'
 
-import Form from 'components/ui/Form'
-import Input from 'components/ui/Input'
+import Form from 'components/common/ui/Form'
+import Input from 'components/common/ui/Input'
 import { changePassword } from 'reducers/AppReducer'
-import Main from 'components/ui/Main'
-import Header from 'components/ui/Header'
+import Main from 'components/common/ui/Main'
+import Header from 'components/common/ui/Header'
 
 class ChangePasswordPage extends React.Component {
   constructor(props) {

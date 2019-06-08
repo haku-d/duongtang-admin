@@ -1,10 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { Modal, ModalHead, ModalBody, ModalFooter } from 'components/modal'
+import {
+  Modal,
+  ModalHead,
+  ModalBody,
+  ModalFooter
+} from 'components/common/modal'
 
-import Form from 'components/ui/Form'
-import Input from 'components/ui/Input'
+import Form from 'components/common/ui/Form'
+import Input from 'components/common/ui/Input'
 import { addUser, toggleCreateUserModal } from 'reducers/UserReducer'
 
 class CreateUserModal extends React.Component {

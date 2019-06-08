@@ -1,9 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import Main from 'components/ui/Main'
-import Header from 'components/ui/Header'
-import Card from 'components/ui/Card'
+import Main from 'components/common/ui/Main'
+import Header from 'components/common/ui/Header'
+import Card from 'components/common/ui/Card'
 
 class DashBoard extends React.Component {
   render() {

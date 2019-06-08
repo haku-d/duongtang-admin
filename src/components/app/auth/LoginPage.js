@@ -2,8 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import BlockUi from 'react-block-ui'
 import { login } from 'reducers/AppReducer'
-import Input from 'components/ui/Input'
-import Form from 'components/ui/Form'
+import Input from 'components/common/ui/Input'
+import Form from 'components/common/ui/Form'
 
 class LoginPage extends React.Component {
   constructor(props) {
@@ -36,14 +36,16 @@ class LoginPage extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault()
-    this.props.login({
-      email: this.state.email,
-      password: this.state.password
-    }).catch(err => {
-      this.setState({
-        errorMsg: err.toString()
+    this.props
+      .login({
+        email: this.state.email,
+        password: this.state.password
       })
-    })
+      .catch(err => {
+        this.setState({
+          errorMsg: err.toString()
+        })
+      })
   }
 
   render() {

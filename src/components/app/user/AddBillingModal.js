@@ -1,15 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {
-  Modals,
+  Modal,
   ModalHead,
   ModalBody,
   ModalFooter
-} from 'components/modals/Modal'
-import Form from 'components/ui/Form'
-import Input from 'components/ui/Input'
+} from 'components/common/modal'
+import Form from 'components/common/ui/Form'
+import Input from 'components/common/ui/Input'
 
-import { addBilling } from 'reducers/UserReducer'
+import { addBilling, toggleAddBillingModal } from 'reducers/UserReducer'
 
 class AddBillingModal extends React.Component {
   initialState = {
@@ -25,7 +25,9 @@ class AddBillingModal extends React.Component {
     e.preventDefault()
     const userId = parseInt(this.props.userId, 10)
     const amount = parseInt(this.state.amount)
-    this.props.addBilling(userId, amount).then(rs => this.props.closeHandler())
+    this.props
+      .addBilling(userId, amount)
+      .then(() => this.props.toggleAddBillingModal())
   }
 
   handleAmountChanged(e) {
@@ -34,28 +36,22 @@ class AddBillingModal extends React.Component {
     })
   }
 
-  cancel(e) {
-    e.preventDefault()
-    this.reset()
-    this.props.closeHandler()
-  }
-
   reset() {
     this.setState({ ...this.initialState })
   }
 
   render() {
     return (
-      <Modals
-        modalSize={'modal-dialog modal-lg'}
-        modalShow={this.props.isOpening}
+      <Modal
+        modalSize={'modal-dialog modal-md'}
+        modalShow={this.props.isOpenAddBillingModal}
       >
         <Form
           isError={this.state.hasError}
           msg={this.state.msg}
           onSubmit={this.handleSubmit.bind(this)}
         >
-          <ModalHead closeModal={this.cancel.bind(this)}>
+          <ModalHead close={this.props.toggleAddBillingModal}>
             <h5 className="modal-title">Add billing</h5>
           </ModalHead>
           <ModalBody>
@@ -74,7 +70,7 @@ class AddBillingModal extends React.Component {
               <button
                 type="button"
                 className="btn btn-default"
-                onClick={this.cancel.bind(this)}
+                onClick={this.props.toggleAddBillingModal}
               >
                 Cancel
               </button>
@@ -84,18 +80,22 @@ class AddBillingModal extends React.Component {
             </React.Fragment>
           </ModalFooter>
         </Form>
-      </Modals>
+      </Modal>
     )
   }
 }
 
 const mapStateToProps = state => {
-  return state.user
+  return {
+    isLoading: state.ui.isLoading,
+    ...state.user
+  }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    addBilling: (id, amount) => dispatch(addBilling(id, amount))
+    addBilling: (id, amount) => dispatch(addBilling(id, amount)),
+    toggleAddBillingModal: () => dispatch(toggleAddBillingModal())
   }
 }
 

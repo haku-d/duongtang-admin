@@ -6,9 +6,9 @@ import {
   getUserInfo,
   updateUserStatus
 } from 'reducers/UserReducer'
-import Main from 'components/ui/Main'
-import Header from 'components/ui/Header'
-import AddBillingModal from 'components/user/AddBillingModal'
+import Main from 'components/common/ui/Main'
+import Header from 'components/common/ui/Header'
+import AddBillingModal from 'components/app/user/AddBillingModal'
 
 class DetailUserPage extends React.Component {
   componentDidMount() {
@@ -23,9 +23,7 @@ class DetailUserPage extends React.Component {
     return (
       <React.Fragment>
         <div className="col-sm-12">
-          <Header
-            title={`User: ${user.email ? user.email : 'No email'}`}
-          >
+          <Header title={`User: ${user.email ? user.email : 'No email'}`}>
             <button
               className={`btn ${user.is_active ? 'btn-danger' : 'btn-success'}`}
               onClick={() =>
