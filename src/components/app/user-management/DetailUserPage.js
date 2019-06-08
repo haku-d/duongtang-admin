@@ -8,7 +8,7 @@ import {
 } from 'reducers/UserReducer'
 import Main from 'components/common/ui/Main'
 import Header from 'components/common/ui/Header'
-import AddBillingModal from 'components/app/user/AddBillingModal'
+import AddBillingModal from './AddBillingModal'
 
 class DetailUserPage extends React.Component {
   componentDidMount() {
