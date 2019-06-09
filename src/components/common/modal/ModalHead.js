@@ -4,11 +4,8 @@ class ModalHead extends Component {
   render() {
     return (
       <div className="modal-header">
-        <button
-          type="button"
-          className="close"
-          onClick={this.props.close}
-        >
+        {this.props.children}
+        <button type="button" className="close" onClick={this.props.close}>
           ×
         </button>
       </div>

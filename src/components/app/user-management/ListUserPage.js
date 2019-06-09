@@ -11,6 +11,8 @@ import {
   updateUserStatus
 } from 'reducers/UserReducer'
 
+import { Confirm } from 'components/common/modal'
+
 const ENTER_KEY = 13
 
 class ListUserPage extends React.Component {
@@ -95,7 +97,7 @@ class ListUserPage extends React.Component {
                   <tr>
                     <th>Id</th>
                     <th>Username</th>
-                    <th>Created date</th>
+                    <th>Registered date</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -110,19 +112,23 @@ class ListUserPage extends React.Component {
                       </td>
                       <td>{item.created_date}</td>
                       <td>
-                        <button
-                          className={`btn btn-xs btn-outline-${
-                            item.is_active ? 'danger' : 'success'
-                          }`}
-                          onClick={() =>
-                            this.props.updateUserStatus(
-                              item.id,
-                              !item.is_active
-                            )
-                          }
-                        >
-                          {item.is_active ? 'Disable' : 'Enable'}
-                        </button>
+                        <Confirm title="Confirm" description="Are your sure?">
+                          {confirm => (
+                            <button
+                              className={`btn btn-xs btn-outline-${
+                                item.is_active ? 'danger' : 'success'
+                              }`}
+                              onClick={confirm(() =>
+                                this.props.updateUserStatus(
+                                  item.id,
+                                  !item.is_active
+                                )
+                              )}
+                            >
+                              {item.is_active ? 'Disable' : 'Enable'}
+                            </button>
+                          )}
+                        </Confirm>
                       </td>
                     </tr>
                   ))}

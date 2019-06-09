@@ -14,7 +14,6 @@ ModalBody.propTypes = {
 }
 // Default propTypes
 ModalBody.defaultProps = {
-  addClass: 'modal-body',
-  children: <React.Fragment />
+  addClass: 'modal-body'
 }
 export default ModalBody

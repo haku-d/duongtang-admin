@@ -9,6 +9,7 @@ import {
 import Main from 'components/common/ui/Main'
 import Header from 'components/common/ui/Header'
 import AddBillingModal from './AddBillingModal'
+import { Confirm } from 'components/common/modal'
 
 class DetailUserPage extends React.Component {
   componentDidMount() {
@@ -23,25 +24,23 @@ class DetailUserPage extends React.Component {
     return (
       <React.Fragment>
         <div className="col-sm-12">
-          <Header title={`User: ${user.email ? user.email : 'No email'}`}>
-            <button
-              className={`btn ${user.is_active ? 'btn-danger' : 'btn-success'}`}
-              onClick={() =>
-                this.props.updateUserStatus(user.id, !user.is_active)
-              }
-            >
-              {user.is_active ? 'Disable' : 'Active'}
-            </button>
-          </Header>
+          <Header title={`Email: ${user.email ? user.email : 'No email'}`} />
         </div>
         <div className="col-sm-12 mg-bt-15">
           <div className="card card-money">
             <div className="row align-items-center">
               <div className="col-6">
-                <h4>Balance</h4>
+                <h4>
+                  Facebook: <a href={user.facebook}>{user.facebook}</a>
+                </h4>
+                <h4>
+                  Website: <a href={user.website}>{user.website}</a>
+                </h4>
               </div>
               <div className="col-6 card-money-num">
-                {user.balance} <small>vnđ</small>
+                <h4>
+                  Balance: {user.balance} <small>vnđ</small>
+                </h4>
               </div>
             </div>
           </div>
@@ -66,6 +65,7 @@ class DetailUserPage extends React.Component {
               <tr>
                 <th>App Id</th>
                 <th>App Key</th>
+                <th>Stream type</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -75,6 +75,7 @@ class DetailUserPage extends React.Component {
                   <tr key={index.toString()}>
                     <td>{item.label}</td>
                     <td>{item.api_key}</td>
+                    <td>{item.stream_type}</td>
                     <td>
                       <button className="btn btn-xs btn-outline-danger">
                         Delete
@@ -96,12 +97,32 @@ class DetailUserPage extends React.Component {
     )
   }
 
+  renderUserAction(user) {
+    return (
+      <div className="col-sm-12">
+        <Confirm title="Confirm" description="Are your sure?">
+          {confirm => (
+            <button
+              className={`btn ${user.is_active ? 'btn-danger' : 'btn-success'}`}
+              onClick={confirm(() =>
+                this.props.updateUserStatus(user.id, !user.is_active)
+              )}
+            >
+              {user.is_active ? 'Disable user' : 'Active user'}
+            </button>
+          )}
+        </Confirm>
+      </div>
+    )
+  }
+
   render() {
     return (
       <Main>
         <div className="row">
           {this.renderUserInfo(this.props.user)}
           {this.renderUserApps(this.props.userApps)}
+          {this.renderUserAction(this.props.user)}
         </div>
         <AddBillingModal userId={this.props.user.id} />
       </Main>

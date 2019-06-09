@@ -1,10 +1,23 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
-import ModalHead from './ModalHead'
-import ModalBody from './ModalBody'
-import ModalFooter from './ModalFooter'
 
-class Modal extends Component {
+const modalRoot = document.getElementById('modal-root')
+
+export default class Modal extends Component {
+  constructor(props) {
+    super(props)
+    this.el = document.createElement('div')
+  }
+
+  componentDidMount() {
+    modalRoot.appendChild(this.el)
+  }
+
+  componentWillUnmount() {
+    modalRoot.removeChild(this.el)
+  }
+
   displayBackdrop() {
     if (this.props.modalShow) {
       return <div className={'fade modal-backdrop show'} />
@@ -21,7 +34,7 @@ class Modal extends Component {
   }
 
   render() {
-    return (
+    return ReactDOM.createPortal(
       <React.Fragment>
         <div
           className={this.handleModalToggle()}
@@ -33,7 +46,8 @@ class Modal extends Component {
           </div>
         </div>
         {this.displayBackdrop()}
-      </React.Fragment>
+      </React.Fragment>,
+      this.el
     )
   }
 }
@@ -48,9 +62,3 @@ Modal.defaultProps = {
   targetState: '',
   modalSize: 'modal-dialog'
 }
-// handele Function
-// handleShow.bind(this, 'jsTaget02')
-// jsTaget02 -> name, id target show hide modal
-
-export default Modal
-export { Modal, ModalHead, ModalBody, ModalFooter }
