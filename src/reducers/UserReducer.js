@@ -3,6 +3,7 @@ import client from 'client'
 const defaultState = {
   isOpenCreateUserModal: false,
   isOpenAddBillingModal: false,
+  isOpenAddUserAppModal: false,
   users: [],
   pagination: {},
   user: {},
@@ -21,6 +22,11 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         isOpenAddBillingModal: action.data
+      }
+    case 'TOGGLE_ADD_USER_APP_MODAL':
+      return {
+        ...state,
+        isOpenAddUserAppModal: action.data
       }
     case 'ADD_USER_COMPLETE':
       return {
@@ -68,6 +74,12 @@ export default (state = defaultState, action) => {
           return user
         })
       }
+    case 'ADD_USER_APP_COMPLETED':
+      return {
+        ...state,
+        isOpenAddUserAppModal: false,
+        userApps: [...state.userApps, action.data]
+      }
     default:
       return state
   }
@@ -100,6 +112,11 @@ export const getUsers = (filter, page) => {
 
 export const toggleCreateUserModal = isOpen => {
   return dispatch => dispatch({ type: 'TOGGLE_ADD_USER_MODAL', data: isOpen })
+}
+
+export const toggleAddUserAppModal = isOpen => {
+  return dispatch =>
+    dispatch({ type: 'TOGGLE_ADD_USER_APP_MODAL', data: isOpen })
 }
 
 export const toggleAddBillingModal = isOpen => {
@@ -171,6 +188,43 @@ export const updateUserStatus = (id, is_active) => {
         type: 'UPDATE_USER_STATUS_COMPLETE',
         data: data
       })
+    })
+  }
+}
+
+export const addApp = (id, streamType, shortDomain) => {
+  return dispatch => {
+    const data = {
+      user_id: id,
+      stream_type: streamType,
+      short_domain: shortDomain
+    }
+    return client.post('admin/create-user-app', data).then(rs => {
+      if (rs.status === 200) {
+        dispatch({ type: 'ADD_USER_APP_COMPLETED', data: rs.data })
+      }
+    })
+  }
+}
+
+export const disableApp = id => {
+  return dispatch => {
+    const data = { id }
+    return client.post('admin/disable-user-app', data).then(rs => {
+      if (rs.status === 200) {
+        dispatch({ type: 'UPDATE_USER_APP_COMPLETED', data: rs.data })
+      }
+    })
+  }
+}
+
+export const enableApp = id => {
+  return dispatch => {
+    const data = { id }
+    return client.post('admin/enable-user-app', data).then(rs => {
+      if (rs.status === 200) {
+        dispatch({ type: 'UPDATE_USER_APP_COMPLETED', data: rs.data })
+      }
     })
   }
 }

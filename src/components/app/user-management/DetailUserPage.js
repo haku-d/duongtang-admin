@@ -3,13 +3,17 @@ import { connect } from 'react-redux'
 
 import {
   toggleAddBillingModal,
+  toggleAddUserAppModal,
   getUserInfo,
-  updateUserStatus
+  updateUserStatus,
+  disableApp,
+  enableApp
 } from 'reducers/UserReducer'
 import Main from 'components/common/ui/Main'
 import Header from 'components/common/ui/Header'
 import AddBillingModal from './AddBillingModal'
 import { Confirm } from 'components/common/modal'
+import AddUserAppModal from './AddUserAppModal'
 
 class DetailUserPage extends React.Component {
   componentDidMount() {
@@ -63,9 +67,9 @@ class DetailUserPage extends React.Component {
           <table className="table table-align-right">
             <thead>
               <tr>
-                <th>App Id</th>
-                <th>App Key</th>
+                <th>App key</th>
                 <th>Stream type</th>
+                <th>Created data</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -73,9 +77,9 @@ class DetailUserPage extends React.Component {
               {apps.length > 0 ? (
                 apps.map((item, index) => (
                   <tr key={index.toString()}>
-                    <td>{item.label}</td>
                     <td>{item.api_key}</td>
                     <td>{item.stream_type}</td>
+                    <td>{item.created_date}</td>
                     <td>
                       <button className="btn btn-xs btn-outline-danger">
                         Delete
@@ -100,6 +104,12 @@ class DetailUserPage extends React.Component {
   renderUserAction(user) {
     return (
       <div className="col-sm-12">
+        <button
+          className="btn btn-success mr-1"
+          onClick={() => this.props.toggleAddUserAppModal(true)}
+        >
+          Add new app
+        </button>
         <Confirm title="Confirm" description="Are your sure?">
           {confirm => (
             <button
@@ -108,7 +118,7 @@ class DetailUserPage extends React.Component {
                 this.props.updateUserStatus(user.id, !user.is_active)
               )}
             >
-              {user.is_active ? 'Disable user' : 'Active user'}
+              {user.is_active ? 'Disable app' : 'Active app'}
             </button>
           )}
         </Confirm>
@@ -125,6 +135,7 @@ class DetailUserPage extends React.Component {
           {this.renderUserAction(this.props.user)}
         </div>
         <AddBillingModal userId={this.props.user.id} />
+        <AddUserAppModal userId={this.props.user.id} />
       </Main>
     )
   }
@@ -137,8 +148,11 @@ const mapDispatchToProps = dispatch => {
   return {
     getUserInfo: id => dispatch(getUserInfo(id)),
     toggleAddBillingModal: isOpen => dispatch(toggleAddBillingModal(isOpen)),
+    toggleAddUserAppModal: isOpen => dispatch(toggleAddUserAppModal(isOpen)),
     updateUserStatus: (id, is_active) =>
-      dispatch(updateUserStatus(id, is_active))
+      dispatch(updateUserStatus(id, is_active)),
+    disableApp: id => dispatch(disableApp(id)),
+    enableApp: id => dispatch(enableApp(id))
   }
 }
 
