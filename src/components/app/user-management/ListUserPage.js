@@ -32,10 +32,7 @@ class ListUserPage extends React.Component {
 
   getDefaultState() {
     return {
-      filter: '',
-      meta: {},
-      users: [],
-      isOpenCreateUserModal: false
+      filter: ''
     }
   }
 
@@ -57,8 +54,6 @@ class ListUserPage extends React.Component {
   handlePageClick = data => {
     this.props.getUsers(this.state.filter, data.selected + 1)
   }
-
-  handleUpdateUserStatus(id) {}
 
   render() {
     return (
