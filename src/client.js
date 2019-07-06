@@ -34,7 +34,7 @@ class Client {
   }
 
   addHeaders(headers) {
-    headers.forEach(({key, value}) => {
+    headers.forEach(({ key, value }) => {
       this.addHeader(key, value)
     })
     return this

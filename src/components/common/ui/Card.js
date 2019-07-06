@@ -7,7 +7,7 @@ class Card extends React.Component {
         <div className={this.props.addClass}>
           <div className="card-body">
             <h2 className="card-title">{this.props.title}</h2>
-            <span className="card-number">{this.props.number}</span>
+            <span className="card-number">{this.props.text}</span>
           </div>
         </div>
       </React.Fragment>
@@ -18,12 +18,12 @@ class Card extends React.Component {
 Card.propTypes = {
   addClass: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  number: PropTypes.number.isRequired
+  text: PropTypes.any
 }
 // Default propTypes
 Card.defaultProps = {
   addClass: 'card',
   title: '',
-  number: 0
+  text: ''
 }
 export default Card

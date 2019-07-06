@@ -19,7 +19,6 @@ class ListUserPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = this.getDefaultState()
-    this.handleUpdateUserStatus.bind(this)
   }
 
   componentDidMount() {

@@ -39,7 +39,7 @@ const getAccessToken = () => {
 }
 
 const checkTokenExpired = token => {
-  return client.addHeader('x-token', token).get('/me')
+  return client.updateToken(token).get('/me')
 }
 
 export const initialize = () => {
@@ -95,7 +95,8 @@ export const changePassword = ({ current_pw, new_pw }) => {
     dispatch({
       type: 'changePassword_begin'
     })
-    return client.post('change-password', { current_pw, new_pw })
-      .finally(() => dispatch({type: 'changePassword_complete'}))
+    return client
+      .post('change-password', { current_pw, new_pw })
+      .finally(() => dispatch({ type: 'changePassword_complete' }))
   }
 }
