@@ -10,6 +10,7 @@ import ChangePasswordPage from 'components/app/auth/ChangePasswordPage'
 import ListUserPage from 'components/app/user-management/ListUserPage'
 import DetailUserPage from 'components/app/user-management/DetailUserPage'
 import DashBoard from 'components/app/dashboard/DashBoard'
+import ReportEarning from 'components/app/report/Earning'
 import { initialize } from 'reducers/AppReducer'
 import Sidebar from 'components/common/ui/Sidebar'
 
@@ -34,6 +35,7 @@ class App extends React.Component {
           <PrivateRoute exact path="/users" component={ListUserPage} />
           <PrivateRoute exact path="/users/:id" component={DetailUserPage} />
           <GuestRoute exact path="/account/login" component={LoginPage} />
+          <PrivateRoute exact path="/reports" component={ReportEarning} />
         </Switch>
       </React.Fragment>
     )

@@ -4,6 +4,7 @@ import AppReducer from 'reducers/AppReducer'
 import UIReducer from 'reducers/UIReducer'
 import UserReducer from 'reducers/UserReducer'
 import DashboardReducer from 'reducers/DashboardReducer'
+import ReportReducer from './ReportReducer'
 
 export default history =>
   combineReducers({
@@ -11,5 +12,6 @@ export default history =>
     app: AppReducer,
     ui: UIReducer,
     user: UserReducer,
-    dashboard: DashboardReducer
+    dashboard: DashboardReducer,
+    report: ReportReducer
   })

@@ -22,10 +22,12 @@ class Client {
 
   removeToken() {
     this.request.defaults.headers.common['X-Token'] = undefined
+    return this
   }
 
   updateToken(token) {
     this.request.defaults.headers.common['X-Token'] = token
+    return this
   }
 
   addHeader(key, value) {

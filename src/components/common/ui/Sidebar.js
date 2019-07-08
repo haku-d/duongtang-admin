@@ -34,6 +34,14 @@ class Sidebar extends React.Component {
               <NavLink
                 exact
                 className="sidebar-item"
+                to="/reports"
+                activeClassName="active"
+              >
+                Reports
+              </NavLink>
+              <NavLink
+                exact
+                className="sidebar-item"
                 to="/account/change-password"
               >
                 Change password
