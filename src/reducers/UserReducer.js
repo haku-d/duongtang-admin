@@ -157,11 +157,12 @@ export const getUser = id => {
   }
 }
 
-export const addBilling = (id, amount) => {
+export const addBilling = (id, amount, note) => {
   return dispatch => {
     const data = {
       user_id: id,
-      amount: amount
+      amount: amount,
+      note: note
     }
     return client.post('admin/billing', data).then(rs => {
       if (rs.status === 200) {

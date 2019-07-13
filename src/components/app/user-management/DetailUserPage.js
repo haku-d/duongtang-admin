@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import numeral from 'numeral'
 
 import {
   toggleAddBillingModal,
@@ -43,7 +44,8 @@ class DetailUserPage extends React.Component {
               </div>
               <div className="col-6 card-money-num">
                 <h4>
-                  Balance: {user.balance} <small>vnđ</small>
+                  Balance: {numeral(user.balance).format('0,0')}{' '}
+                  <small>gạo</small>
                 </h4>
               </div>
             </div>

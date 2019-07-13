@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import numeral from 'numeral'
 import Main from 'components/common/ui/Main'
 import Header from 'components/common/ui/Header'
 import ReactPaginate from 'react-paginate'
@@ -91,6 +92,7 @@ class ListUserPage extends React.Component {
                   <tr>
                     <th>Id</th>
                     <th>Username</th>
+                    <th>Balance</th>
                     <th>Registered date</th>
                     <th>Action</th>
                   </tr>
@@ -104,6 +106,7 @@ class ListUserPage extends React.Component {
                           {item.email ? item.email : 'No email'}
                         </Link>
                       </td>
+                      <td>{numeral(item.balance).format('0,0')}</td>
                       <td>{item.created_date}</td>
                       <td>
                         <Confirm title="Confirm" description="Are your sure?">

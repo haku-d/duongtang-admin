@@ -8,12 +8,14 @@ import {
 } from 'components/common/modal'
 import Form from 'components/common/ui/Form'
 import Input from 'components/common/ui/Input'
+import Textarea from 'components/common/ui/Textarea'
 
 import { addBilling, toggleAddBillingModal } from 'reducers/UserReducer'
 
 class AddBillingModal extends React.Component {
   initialState = {
-    amount: 0
+    amount: 0,
+    note: ''
   }
 
   constructor(props) {
@@ -25,14 +27,21 @@ class AddBillingModal extends React.Component {
     e.preventDefault()
     const userId = parseInt(this.props.userId, 10)
     const amount = parseInt(this.state.amount)
+    const note = this.state.note
     this.props
-      .addBilling(userId, amount)
+      .addBilling(userId, amount, note)
       .then(() => this.props.toggleAddBillingModal())
   }
 
   handleAmountChanged(e) {
     this.setState({
       amount: e.target.value
+    })
+  }
+
+  handleNoteChanged(e) {
+    this.setState({
+      note: e.target.value
     })
   }
 
@@ -57,11 +66,15 @@ class AddBillingModal extends React.Component {
           <ModalBody>
             <React.Fragment>
               <Input
-                id="js-amount"
                 label={'Amount'}
                 type={'number'}
                 placeholder="0"
                 onChange={this.handleAmountChanged.bind(this)}
+              />
+              <Textarea
+                label={'Note'}
+                placeholder="Note"
+                onChange={this.handleNoteChanged.bind(this)}
               />
             </React.Fragment>
           </ModalBody>
@@ -94,7 +107,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addBilling: (id, amount) => dispatch(addBilling(id, amount)),
+    addBilling: (id, amount, note) => dispatch(addBilling(id, amount, note)),
     toggleAddBillingModal: () => dispatch(toggleAddBillingModal())
   }
 }

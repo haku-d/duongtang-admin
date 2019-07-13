@@ -2,7 +2,8 @@ import client from 'client'
 import numeral from 'numeral'
 
 const defaultState = {
-  today_req: 0,
+  today_view: 0,
+  today_upload: 0,
   totay_earn: 0,
   today_req_details: []
 }
@@ -12,8 +13,15 @@ export default (state = defaultState, action) => {
     case 'LOAD_TODAY_REQUEST_COMPLETE':
       return {
         ...state,
-        today_req: numeral(action.data.total_req).format('0,0'),
-        totay_earn: numeral(action.data.total_earn).format('0,0')
+        today_view: numeral(
+          action.data.find(item => item.type === 'VIEW').total_req
+        ).format('0,0'),
+        today_upload: numeral(
+          action.data.find(item => item.type === 'UPLOAD_PHOTO').total_req
+        ).format('0,0'),
+        totay_earn: numeral(
+          action.data.reduce((acc, curr) => acc + curr.total_earn, 0)
+        ).format('0,0')
       }
     case 'LOAD_TODAY_REQUEST_DETAIL_COMPLETE':
       return {

@@ -31,10 +31,13 @@ class DashBoard extends React.Component {
       <Main>
         <Header title={'DashBoard'} />
         <div className="row">
-          <div className="col-sm-6">
-            <Card title={'Today requests'} text={this.props.today_req} />
+          <div className="col-sm-4">
+            <Card title={'Today views'} text={this.props.today_view} />
           </div>
-          <div className="col-sm-6">
+          <div className="col-sm-4">
+            <Card title={'Today uploads'} text={this.props.today_upload} />
+          </div>
+          <div className="col-sm-4">
             <Card title={'Today earns'} text={this.props.totay_earn} />
           </div>
         </div>
