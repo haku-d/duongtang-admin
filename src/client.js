@@ -4,6 +4,12 @@ class Client {
   constructor(opt = {}) {
     this.opt = Object.assign(this._getDefaultOption(), opt)
     this.request = axios.create(this.opt)
+    this.request.interceptors.response.use(response => {
+      if (response.data.status === 401) {
+        return Promise.reject()
+      }
+      return response
+    })
   }
 
   _getDefaultOption() {
