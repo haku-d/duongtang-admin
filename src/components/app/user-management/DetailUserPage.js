@@ -48,12 +48,6 @@ class DetailUserPage extends React.Component {
               </div>
             </div>
           </div>
-          <button
-            className="btn btn-success float-right"
-            onClick={() => this.props.toggleAddBillingModal(true)}
-          >
-            Add Money
-          </button>
         </div>
       </React.Fragment>
     )
@@ -61,49 +55,57 @@ class DetailUserPage extends React.Component {
 
   renderUserApps(apps) {
     return (
-      <React.Fragment>
-        <div className="col-sm-12">
-          <h4>List Api Key</h4>
-          <table className="table table-align-right">
-            <thead>
-              <tr>
-                <th>App key</th>
-                <th>Stream type</th>
-                <th>Created data</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {apps.length > 0 ? (
-                apps.map((item, index) => (
-                  <tr key={index.toString()}>
-                    <td>{item.api_key}</td>
-                    <td>{item.stream_type}</td>
-                    <td>{item.created_date}</td>
-                    <td>
-                      <button className="btn btn-xs btn-outline-danger">
-                        Delete
-                      </button>
-                      |<button className="btn btn-xs btn-success">Edit</button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="3">No app found</td>
+      <div className="col-sm-12">
+        <h4>List Api Key</h4>
+        <table className="table table-align-right">
+          <thead>
+            <tr>
+              <th>App key</th>
+              <th>Stream type</th>
+              <th>Created data</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {apps.length > 0 ? (
+              apps.map((item, index) => (
+                <tr key={index.toString()}>
+                  <td>{item.api_key}</td>
+                  <td>{item.stream_type}</td>
+                  <td>{item.created_date}</td>
+                  <td>
+                    <button className="btn btn-xs btn-outline-danger">
+                      Delete
+                    </button>
+                    |<button className="btn btn-xs btn-success">Edit</button>
+                  </td>
                 </tr>
-              )}
-            </tbody>
-          </table>
-          <hr />
-        </div>
-      </React.Fragment>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" className="pd-0">
+                  <div className="alert alert-warning text-center">
+                    No app found!
+                  </div>
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+        <hr />
+      </div>
     )
   }
 
   renderUserAction(user) {
     return (
-      <div className="col-sm-12">
+      <div className="col-sm-12 mg-bt-15">
+        <button
+          className="btn btn-success mr-1"
+          onClick={() => this.props.toggleAddBillingModal(true)}
+        >
+          Add Money
+        </button>
         <button
           className="btn btn-success mr-1"
           onClick={() => this.props.toggleAddUserAppModal(true)}
@@ -118,10 +120,46 @@ class DetailUserPage extends React.Component {
                 this.props.updateUserStatus(user.id, !user.is_active)
               )}
             >
-              {user.is_active ? 'Disable app' : 'Active app'}
+              {user.is_active ? 'Disable user' : 'Active user'}
             </button>
           )}
         </Confirm>
+      </div>
+    )
+  }
+
+  renderUserTransaction(transactions) {
+    return (
+      <div className="col-sm-12">
+        <h4>Transaction history</h4>
+        <table className="table table-align-right">
+          <thead>
+            <tr>
+              <th>Transaction date</th>
+              <th>Type</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {transactions.items.length > 0 ? (
+              transactions.items.map((item, index) => (
+                <tr key={index.toString()}>
+                  <td>{item.transaction_datetime}</td>
+                  <td>{item.transaction_type}</td>
+                  <td>{item.balance}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" className="pd-0">
+                  <div className="alert alert-warning text-center">
+                    No transaction found!
+                  </div>
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     )
   }
@@ -131,8 +169,9 @@ class DetailUserPage extends React.Component {
       <Main>
         <div className="row">
           {this.renderUserInfo(this.props.user)}
-          {this.renderUserApps(this.props.userApps)}
           {this.renderUserAction(this.props.user)}
+          {this.renderUserApps(this.props.userApps)}
+          {this.renderUserTransaction(this.props.transactions)}
         </div>
         <AddBillingModal userId={this.props.user.id} />
         <AddUserAppModal userId={this.props.user.id} />

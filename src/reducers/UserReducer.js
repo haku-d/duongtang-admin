@@ -8,6 +8,9 @@ const defaultState = {
   pagination: {},
   user: {},
   userApps: [],
+  transactions: {
+    items: []
+  },
   errorMsg: ''
 }
 
@@ -79,6 +82,11 @@ export default (state = defaultState, action) => {
         ...state,
         isOpenAddUserAppModal: false,
         userApps: [...state.userApps, action.data]
+      }
+    case 'LOAD_USER_TRANSACTION_COMPLETED':
+      return {
+        ...state,
+        transactions: action.data
       }
     default:
       return state
@@ -166,12 +174,19 @@ export const addBilling = (id, amount) => {
 export const getUserInfo = id => {
   const userReq = client.get(`/user-info/${id}`).then(rs => rs.data)
   const appsReq = client.get(`/admin/user/${id}/apps`).then(rs => rs.data)
+  const transactionsReq = client
+    .get(`/admin/user/${id}/transactions`)
+    .then(rs => rs.data)
 
   return dispatch => {
-    return client.all([userReq, appsReq]).then(
-      client.spread((user, apps) => {
+    return client.all([userReq, appsReq, transactionsReq]).then(
+      client.spread((user, apps, transactions) => {
         dispatch({ type: 'LOAD_USER_COMPLETED', data: user })
         dispatch({ type: 'LOAD_USER_APP_COMPLETED', data: apps })
+        dispatch({
+          type: 'LOAD_USER_TRANSACTION_COMPLETED',
+          data: transactions
+        })
       })
     )
   }
