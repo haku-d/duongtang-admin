@@ -11,14 +11,18 @@ const defaultState = {
 export default (state = defaultState, action) => {
   switch (action.type) {
     case 'LOAD_TODAY_REQUEST_COMPLETE':
+      const view_stats = action.data.find(item => item.type === 'VIEW')
+      const upload_stats = action.data.find(
+        item => item.type === 'UPLOAD_PHOTO'
+      )
       return {
         ...state,
-        today_view: numeral(
-          action.data.find(item => item.type === 'VIEW').total_req
-        ).format('0,0'),
-        today_upload: numeral(
-          action.data.find(item => item.type === 'UPLOAD_PHOTO').total_req
-        ).format('0,0'),
+        today_view: numeral(view_stats ? view_stats.total_req : 0).format(
+          '0,0'
+        ),
+        today_upload: numeral(upload_stats ? upload_stats.total_req : 0).format(
+          '0,0'
+        ),
         totay_earn: numeral(
           action.data.reduce((acc, curr) => acc + curr.total_earn, 0)
         ).format('0,0')

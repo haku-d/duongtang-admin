@@ -8,13 +8,15 @@ import {
   getUserInfo,
   updateUserStatus,
   disableApp,
-  enableApp
+  enableApp,
+  editApp
 } from 'reducers/UserReducer'
 import Main from 'components/common/ui/Main'
 import Header from 'components/common/ui/Header'
 import AddBillingModal from './AddBillingModal'
 import { Confirm } from 'components/common/modal'
 import AddUserAppModal from './AddUserAppModal'
+import EditUserAppModal from './EditUserAppModal'
 
 class DetailUserPage extends React.Component {
   componentDidMount() {
@@ -64,6 +66,7 @@ class DetailUserPage extends React.Component {
             <tr>
               <th>App key</th>
               <th>Stream type</th>
+              <th>Short domain</th>
               <th>Created data</th>
               <th>Action</th>
             </tr>
@@ -74,12 +77,39 @@ class DetailUserPage extends React.Component {
                 <tr key={index.toString()}>
                   <td>{item.api_key}</td>
                   <td>{item.stream_type}</td>
+                  <td>{item.short_domain}</td>
                   <td>{item.created_date}</td>
                   <td>
-                    <button className="btn btn-xs btn-outline-danger">
-                      Delete
+                    <Confirm title="Confirm" description="Are your sure?">
+                      {confirm =>
+                        item.status === 1 ? (
+                          <button
+                            className="btn btn-xs btn-outline-danger"
+                            onClick={confirm(() =>
+                              this.props.disableApp(item.api_key)
+                            )}
+                          >
+                            Disable
+                          </button>
+                        ) : (
+                          <button
+                            className="btn btn-xs btn-outline-success"
+                            onClick={confirm(() =>
+                              this.props.enableApp(item.api_key)
+                            )}
+                          >
+                            Enable
+                          </button>
+                        )
+                      }
+                    </Confirm>
+                    |
+                    <button
+                      className="btn btn-xs btn-success"
+                      onClick={() => this.props.editApp(item.api_key)}
+                    >
+                      Edit
                     </button>
-                    |<button className="btn btn-xs btn-success">Edit</button>
                   </td>
                 </tr>
               ))
@@ -177,6 +207,7 @@ class DetailUserPage extends React.Component {
         </div>
         <AddBillingModal userId={this.props.user.id} />
         <AddUserAppModal userId={this.props.user.id} />
+        <EditUserAppModal />
       </Main>
     )
   }
@@ -192,8 +223,9 @@ const mapDispatchToProps = dispatch => {
     toggleAddUserAppModal: isOpen => dispatch(toggleAddUserAppModal(isOpen)),
     updateUserStatus: (id, is_active) =>
       dispatch(updateUserStatus(id, is_active)),
-    disableApp: id => dispatch(disableApp(id)),
-    enableApp: id => dispatch(enableApp(id))
+    disableApp: api_key => dispatch(disableApp(api_key)),
+    enableApp: api_key => dispatch(enableApp(api_key)),
+    editApp: api_key => dispatch(editApp(api_key))
   }
 }
 

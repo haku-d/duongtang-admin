@@ -4,6 +4,7 @@ const defaultState = {
   isOpenCreateUserModal: false,
   isOpenAddBillingModal: false,
   isOpenAddUserAppModal: false,
+  isOpenEditUserAppModal: false,
   users: [],
   pagination: {},
   user: {},
@@ -11,7 +12,8 @@ const defaultState = {
   transactions: {
     items: []
   },
-  errorMsg: ''
+  errorMsg: '',
+  editingUserApp: {}
 }
 
 export default (state = defaultState, action) => {
@@ -30,6 +32,11 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         isOpenAddUserAppModal: action.data
+      }
+    case 'TOGGLE_EDIT_USER_APP_MODAL':
+      return {
+        ...state,
+        isOpenEditUserAppModal: action.data
       }
     case 'ADD_USER_COMPLETE':
       return {
@@ -58,6 +65,9 @@ export default (state = defaultState, action) => {
         user: {
           ...state.user,
           balance: state.user.balance + action.data
+        },
+        transactions: {
+          items: [action.data, ...state.transactions.items]
         }
       }
     case 'UPDATE_USER_STATUS_COMPLETE':
@@ -87,6 +97,24 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         transactions: action.data
+      }
+    case 'EDIT_USER_APP_BEGIN':
+      return {
+        ...state,
+        isOpenEditUserAppModal: true,
+        editingUserApp: state.userApps.find(app => app.api_key === action.data)
+      }
+    case 'EDIT_USER_APP_COMPLETED':
+      return {
+        ...state,
+        editingUserApp: {},
+        isOpenEditUserAppModal: false,
+        userApps: state.userApps.map(app => {
+          if (app.api_key === action.data.api_key) {
+            app = Object.assign({}, app, action.data)
+          }
+          return app
+        })
       }
     default:
       return state
@@ -132,6 +160,11 @@ export const toggleAddBillingModal = isOpen => {
     dispatch({ type: 'TOGGLE_ADD_BILLING_MODAL', data: isOpen })
 }
 
+export const toggleEditUserAppModal = isOpen => {
+  return dispatch =>
+    dispatch({ type: 'TOGGLE_EDIT_USER_APP_MODAL', data: isOpen })
+}
+
 export const addUser = user => {
   return dispatch => {
     dispatch({ type: 'ADD_USER_BEGIN' })
@@ -166,7 +199,14 @@ export const addBilling = (id, amount, note) => {
     }
     return client.post('admin/billing', data).then(rs => {
       if (rs.status === 200) {
-        dispatch({ type: 'UPDATE_BILLING_COMPLETED', data: amount })
+        dispatch({
+          type: 'UPDATE_BILLING_COMPLETED',
+          data: {
+            balance: amount,
+            transaction_datetime: new Date().toGMTString(),
+            transaction_type: 'DEPOSIT'
+          }
+        })
       }
     })
   }
@@ -223,23 +263,36 @@ export const addApp = (id, streamType, shortDomain) => {
   }
 }
 
-export const disableApp = id => {
-  return dispatch => {
-    const data = { id }
-    return client.post('admin/disable-user-app', data).then(rs => {
-      if (rs.status === 200) {
-        dispatch({ type: 'UPDATE_USER_APP_COMPLETED', data: rs.data })
-      }
-    })
-  }
+export const disableApp = api_key => {
+  return updateApp({
+    api_key: api_key,
+    status: 0
+  })
 }
 
-export const enableApp = id => {
+export const enableApp = api_key => {
+  return updateApp({
+    api_key: api_key,
+    status: 1
+  })
+}
+
+export const editApp = id => {
+  return dispatch =>
+    dispatch({
+      type: 'EDIT_USER_APP_BEGIN',
+      data: id
+    })
+}
+
+export const updateApp = app => {
   return dispatch => {
-    const data = { id }
-    return client.post('admin/enable-user-app', data).then(rs => {
+    return client.post(`/admin/user-app/${app.api_key}`, app).then(rs => {
       if (rs.status === 200) {
-        dispatch({ type: 'UPDATE_USER_APP_COMPLETED', data: rs.data })
+        dispatch({
+          type: 'EDIT_USER_APP_COMPLETED',
+          data: app
+        })
       }
     })
   }

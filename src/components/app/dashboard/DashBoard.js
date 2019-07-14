@@ -53,16 +53,26 @@ class DashBoard extends React.Component {
                 </tr>
               </thead>
               <tbody>
-                {this.props.today_req_details.map(detail => (
-                  <tr key={detail.id.toString()}>
-                    <td>{detail.id}</td>
-                    <td>
-                      <Link to={`/users/${detail.id}`}>{detail.email}</Link>
+                {this.props.today_req_details.length > 0 ? (
+                  this.props.today_req_details.map(detail => (
+                    <tr key={detail.id.toString()}>
+                      <td>{detail.id}</td>
+                      <td>
+                        <Link to={`/users/${detail.id}`}>{detail.email}</Link>
+                      </td>
+                      <td>{detail.total_req}</td>
+                      <td>{detail.total_money}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="4">
+                      <div className="alert alert-warning text-center">
+                        Chưa có request nào :(
+                      </div>
                     </td>
-                    <td>{detail.total_req}</td>
-                    <td>{detail.total_money}</td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>
