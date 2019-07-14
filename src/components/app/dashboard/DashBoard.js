@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import numeral from 'numeral'
 
 import Main from 'components/common/ui/Main'
 import Header from 'components/common/ui/Header'
@@ -60,8 +61,8 @@ class DashBoard extends React.Component {
                       <td>
                         <Link to={`/users/${detail.id}`}>{detail.email}</Link>
                       </td>
-                      <td>{detail.total_req}</td>
-                      <td>{detail.total_money}</td>
+                      <td>{numeral(detail.total_req).format('0,0')}</td>
+                      <td>{numeral(detail.total_money).format('0,0')}</td>
                     </tr>
                   ))
                 ) : (

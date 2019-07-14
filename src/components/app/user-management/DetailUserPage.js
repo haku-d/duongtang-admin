@@ -178,7 +178,7 @@ class DetailUserPage extends React.Component {
                 <tr key={index.toString()}>
                   <td>{item.transaction_datetime}</td>
                   <td>{item.transaction_type}</td>
-                  <td>{item.balance}</td>
+                  <td>{numeral(item.balance).format('0,0')}</td>
                 </tr>
               ))
             ) : (
