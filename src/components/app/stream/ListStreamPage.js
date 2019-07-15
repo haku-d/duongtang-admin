@@ -2,6 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import ReactPaginate from 'react-paginate'
 import numeral from 'numeral'
+import { Link } from 'react-router-dom'
+import Moment from 'react-moment'
 
 import Main from 'components/common/ui/Main'
 import Header from 'components/common/ui/Header'
@@ -68,6 +70,7 @@ class ListStreamPage extends React.Component {
                   <th>source_id</th>
                   <th width="30%">title</th>
                   <th>size</th>
+                  <th>user</th>
                   <th>updated date</th>
                 </tr>
               </thead>
@@ -88,7 +91,16 @@ class ListStreamPage extends React.Component {
                     </td>
                     <td style={{ wordBreak: 'break-word' }}>{stream.title}</td>
                     <td>{numeral(stream.size).format('0.00b')}</td>
-                    <td>{stream.updated_date}</td>
+                    <td>
+                      <Link to={`/users/${stream.user_id}`}>
+                        #ID {stream.user_id}
+                      </Link>
+                    </td>
+                    <td>
+                      <Moment format="YYYY-MM-DD HH:mm:ss">
+                        {stream.updated_date}
+                      </Moment>
+                    </td>
                   </tr>
                 ))}
               </tbody>

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import Moment from 'react-moment'
 import numeral from 'numeral'
 import Main from 'components/common/ui/Main'
 import Header from 'components/common/ui/Header'
@@ -107,7 +108,11 @@ class ListUserPage extends React.Component {
                         </Link>
                       </td>
                       <td>{numeral(item.balance).format('0,0')}</td>
-                      <td>{item.created_date}</td>
+                      <td>
+                        <Moment format="YYYY-MM-DD HH:mm:ss">
+                          {item.created_date}
+                        </Moment>
+                      </td>
                       <td>
                         <Confirm title="Confirm" description="Are your sure?">
                           {confirm => (
