@@ -5,6 +5,7 @@ import UIReducer from 'reducers/UIReducer'
 import UserReducer from 'reducers/UserReducer'
 import DashboardReducer from 'reducers/DashboardReducer'
 import ReportReducer from './ReportReducer'
+import StreamReducer from './StreamReducer'
 
 export default history =>
   combineReducers({
@@ -13,5 +14,6 @@ export default history =>
     ui: UIReducer,
     user: UserReducer,
     dashboard: DashboardReducer,
-    report: ReportReducer
+    report: ReportReducer,
+    stream: StreamReducer
   })

@@ -10,7 +10,6 @@ import {
   ModalFooter
 } from 'components/common/modal'
 import Form from 'components/common/ui/Form'
-import Input from 'components/common/ui/Input'
 
 class EditUserAppModal extends React.Component {
   state = {

@@ -34,6 +34,14 @@ class Sidebar extends React.Component {
               <NavLink
                 exact
                 className="sidebar-item"
+                to="/streams"
+                activeClassName="active"
+              >
+                Streams
+              </NavLink>
+              <NavLink
+                exact
+                className="sidebar-item"
                 to="/reports"
                 activeClassName="active"
               >
