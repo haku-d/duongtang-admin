@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import BlockUi from 'react-block-ui'
 import Moment from 'react-moment'
 import numeral from 'numeral'
 import Main from 'components/common/ui/Main'
@@ -58,16 +59,16 @@ class ListUserPage extends React.Component {
 
   render() {
     return (
-      <React.Fragment>
-        <Main>
-          <Header title={'Users'}>
-            <button
-              className="btn btn-success"
-              onClick={() => this.props.toggleCreateUserModal(true)}
-            >
-              Add User
-            </button>
-          </Header>
+      <Main>
+        <Header title={'Users'}>
+          <button
+            className="btn btn-success"
+            onClick={() => this.props.toggleCreateUserModal(true)}
+          >
+            Add User
+          </button>
+        </Header>
+        <BlockUi blocking={this.props.isLoading}>
           <div className="row">
             <div className="col-sm-12">
               <form className="form-search">
@@ -162,9 +163,9 @@ class ListUserPage extends React.Component {
               />
             </div>
           </div>
-        </Main>
+        </BlockUi>
         <CreateUserModal />
-      </React.Fragment>
+      </Main>
     )
   }
 }
@@ -172,7 +173,8 @@ class ListUserPage extends React.Component {
 const mapStateToProps = state => {
   return {
     users: state.user.users,
-    meta: state.user.pagination
+    meta: state.user.pagination,
+    isLoading: state.user.isLoading
   }
 }
 const mapDispatchToProps = dispatch => {

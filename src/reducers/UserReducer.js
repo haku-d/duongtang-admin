@@ -13,7 +13,8 @@ const defaultState = {
     items: []
   },
   errorMsg: '',
-  editingUserApp: {}
+  editingUserApp: {},
+  isLoading: false
 }
 
 export default (state = defaultState, action) => {
@@ -47,12 +48,20 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         users: action.data.users,
-        pagination: action.data.meta
+        pagination: action.data.meta,
+        isLoading: false
+      }
+    case 'LOAD_USER_BEGIN':
+    case 'GET_LIST_USER_BEGIN':
+      return {
+        ...state,
+        isLoading: true
       }
     case 'LOAD_USER_COMPLETED':
       return {
         ...state,
-        user: action.data
+        user: action.data,
+        isLoading: false
       }
     case 'LOAD_USER_APP_COMPLETED':
       return {
@@ -180,7 +189,7 @@ export const addUser = user => {
 
 export const getUser = id => {
   return dispatch => {
-    dispatch({ type: 'LOAD_USER_START' })
+    dispatch({ type: 'LOAD_USER_BEGIN' })
     return client.get(`/user-info/${id}`).then(rs => {
       dispatch({
         type: 'LOAD_USER_COMPLETE'

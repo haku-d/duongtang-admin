@@ -2,15 +2,22 @@ import client from 'client'
 
 const defaultState = {
   streams: [],
-  pagination: {}
+  pagination: {},
+  isLoading: false
 }
 
 export default (state = defaultState, action) => {
   switch (action.type) {
+    case 'LOAD_STREAM_BEGIN':
+      return {
+        ...state,
+        isLoading: true
+      }
     case 'LOAD_STREAM_COMPLETE':
       return {
         streams: action.data.items,
-        pagination: action.data.meta
+        pagination: action.data.meta,
+        isLoading: false
       }
     default:
       return state
