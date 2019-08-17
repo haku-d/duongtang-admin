@@ -65,50 +65,52 @@ class ListStreamPage extends React.Component {
               </form>
             </div>
             <div className="col-sm-12">
-              <table className="table table-align-right">
-                <thead>
-                  <tr>
-                    <th>id</th>
-                    <th>source_id</th>
-                    <th width="30%">title</th>
-                    <th>size</th>
-                    <th>user</th>
-                    <th>updated date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.props.streams.map(stream => (
-                    <tr key={stream.id.toString()}>
-                      <td>{stream.id}</td>
-                      <td>
-                        <a
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          href={`https://drive.google.com/open?id=${
-                            stream.source_id
-                          }`}
-                        >
-                          {stream.source_id}
-                        </a>
-                      </td>
-                      <td style={{ wordBreak: 'break-word' }}>
-                        {stream.title}
-                      </td>
-                      <td>{numeral(stream.size).format('0.00b')}</td>
-                      <td>
-                        <Link to={`/users/${stream.user_id}`}>
-                          #ID {stream.user_id}
-                        </Link>
-                      </td>
-                      <td>
-                        <Moment format="YYYY-MM-DD HH:mm:ss">
-                          {stream.updated_date}
-                        </Moment>
-                      </td>
+              <div className="table-responsive">
+                <table className="table table-align-right">
+                  <thead>
+                    <tr>
+                      <th>id</th>
+                      <th>source_id</th>
+                      <th width="30%">title</th>
+                      <th>size</th>
+                      <th>user</th>
+                      <th>updated date</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {this.props.streams.map(stream => (
+                      <tr key={stream.id.toString()}>
+                        <td>{stream.id}</td>
+                        <td>
+                          <a
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            href={`https://drive.google.com/open?id=${
+                              stream.source_id
+                            }`}
+                          >
+                            {stream.source_id}
+                          </a>
+                        </td>
+                        <td style={{ wordBreak: 'break-word' }}>
+                          {stream.title}
+                        </td>
+                        <td>{numeral(stream.size).format('0.00b')}</td>
+                        <td>
+                          <Link to={`/users/${stream.user_id}`}>
+                            #ID {stream.user_id}
+                          </Link>
+                        </td>
+                        <td>
+                          <Moment format="YYYY-MM-DD HH:mm:ss">
+                            {stream.updated_date}
+                          </Moment>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
             <div className="col-sm-12">
               {/*<Pagination />*/}

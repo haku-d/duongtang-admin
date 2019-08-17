@@ -89,55 +89,57 @@ class ListUserPage extends React.Component {
             </div>
 
             <div className="col-sm-12">
-              <table className="table table-align-right">
-                <thead>
-                  <tr>
-                    <th>Id</th>
-                    <th>Username</th>
-                    <th>Balance</th>
-                    <th>Registered date</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.props.users.map(item => (
-                    <tr key={item.id.toString()}>
-                      <td>{item.id}</td>
-                      <td>
-                        <Link to={`${this.props.match.path}/${item.id}`}>
-                          {item.email ? item.email : 'No email'}
-                        </Link>
-                      </td>
-                      <td>{numeral(item.balance).format('0,0')}</td>
-                      <td>
-                        <Moment format="YYYY-MM-DD HH:mm:ss">
-                          {item.created_date}
-                        </Moment>
-                      </td>
-                      <td>
-                        <Confirm title="Confirm" description="Are your sure?">
-                          {confirm => (
-                            <button
-                              className={`btn btn-xs btn-outline-${
-                                item.is_active ? 'danger' : 'success'
-                              }`}
-                              onClick={confirm(() =>
-                                this.props.updateUserStatus(
-                                  item.id,
-                                  !item.is_active
-                                )
-                              )}
-                            >
-                              {item.is_active ? 'Disable' : 'Enable'}
-                            </button>
-                          )}
-                        </Confirm>
-                      </td>
+              <div className="table-responsive">
+                <table className="table table-align-right">
+                  <thead>
+                    <tr>
+                      <th>Id</th>
+                      <th>Username</th>
+                      <th>Balance</th>
+                      <th>Registered date</th>
+                      <th>Action</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-              <hr />
+                  </thead>
+                  <tbody>
+                    {this.props.users.map(item => (
+                      <tr key={item.id.toString()}>
+                        <td>{item.id}</td>
+                        <td>
+                          <Link to={`${this.props.match.path}/${item.id}`}>
+                            {item.email ? item.email : 'No email'}
+                          </Link>
+                        </td>
+                        <td>{numeral(item.balance).format('0,0')}</td>
+                        <td>
+                          <Moment format="YYYY-MM-DD HH:mm:ss">
+                            {item.created_date}
+                          </Moment>
+                        </td>
+                        <td>
+                          <Confirm title="Confirm" description="Are your sure?">
+                            {confirm => (
+                              <button
+                                className={`btn btn-xs btn-outline-${
+                                  item.is_active ? 'danger' : 'success'
+                                }`}
+                                onClick={confirm(() =>
+                                  this.props.updateUserStatus(
+                                    item.id,
+                                    !item.is_active
+                                  )
+                                )}
+                              >
+                                {item.is_active ? 'Disable' : 'Enable'}
+                              </button>
+                            )}
+                          </Confirm>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <hr />
+              </div>
             </div>
 
             <div className="col-sm-12">

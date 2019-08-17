@@ -11,8 +11,22 @@ body {
   bottom: 0;
   overflow-y: auto;
   height: 100%;
+  background: #fff;
   border-right: 1px solid #eee;
+  z-index: 10;
+  transition: 0.2s all linear;
+}
+.sidebar-fixed {
+  content: "";
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 10;
+  width: 239px;
   padding: 15px 0 30px;
+  background: #fff;
 }
 .sidebar-item {
   width: 100%;
@@ -231,6 +245,86 @@ body {
   overflow-y: auto;
 }
 
+.nav-toggle {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .nav-toggle {
+    display: inline-block;
+    position: fixed;
+    left: 30px;
+    top: 0;
+    width: 40px;
+    z-index: 1;
+    background: #fff;
+    padding: 0 13px;
+    border-top: 0;
+    border-radius: 0 0 4px 4px;
+    border-color: #ced4da;
+  }
+  .nav-toggle, .nav-toggle:focus, .nav-toggle:hover {
+    color: #ced4da;
+    box-shadow: none;
+    background-color: #fff;
+    border-color: #ced4da;
+  }
+  .nav-toggle::before, .nav-toggle::after {
+    content: "";
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 9;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+  }
+  .nav-toggle::before {
+    content: "<";
+    background: #fff;
+    z-index: 10;
+    height: 30px;
+    width: 40px;
+    left: 239px;
+    padding-top: 2px;
+    border-radius: 0 0 4px;
+  }
+
+  .sidebar {
+    width: 100%;
+    left: -100%;
+  }
+  .sidebar-fixed, .sidebar::after {
+    left: -240px;
+    display: none;
+  }
+  .sidebar.open {
+    left: 0px;
+  }
+  .sidebar.open .nav-toggle {
+    left: 230px;
+    position: absolute;
+    background: #fff;
+    z-index: 9;
+    border-right: 0;
+    border-radius: 0 0 0 4px;
+  }
+  .sidebar.open .nav-toggle::after, .sidebar.open .nav-toggle::before {
+    display: inline-block;
+  }
+  .sidebar.open .sidebar-fixed, .sidebar.open::after {
+    left: 0;
+    display: block;
+  }
+  .sidebar + .main {
+    padding: 0 15px;
+  }
+
+  .card {
+    margin-bottom: 20px;
+  }
+}
 .sign {
   height: 70vh;
 }
