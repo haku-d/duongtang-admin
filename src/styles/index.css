@@ -5,19 +5,16 @@ body {
 
 .sidebar {
   width: 240px;
-  position: fixed;
+  position: relative;
   left: 0;
   top: 0;
   bottom: 0;
-  overflow-y: auto;
-  height: 100%;
-  background: #fff;
-  border-right: 1px solid #eee;
   z-index: 10;
+  border-right: 1px solid #eee;
   transition: 0.2s all linear;
 }
 .sidebar-fixed {
-  content: "";
+  height: 100%;
   position: fixed;
   left: 0;
   top: 0;
@@ -25,8 +22,11 @@ body {
   right: 0;
   z-index: 10;
   width: 239px;
-  padding: 15px 0 30px;
+  padding: 15px 0 80px;
   background: #fff;
+  overflow: hidden;
+  overflow-y: auto;
+  transition: 0.2s all linear;
 }
 .sidebar-item {
   width: 100%;
@@ -262,6 +262,7 @@ body {
     border-top: 0;
     border-radius: 0 0 4px 4px;
     border-color: #ced4da;
+    transition: 0.2s all linear;
   }
   .nav-toggle, .nav-toggle:focus, .nav-toggle:hover {
     color: #ced4da;
@@ -275,10 +276,10 @@ body {
     left: 0;
     top: 0;
     bottom: 0;
-    right: 0;
     z-index: 9;
     background: rgba(0, 0, 0, 0.8);
-    display: none;
+    opacity: 0;
+    transition: 0.2s all linear;
   }
   .nav-toggle::before {
     content: "<";
@@ -286,7 +287,6 @@ body {
     z-index: 10;
     height: 30px;
     width: 40px;
-    left: 239px;
     padding-top: 2px;
     border-radius: 0 0 4px;
   }
@@ -294,31 +294,33 @@ body {
   .sidebar {
     width: 100%;
     left: -100%;
+    border: 0;
+  }
+  .sidebar + .main {
+    padding: 0 15px;
+  }
+  .sidebar .copy {
+    left: -239px;
+    transition: 0.2s all linear;
   }
   .sidebar-fixed, .sidebar::after {
-    left: -240px;
-    display: none;
+    left: -100%;
   }
   .sidebar.open {
     left: 0px;
   }
-  .sidebar.open .nav-toggle {
-    left: 230px;
-    position: absolute;
-    background: #fff;
-    z-index: 9;
-    border-right: 0;
-    border-radius: 0 0 0 4px;
-  }
   .sidebar.open .nav-toggle::after, .sidebar.open .nav-toggle::before {
     display: inline-block;
+    opacity: 1;
+    left: 239px;
+    right: 0;
   }
   .sidebar.open .sidebar-fixed, .sidebar.open::after {
     left: 0;
     display: block;
   }
-  .sidebar + .main {
-    padding: 0 15px;
+  .sidebar.open .copy {
+    left: 0;
   }
 
   .card {

@@ -1,18 +1,14 @@
 .sidebar {
   width: 240px;
-  position: fixed;
+  position: relative;
   left: 0;
   top: 0;
   bottom: 0;
-  overflow-y: auto;
-  height: 100%;
-  // background: #eee;
-  background: #fff;
-  border-right: 1px solid #eee;
   z-index: 10;
+  border-right: 1px solid #eee;
   transition: 0.2s all linear;
   &-fixed {
-    content: '';
+    height: 100%;
     position: fixed;
     left: 0;
     top: 0;
@@ -20,8 +16,11 @@
     right: 0;
     z-index: 10;
     width: 239px;
-    padding: 15px 0 30px;
+    padding: 15px 0 80px;
     background: #fff;
+    overflow: hidden;
+    overflow-y: auto;
+    transition: 0.2s all linear;
   }
   &-item {
     width: 100%;

@@ -14,6 +14,7 @@
     border-top: 0;
     border-radius: 0 0 4px 4px;
     border-color: #ced4da;
+    transition: 0.2s all linear;
     &,
     &:focus,
     &:hover {
@@ -29,10 +30,10 @@
       left: 0;
       top: 0;
       bottom: 0;
-      right: 0;
       z-index: 9;
       background: rgba(0, 0, 0, 0.8);
-      display: none;
+      opacity: 0;
+      transition: 0.2s all linear;
     }
     &::before {
       content: '<';
@@ -40,7 +41,6 @@
       z-index: 10;
       height: 30px;
       width: 40px;
-      left: 239px;
       padding-top: 2px;
       border-radius: 0 0 4px;
     }
@@ -48,23 +48,27 @@
   .sidebar {
     width: 100%;
     left: -100%;
+    border: 0;
+    & + .main {
+      padding: 0 15px;
+    }
+    .copy {
+      left: -239px;
+      transition: 0.2s all linear;
+    }
     &-fixed,
     &::after {
-      left: -240px;
-      display: none;
+      left: -100%;
     }
     &.open {
       left: 0px;
       .nav-toggle {
-        left: 230px;
-        position: absolute;
-        background: #fff;
-        z-index: 9;
-        border-right: 0;
-        border-radius: 0 0 0 4px;
         &::after,
         &::before {
           display: inline-block;
+          opacity: 1;
+          left: 239px;
+          right: 0;
         }
       }
       .sidebar-fixed,
@@ -72,12 +76,9 @@
         left: 0;
         display: block;
       }
-      // &::after {
-      //   background: rgba(0, 0, 0, 0.8);
-      // }
-    }
-    & + .main {
-      padding: 0 15px;
+      .copy {
+        left: 0;
+      }
     }
   }
   .card {
