@@ -44,38 +44,40 @@ class DashBoard extends React.Component {
         </div>
         <div className="row">
           <div className="col-sm-12">
-            <table className="table table-align-right">
-              <thead>
-                <tr>
-                  <th>User Id</th>
-                  <th>Email</th>
-                  <th>Total request</th>
-                  <th>Total spending</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.props.today_req_details.length > 0 ? (
-                  this.props.today_req_details.map(detail => (
-                    <tr key={detail.id.toString()}>
-                      <td>{detail.id}</td>
-                      <td>
-                        <Link to={`/users/${detail.id}`}>{detail.email}</Link>
-                      </td>
-                      <td>{numeral(detail.total_req).format('0,0')}</td>
-                      <td>{numeral(detail.total_money).format('0,0')}</td>
-                    </tr>
-                  ))
-                ) : (
+            <div className="table-responsive">
+              <table className="table table-align-right">
+                <thead>
                   <tr>
-                    <td colSpan="4">
-                      <div className="alert alert-warning text-center">
-                        Chưa có request nào :(
-                      </div>
-                    </td>
+                    <th>User Id</th>
+                    <th>Email</th>
+                    <th>Total request</th>
+                    <th>Total spending</th>
                   </tr>
-                )}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {this.props.today_req_details.length > 0 ? (
+                    this.props.today_req_details.map(detail => (
+                      <tr key={detail.id.toString()}>
+                        <td>{detail.id}</td>
+                        <td>
+                          <Link to={`/users/${detail.id}`}>{detail.email}</Link>
+                        </td>
+                        <td>{numeral(detail.total_req).format('0,0')}</td>
+                        <td>{numeral(detail.total_money).format('0,0')}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="4">
+                        <div className="alert alert-warning text-center">
+                          Chưa có request nào :(
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </Main>

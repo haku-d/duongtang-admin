@@ -16,6 +16,8 @@ body {
 @import 'components/lists';
 @import 'components/tables';
 
+@import 'responsive/mobile';
+
 .sign {
   height: 70vh;
   &-title {

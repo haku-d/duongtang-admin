@@ -61,69 +61,71 @@ class DetailUserPage extends React.Component {
     return (
       <div className="col-sm-12">
         <h4>List Api Key</h4>
-        <table className="table table-align-right">
-          <thead>
-            <tr>
-              <th>App key</th>
-              <th>Stream type</th>
-              <th>Short domain</th>
-              <th>Created data</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {apps.length > 0 ? (
-              apps.map((item, index) => (
-                <tr key={index.toString()}>
-                  <td>{item.api_key}</td>
-                  <td>{item.stream_type}</td>
-                  <td>{item.short_domain}</td>
-                  <td>{item.created_date}</td>
-                  <td>
-                    <Confirm title="Confirm" description="Are your sure?">
-                      {confirm =>
-                        item.status === 1 ? (
-                          <button
-                            className="btn btn-xs btn-outline-danger"
-                            onClick={confirm(() =>
-                              this.props.disableApp(item.api_key)
-                            )}
-                          >
-                            Disable
-                          </button>
-                        ) : (
-                          <button
-                            className="btn btn-xs btn-outline-success"
-                            onClick={confirm(() =>
-                              this.props.enableApp(item.api_key)
-                            )}
-                          >
-                            Enable
-                          </button>
-                        )
-                      }
-                    </Confirm>
-                    |
-                    <button
-                      className="btn btn-xs btn-success"
-                      onClick={() => this.props.editApp(item.api_key)}
-                    >
-                      Edit
-                    </button>
+        <div className="table-responsive">
+          <table className="table table-align-right">
+            <thead>
+              <tr>
+                <th>App key</th>
+                <th>Stream type</th>
+                <th>Short domain</th>
+                <th>Created data</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {apps.length > 0 ? (
+                apps.map((item, index) => (
+                  <tr key={index.toString()}>
+                    <td>{item.api_key}</td>
+                    <td>{item.stream_type}</td>
+                    <td>{item.short_domain}</td>
+                    <td>{item.created_date}</td>
+                    <td>
+                      <Confirm title="Confirm" description="Are your sure?">
+                        {confirm =>
+                          item.status === 1 ? (
+                            <button
+                              className="btn btn-xs btn-outline-danger"
+                              onClick={confirm(() =>
+                                this.props.disableApp(item.api_key)
+                              )}
+                            >
+                              Disable
+                            </button>
+                          ) : (
+                            <button
+                              className="btn btn-xs btn-outline-success"
+                              onClick={confirm(() =>
+                                this.props.enableApp(item.api_key)
+                              )}
+                            >
+                              Enable
+                            </button>
+                          )
+                        }
+                      </Confirm>
+                      |
+                      <button
+                        className="btn btn-xs btn-success"
+                        onClick={() => this.props.editApp(item.api_key)}
+                      >
+                        Edit
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5" className="pd-0">
+                    <div className="alert alert-warning text-center">
+                      No app found!
+                    </div>
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="5" className="pd-0">
-                  <div className="alert alert-warning text-center">
-                    No app found!
-                  </div>
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              )}
+            </tbody>
+          </table>
+        </div>
         <hr />
       </div>
     )
@@ -164,34 +166,36 @@ class DetailUserPage extends React.Component {
     return (
       <div className="col-sm-12">
         <h4>Transaction history</h4>
-        <table className="table table-align-right">
-          <thead>
-            <tr>
-              <th>Transaction date</th>
-              <th>Type</th>
-              <th>Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            {transactions.items.length > 0 ? (
-              transactions.items.map((item, index) => (
-                <tr key={index.toString()}>
-                  <td>{item.transaction_datetime}</td>
-                  <td>{item.transaction_type}</td>
-                  <td>{numeral(item.balance).format('0,0')}</td>
-                </tr>
-              ))
-            ) : (
+        <div className="table-responsive">
+          <table className="table table-align-right">
+            <thead>
               <tr>
-                <td colSpan="5" className="pd-0">
-                  <div className="alert alert-warning text-center">
-                    No transaction found!
-                  </div>
-                </td>
+                <th>Transaction date</th>
+                <th>Type</th>
+                <th>Amount</th>
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {transactions.items.length > 0 ? (
+                transactions.items.map((item, index) => (
+                  <tr key={index.toString()}>
+                    <td>{item.transaction_datetime}</td>
+                    <td>{item.transaction_type}</td>
+                    <td>{numeral(item.balance).format('0,0')}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5" className="pd-0">
+                    <div className="alert alert-warning text-center">
+                      No transaction found!
+                    </div>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     )
   }
