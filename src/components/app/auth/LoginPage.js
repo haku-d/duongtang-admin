@@ -43,7 +43,7 @@ class LoginPage extends React.Component {
       })
       .catch(err => {
         this.setState({
-          errorMsg: err.toString()
+          errorMsg: 'Login failed'
         })
       })
   }
