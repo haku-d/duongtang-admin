@@ -24,7 +24,7 @@ class ReportEarning extends React.Component {
     this.props.getWeeklyEarning(days)
   }
 
-  render() {
+  renderEarningChart() {
     const data = {
       labels: this.props.earnings.data_labels,
       datasets: [
@@ -47,10 +47,85 @@ class ReportEarning extends React.Component {
           pointHoverBorderWidth: 2,
           pointRadius: 1,
           pointHitRadius: 10,
-          data: this.props.earnings.data_values
+          data: this.props.earnings.data_values.total_earn
         }
       ]
     }
+    return <Line data={data} />
+  }
+  renderRequestChart() {
+    const data = {
+      labels: this.props.earnings.data_labels,
+      datasets: [
+        {
+          label: 'Total view',
+          fill: false,
+          lineTension: 0.1,
+          backgroundColor: 'rgba(255,224,230,0.4)',
+          borderColor: 'rgba(255,224,230,1)',
+          borderCapStyle: 'butt',
+          borderDash: [],
+          borderDashOffset: 0.0,
+          borderJoinStyle: 'miter',
+          pointBorderColor: 'rgba(75,192,192,1)',
+          pointBackgroundColor: '#fff',
+          pointBorderWidth: 1,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+          pointHoverBorderColor: 'rgba(220,220,220,1)',
+          pointHoverBorderWidth: 2,
+          pointRadius: 1,
+          pointHitRadius: 10,
+          data: this.props.earnings.data_values.total_view
+        },
+        {
+          label: 'Total upload',
+          fill: false,
+          lineTension: 0.1,
+          backgroundColor: 'rgba(255,236,218,0.4)',
+          borderColor: 'rgba(255,236,218,1)',
+          borderCapStyle: 'butt',
+          borderDash: [],
+          borderDashOffset: 0.0,
+          borderJoinStyle: 'miter',
+          pointBorderColor: 'rgba(75,192,192,1)',
+          pointBackgroundColor: '#fff',
+          pointBorderWidth: 1,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+          pointHoverBorderColor: 'rgba(220,220,220,1)',
+          pointHoverBorderWidth: 2,
+          pointRadius: 1,
+          pointHitRadius: 10,
+          data: this.props.earnings.data_values.total_upload
+        },
+        {
+          label: 'Total export',
+          fill: false,
+          lineTension: 0.1,
+          backgroundColor: 'rgba(219,242,242,0.4)',
+          borderColor: 'rgba(219,242,242,1)',
+          borderCapStyle: 'butt',
+          borderDash: [],
+          borderDashOffset: 0.0,
+          borderJoinStyle: 'miter',
+          pointBorderColor: 'rgba(75,192,192,1)',
+          pointBackgroundColor: '#fff',
+          pointBorderWidth: 1,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+          pointHoverBorderColor: 'rgba(220,220,220,1)',
+          pointHoverBorderWidth: 2,
+          pointRadius: 1,
+          pointHitRadius: 10,
+          data: this.props.earnings.data_values.total_export
+        }
+      ]
+    }
+    return <Line data={data} />
+  }
+
+  render() {
     return (
       <Main>
         <Header title={'Report Earnings'} />
@@ -75,9 +150,8 @@ class ReportEarning extends React.Component {
               30 days
             </button>
           </div>
-          <div className="col-sm-12">
-            <Line data={data} />
-          </div>
+          <div className="col-sm-12">{this.renderEarningChart()}</div>
+          <div className="col-sm-12">{this.renderRequestChart()}</div>
         </div>
       </Main>
     )
