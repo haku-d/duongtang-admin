@@ -9,10 +9,28 @@
   &-money {
     padding: 15px;
     margin-bottom: 15px;
+    h4 {
+      font-size: 0.8rem;
+    }
     &-num {
-      font-size: 30px;
-      text-align: right;
-      border-left: 1px solid #ddd;
+      h4 {
+        font-size: 1rem;
+        margin-bottom: 0;
+      }
+    }
+    // >>
+    @media (min-width: 768px) {
+      h4 {
+        font-size: 1rem;
+      }
+      &-num {
+        h4 {
+          font-size: 1.5rem;
+        }
+        font-size: 1.5rem;
+        text-align: right;
+        border-left: 1px solid #ddd;
+      }
     }
   }
 }

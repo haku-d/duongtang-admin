@@ -45,12 +45,15 @@
       border-radius: 0 0 4px;
     }
   }
+  .main {
+    padding: 0;
+  }
   .sidebar {
     width: 100%;
     left: -100%;
     border: 0;
     & + .main {
-      padding: 0 15px;
+      padding: 0;
     }
     .copy {
       left: -239px;

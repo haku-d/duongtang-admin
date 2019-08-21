@@ -116,6 +116,15 @@ body {
   border: 0;
 }
 
+.btn-res-group .btn {
+  margin-right: 10px;
+}
+@media (max-width: 767px) {
+  .btn-res-group .btn {
+    margin-bottom: 10px;
+  }
+}
+
 .card-title {
   margin-top: 0;
   font-size: 16px;
@@ -127,10 +136,25 @@ body {
   padding: 15px;
   margin-bottom: 15px;
 }
-.card-money-num {
-  font-size: 30px;
-  text-align: right;
-  border-left: 1px solid #ddd;
+.card-money h4 {
+  font-size: 0.8rem;
+}
+.card-money-num h4 {
+  font-size: 1rem;
+  margin-bottom: 0;
+}
+@media (min-width: 768px) {
+  .card-money h4 {
+    font-size: 1rem;
+  }
+  .card-money-num {
+    font-size: 1.5rem;
+    text-align: right;
+    border-left: 1px solid #ddd;
+  }
+  .card-money-num h4 {
+    font-size: 1.5rem;
+  }
 }
 
 .form-search {
@@ -178,6 +202,16 @@ body {
   cursor: auto;
   border-color: #88b04b;
   background: #88b04b;
+}
+.pagination-responsive {
+  overflow: scroll;
+  padding: 0 0 15px 0;
+  float: right;
+}
+@media (max-width: 767px) {
+  .pagination-responsive {
+    float: none;
+  }
 }
 
 .btn-min-width {
@@ -227,6 +261,15 @@ body {
 }
 .table th {
   border-top: 0;
+}
+.table th,
+.table td {
+  white-space: nowrap;
+}
+.table th .text-break,
+.table td .text-break {
+  white-space: normal;
+  width: 300px;
 }
 .table .btn-xs {
   padding: 0 5px;
@@ -291,13 +334,17 @@ body {
     border-radius: 0 0 4px;
   }
 
+  .main {
+    padding: 0;
+  }
+
   .sidebar {
     width: 100%;
     left: -100%;
     border: 0;
   }
   .sidebar + .main {
-    padding: 0 15px;
+    padding: 0;
   }
   .sidebar .copy {
     left: -239px;

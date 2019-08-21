@@ -20,3 +20,11 @@
 .badge {
   border: 0;
 }
+.btn-res-group {
+  .btn {
+    margin-right: 10px;
+    @media (max-width: 767px) {
+      margin-bottom: 10px;
+    }
+  }
+}

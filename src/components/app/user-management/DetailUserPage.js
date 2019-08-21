@@ -36,7 +36,7 @@ class DetailUserPage extends React.Component {
         <div className="col-sm-12 mg-bt-15">
           <div className="card card-money">
             <div className="row align-items-center">
-              <div className="col-6">
+              <div className="col-sm-6">
                 <h4>
                   Facebook: <a href={user.facebook}>{user.facebook}</a>
                 </h4>
@@ -44,7 +44,7 @@ class DetailUserPage extends React.Component {
                   Website: <a href={user.website}>{user.website}</a>
                 </h4>
               </div>
-              <div className="col-6 card-money-num">
+              <div className="col-sm-6 card-money-num">
                 <h4>
                   Balance: {numeral(user.balance).format('0,0')}{' '}
                   <small>gạo</small>
@@ -133,15 +133,15 @@ class DetailUserPage extends React.Component {
 
   renderUserAction(user) {
     return (
-      <div className="col-sm-12 mg-bt-15">
+      <div className="col-sm-12 mg-bt-15 btn-res-group">
         <button
-          className="btn btn-success mr-1"
+          className="btn btn-success"
           onClick={() => this.props.toggleAddBillingModal(true)}
         >
           Add Money
         </button>
         <button
-          className="btn btn-success mr-1"
+          className="btn btn-success"
           onClick={() => this.props.toggleAddUserAppModal(true)}
         >
           Add new app

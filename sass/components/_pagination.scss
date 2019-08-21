@@ -19,4 +19,12 @@
       }
     }
   }
+  &-responsive {
+    overflow: scroll;
+    padding: 0 0 15px 0;
+    float: right;
+    @media (max-width: 767px) {
+      float: none;
+    }
+  }
 }

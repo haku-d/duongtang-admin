@@ -152,7 +152,7 @@ class ListUserPage extends React.Component {
                 marginPagesDisplayed={2}
                 pageRangeDisplayed={5}
                 onPageChange={this.handlePageClick}
-                containerClassName={'pagination justify-content-end'}
+                containerClassName={'pagination pagination-responsive'}
                 activeClassName={'active'}
                 pageClassName={'page-item'}
                 nextClassName={'page-item'}

@@ -4,6 +4,14 @@
   th {
     border-top: 0;
   }
+  th,
+  td {
+    white-space: nowrap;
+    .text-break {
+      white-space: normal;
+      width: 300px;
+    }
+  }
   .btn-xs {
     padding: 0 5px;
     font-size: 12px;
