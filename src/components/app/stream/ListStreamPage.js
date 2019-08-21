@@ -92,8 +92,8 @@ class ListStreamPage extends React.Component {
                             {stream.source_id}
                           </a>
                         </td>
-                        <td style={{ wordBreak: 'break-word' }}>
-                          {stream.title}
+                        <td>
+                          <div className="text-break">{stream.title}</div>
                         </td>
                         <td>{numeral(stream.size).format('0.00b')}</td>
                         <td>
