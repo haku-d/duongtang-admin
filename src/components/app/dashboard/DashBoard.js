@@ -10,8 +10,13 @@ import Card from 'components/common/ui/Card'
 import { getRequest, getRequestDetail } from 'reducers/DashboardReducer'
 
 class DashBoard extends React.Component {
-  state = {
-    timer: null
+  constructor(props) {
+    super(props)
+    this.state = {
+      timer: null,
+      isOpen: ''
+    }
+    this.handleOpen = this.handleOpen.bind(this)
   }
 
   componentDidMount() {
@@ -27,11 +32,31 @@ class DashBoard extends React.Component {
     clearInterval(this.state.timer)
   }
 
+  handleOpen() {
+    if (this.state.isOpen === '') {
+      this.setState({
+        isOpen: 'open-zoom'
+      })
+    } else {
+      this.setState({
+        isOpen: ''
+      })
+    }
+  }
+
   render() {
     return (
       <Main>
-        <Header title={'DashBoard'} />
-        <div className="row">
+        <Header title={'DashBoard'}>
+          <button
+            className={`btn btn-zoom ${this.state.isOpen}`}
+            onClick={this.handleOpen}
+          >
+            <i className="icons icon-cross" />
+            <i className="icons icon-frame-expand" />
+          </button>
+        </Header>
+        <div className={`row ${this.state.isOpen}`}>
           <div className="col-sm-4">
             <Card title={'Today views'} text={this.props.today_view} />
           </div>

@@ -126,6 +126,9 @@ body {
   }
 }
 
+.card {
+  margin-bottom: 20px;
+}
 .card-title {
   margin-top: 0;
   font-size: 16px;
@@ -156,6 +159,85 @@ body {
   .card-money-num h4 {
     font-size: 1.5rem;
   }
+}
+
+.btn-zoom {
+  padding: 0;
+  line-height: 1;
+}
+.btn-zoom .icons {
+  opacity: 0.75;
+}
+.btn-zoom .icon-cross {
+  display: none;
+}
+.btn-zoom:focus {
+  box-shadow: none;
+}
+.btn-zoom.open-zoom {
+  z-index: 12;
+  position: fixed;
+  height: 50px;
+  width: auto;
+  right: 15px;
+  left: auto;
+  top: 10px;
+  margin: 0 auto;
+  padding: 0;
+}
+.btn-zoom.open-zoom .icon-cross {
+  display: block;
+  filter: invert(100%) brightness(1);
+  background-size: 40px;
+  height: 40px;
+  width: 40px;
+}
+.btn-zoom.open-zoom .icon-frame-expand {
+  display: none;
+}
+
+.open-zoom {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 11;
+  background: #88b04b;
+  left: 0;
+  top: 0;
+  margin: 0;
+  -webkit-align-items: center;
+  align-items: center;
+  text-align: center;
+  transition: all 0.2s linear;
+  overflow: scroll;
+}
+@media (min-width: 1024px) {
+  .open-zoom {
+    padding: 0 15%;
+  }
+  .open-zoom .card {
+    margin-top: -50px;
+  }
+  .open-zoom .card-number {
+    font-size: 3rem;
+  }
+}
+@media (max-width: 400px) {
+  .open-zoom {
+    padding: 20% 0;
+  }
+}
+.open-zoom .card {
+  border: 0;
+  color: #fff;
+  background: none;
+}
+.open-zoom .card-number {
+  opacity: 0.95;
+  white-space: nowrap;
+}
+.open-zoom .card-title {
+  font-size: 0.85rem;
 }
 
 .form-search {
@@ -270,7 +352,7 @@ body {
 .table th .text-break,
 .table td .text-break {
   white-space: normal;
-  width: 300px;
+  width: 310px;
 }
 .table .btn-xs {
   padding: 0 5px;
@@ -287,6 +369,22 @@ body {
 .table-auto-scroll {
   max-height: 300px;
   overflow-y: auto;
+}
+
+.icons {
+  height: 20px;
+  width: 20px;
+  display: inline-block;
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+}
+
+.icon-cross {
+  background-image: url(../components/media/icon-cross.svg);
+}
+
+.icon-frame-expand {
+  background-image: url(../components/media/icon-frame-expand.svg);
 }
 
 .nav-toggle {
@@ -369,10 +467,6 @@ body {
   }
   .sidebar.open .copy {
     left: 0;
-  }
-
-  .card {
-    margin-bottom: 20px;
   }
 }
 .sign {

@@ -1,4 +1,5 @@
 .card {
+  margin-bottom: 20px;
   &-title {
     margin-top: 0;
     font-size: 16px;
@@ -31,6 +32,81 @@
         text-align: right;
         border-left: 1px solid #ddd;
       }
+    }
+  }
+}
+
+.btn-zoom {
+  padding: 0;
+  line-height: 1;
+  .icons {
+    opacity: 0.75;
+  }
+  .icon-cross {
+    display: none;
+  }
+  &:focus {
+    box-shadow: none;
+  }
+  &.open-zoom {
+    z-index: 12;
+    position: fixed;
+    height: 50px;
+    width: auto;
+    right: 15px;
+    left: auto;
+    top: 10px;
+    margin: 0 auto;
+    padding: 0;
+    .icon-cross {
+      display: block;
+      filter: invert(100%) brightness(1);
+      background-size: 40px;
+      height: 40px;
+      width: 40px;
+    }
+    .icon-frame-expand {
+      display: none;
+    }
+  }
+}
+
+.open-zoom {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 11;
+  background: $main-color;
+  left: 0;
+  top: 0;
+  margin: 0;
+  -webkit-align-items: center;
+  align-items: center;
+  text-align: center;
+  transition: all 0.2s linear;
+  overflow: scroll;
+  @media (min-width: 1024px) {
+    padding: 0 15%;
+    .card {
+      margin-top: -50px;
+      &-number {
+        font-size: 3rem;
+      }
+    }
+  }
+  @media (max-width: 400px) {
+    padding: 20% 0;
+  }
+  .card {
+    border: 0;
+    color: #fff;
+    background: none;
+    &-number {
+      opacity: 0.95;
+      white-space: nowrap;
+    }
+    &-title {
+      font-size: 0.85rem;
     }
   }
 }
