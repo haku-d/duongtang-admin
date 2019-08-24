@@ -73,6 +73,15 @@ class Sidebar extends React.Component {
                 <NavLink
                   exact
                   className="sidebar-item"
+                  to="/top-streams"
+                  activeClassName="active"
+                  onClick={this.handeleOpen}
+                >
+                  Top Streams
+                </NavLink>
+                <NavLink
+                  exact
+                  className="sidebar-item"
                   to="/reports"
                   activeClassName="active"
                   onClick={this.handeleOpen}
