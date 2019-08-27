@@ -109,11 +109,20 @@
     font-size: 12px;
     th {
       white-space: normal;
-      // word-break: break-all;
     }
     th,
     td {
       padding: 10px 5px;
+    }
+    &-align-right {
+      thead th:first-child,
+      tbody td:first-child {
+        padding-left: 0;
+      }
+      thead th:last-child,
+      tbody td:last-child {
+        padding-right: 0;
+      }
     }
     .btn-xs {
       font-size: 10px;

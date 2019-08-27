@@ -80,9 +80,7 @@ class DetailUserPage extends React.Component {
                   </td>
                   <td>{item.stream_type}</td>
                   <td>
-                    <div className="text-break">
-                      {item.short_domain}totot.clgt.vn
-                    </div>
+                    <div className="text-break">{item.short_domain}</div>
                   </td>
                   <td>{item.created_date}</td>
                   <td>

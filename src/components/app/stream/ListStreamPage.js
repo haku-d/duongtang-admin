@@ -111,7 +111,11 @@ class ListStreamPage extends React.Component {
                           {stream.title}
                         </div>
                       </td>
-                      <td>{numeral(stream.size).format('0.00b')}</td>
+                      <td>
+                        <div className="text-break">
+                          {numeral(stream.size).format('0.00b')}
+                        </div>
+                      </td>
                       <td>
                         <Link to={`/users/${stream.user_id}`}>
                           #ID {stream.user_id}

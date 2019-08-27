@@ -571,6 +571,14 @@ body {
 .table td {
     padding: 10px 5px;
   }
+  .table-align-right thead th:first-child,
+.table-align-right tbody td:first-child {
+    padding-left: 0;
+  }
+  .table-align-right thead th:last-child,
+.table-align-right tbody td:last-child {
+    padding-right: 0;
+  }
   .table .btn-xs {
     font-size: 10px;
   }
