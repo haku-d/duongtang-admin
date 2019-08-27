@@ -26,6 +26,18 @@ class ListUserPage extends React.Component {
 
   componentDidMount() {
     this.props.getUsers()
+    window.addEventListener('resize', this.resize.bind(this))
+    this.resize()
+  }
+
+  // Check isMobile pagination
+  resize() {
+    if (window.innerWidth < 767) {
+      this.setState({
+        marginPagesDisplayed: 1,
+        pageRangeDisplayed: 1
+      })
+    }
   }
 
   componentWillUnmount() {
@@ -34,7 +46,9 @@ class ListUserPage extends React.Component {
 
   getDefaultState() {
     return {
-      filter: ''
+      filter: '',
+      marginPagesDisplayed: 2,
+      pageRangeDisplayed: 5
     }
   }
 
@@ -89,57 +103,62 @@ class ListUserPage extends React.Component {
             </div>
 
             <div className="col-sm-12">
-              <div className="table-responsive">
-                <table className="table table-align-right">
-                  <thead>
-                    <tr>
-                      <th>Id</th>
-                      <th>Username</th>
-                      <th>Balance</th>
-                      <th>Registered date</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.props.users.map(item => (
-                      <tr key={item.id.toString()}>
-                        <td>{item.id}</td>
-                        <td>
-                          <Link to={`${this.props.match.path}/${item.id}`}>
-                            {item.email ? item.email : 'No email'}
-                          </Link>
-                        </td>
-                        <td>{numeral(item.balance).format('0,0')}</td>
-                        <td>
+              <table className="table table-align-right">
+                <thead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Username</th>
+                    <th>Balance</th>
+                    <th>
+                      <div className="text-break">Registered date</div>
+                    </th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.props.users.map(item => (
+                    <tr key={item.id.toString()}>
+                      <td>{item.id}</td>
+                      <td>
+                        <Link
+                          className="text-break"
+                          to={`${this.props.match.path}/${item.id}`}
+                        >
+                          {item.email ? item.email : 'No email'}
+                        </Link>
+                      </td>
+                      <td>{numeral(item.balance).format('0,0')}</td>
+                      <td>
+                        <div className="fix-w-date">
                           <Moment format="YYYY-MM-DD HH:mm:ss">
                             {item.created_date}
                           </Moment>
-                        </td>
-                        <td>
-                          <Confirm title="Confirm" description="Are your sure?">
-                            {confirm => (
-                              <button
-                                className={`btn btn-xs btn-outline-${
-                                  item.is_active ? 'danger' : 'success'
-                                }`}
-                                onClick={confirm(() =>
-                                  this.props.updateUserStatus(
-                                    item.id,
-                                    !item.is_active
-                                  )
-                                )}
-                              >
-                                {item.is_active ? 'Disable' : 'Enable'}
-                              </button>
-                            )}
-                          </Confirm>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <hr />
-              </div>
+                        </div>
+                      </td>
+                      <td>
+                        <Confirm title="Confirm" description="Are your sure?">
+                          {confirm => (
+                            <button
+                              className={`btn btn-xs btn-outline-${
+                                item.is_active ? 'danger' : 'success'
+                              }`}
+                              onClick={confirm(() =>
+                                this.props.updateUserStatus(
+                                  item.id,
+                                  !item.is_active
+                                )
+                              )}
+                            >
+                              {item.is_active ? 'Disable' : 'Enable'}
+                            </button>
+                          )}
+                        </Confirm>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <hr />
             </div>
 
             <div className="col-sm-12">
@@ -149,10 +168,10 @@ class ListUserPage extends React.Component {
                 nextLabel={'»'}
                 breakLabel={'...'}
                 pageCount={this.props.meta.total_pages}
-                marginPagesDisplayed={2}
-                pageRangeDisplayed={5}
+                marginPagesDisplayed={this.state.marginPagesDisplayed}
+                pageRangeDisplayed={this.state.pageRangeDisplayed}
                 onPageChange={this.handlePageClick}
-                containerClassName={'pagination pagination-responsive'}
+                containerClassName={'pagination justify-content-end'}
                 activeClassName={'active'}
                 pageClassName={'page-item'}
                 nextClassName={'page-item'}

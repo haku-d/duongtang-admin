@@ -1,3 +1,68 @@
+/* mixin for multiline */
+.multiLineEllipsis {
+  text-align: justify;
+  display: block;
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  overflow: hidden;
+  position: relative;
+}
+.multiLineEllipsis:before {
+  position: absolute;
+  content: "...";
+  right: 0;
+  bottom: 0;
+}
+.multiLineEllipsis:after {
+  position: absolute;
+  content: "";
+  right: 0;
+  width: 1.5rem;
+  height: 1rem;
+  margin-top: 0.2em;
+}
+
+.multiLineEllipsis-1 {
+  line-height: 1.3em;
+  max-height: 1.3em;
+}
+.multiLineEllipsis-1:before, .multiLineEllipsis-1:after {
+  background: white;
+}
+
+.multiLineEllipsis-2 {
+  line-height: 1.3em;
+  max-height: 2.6em;
+}
+.multiLineEllipsis-2:before, .multiLineEllipsis-2:after {
+  background: white;
+}
+
+.multiLineEllipsis-3 {
+  line-height: 1.3em;
+  max-height: 3.9em;
+}
+.multiLineEllipsis-3:before, .multiLineEllipsis-3:after {
+  background: white;
+}
+
+.multiLineEllipsis-4 {
+  line-height: 1.3em;
+  max-height: 5.2em;
+}
+.multiLineEllipsis-4:before, .multiLineEllipsis-4:after {
+  background: white;
+}
+
+.multiLineEllipsis-5 {
+  line-height: 1.3em;
+  max-height: 6.5em;
+}
+.multiLineEllipsis-5:before, .multiLineEllipsis-5:after {
+  background: white;
+}
+
 html,
 body {
   font-family: monospace, Helvetica Neue, Helvetica, Arial, sans-serif;
@@ -345,14 +410,16 @@ body {
 .table th {
   border-top: 0;
 }
-.table th,
-.table td {
-  white-space: nowrap;
+.table .fix-w-id,
+.table .multiLineEllipsis,
+.table .fix-w-date {
+  word-break: break-all;
 }
-.table th .text-break,
-.table td .text-break {
-  white-space: normal;
-  width: 310px;
+.table .fix-w-id {
+  min-width: 150px;
+}
+.table .multiLineEllipsis {
+  max-width: 400px;
 }
 .table .btn-xs {
   padding: 0 5px;
@@ -364,6 +431,12 @@ body {
 .table-align-right thead th:last-child,
 .table-align-right tbody td:last-child {
   text-align: right;
+}
+.table-warning .multiLineEllipsis::before, .table-warning .multiLineEllipsis::after {
+  background: #ffeeba;
+}
+.table-striped tbody tr:nth-of-type(odd) .multiLineEllipsis::before, .table-striped tbody tr:nth-of-type(odd) .multiLineEllipsis::after {
+  background: #f2f2f2;
 }
 
 .table-auto-scroll {
@@ -387,6 +460,24 @@ body {
   background-image: url(../components/media/icon-frame-expand.svg);
 }
 
+@media (max-width: 800px) {
+  .table {
+    font-size: 13px;
+  }
+  .table th,
+.table td {
+    padding: 10px 8px;
+  }
+  .table .fix-w-state {
+    width: 40px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .table .fix-w-date {
+    min-width: 75px;
+    font-size: 0.75rem;
+  }
+}
 .nav-toggle {
   display: none;
 }
@@ -467,6 +558,37 @@ body {
   }
   .sidebar.open .copy {
     left: 0;
+  }
+}
+@media (max-width: 480px) {
+  .table {
+    font-size: 12px;
+  }
+  .table th {
+    white-space: normal;
+  }
+  .table th,
+.table td {
+    padding: 10px 5px;
+  }
+  .table .btn-xs {
+    font-size: 10px;
+  }
+  .table .fix-w-id {
+    min-width: auto;
+  }
+  .table .fix-w-date {
+    min-width: 50px;
+  }
+  .table .multiLineEllipsis {
+    line-height: 1.3em;
+    max-height: 6.5em;
+  }
+  .table .multiLineEllipsis:before, .table .multiLineEllipsis:after {
+    background: white;
+  }
+  .table-warning .multiLineEllipsis::before, .table-warning .multiLineEllipsis::after {
+    background: #ffeeba;
   }
 }
 .sign {

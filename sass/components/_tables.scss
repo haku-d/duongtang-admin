@@ -4,13 +4,16 @@
   th {
     border-top: 0;
   }
-  th,
-  td {
-    white-space: nowrap;
-    .text-break {
-      white-space: normal;
-      width: 310px;
-    }
+  .fix-w-id,
+  .multiLineEllipsis,
+  .fix-w-date {
+    word-break: break-all;
+  }
+  .fix-w-id {
+    min-width: 150px;
+  }
+  .multiLineEllipsis {
+    max-width: 400px;
   }
   .btn-xs {
     padding: 0 5px;
@@ -25,9 +28,22 @@
       text-align: right;
     }
   }
-  // &-fix-height {
-  //   min-height: 80vh;
-  // }
+  &-warning {
+    .multiLineEllipsis {
+      &::before,
+      &::after {
+        background: #ffeeba;
+      }
+    }
+  }
+  &-striped tbody tr:nth-of-type(odd) {
+    .multiLineEllipsis {
+      &::before,
+      &::after {
+        background: #f2f2f2;
+      }
+    }
+  }
 }
 .table-auto-scroll {
   max-height: 300px;

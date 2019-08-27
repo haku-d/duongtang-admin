@@ -15,7 +15,9 @@ const ENTER_KEY = 13
 
 class ListStreamPage extends React.Component {
   state = {
-    filter: ''
+    filter: '',
+    marginPagesDisplayed: 2,
+    pageRangeDisplayed: 5
   }
 
   handleSearchKeyDown(e) {
@@ -35,6 +37,18 @@ class ListStreamPage extends React.Component {
 
   componentDidMount() {
     this.props.getStream()
+    window.addEventListener('resize', this.resize.bind(this))
+    this.resize()
+  }
+
+  // Check isMobile pagination
+  resize() {
+    if (window.innerWidth < 767) {
+      this.setState({
+        marginPagesDisplayed: 1,
+        pageRangeDisplayed: 1
+      })
+    }
   }
 
   handlePageClick = data => {
@@ -65,52 +79,55 @@ class ListStreamPage extends React.Component {
               </form>
             </div>
             <div className="col-sm-12">
-              <div className="table-responsive">
-                <table className="table table-align-right">
-                  <thead>
-                    <tr>
-                      <th>id</th>
-                      <th>source_id</th>
-                      <th width="30%">title</th>
-                      <th>size</th>
-                      <th>user</th>
-                      <th>updated date</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.props.streams.map(stream => (
-                      <tr key={stream.id.toString()}>
-                        <td>{stream.id}</td>
-                        <td>
-                          <a
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            href={`https://drive.google.com/open?id=${
-                              stream.source_id
-                            }`}
-                          >
-                            {stream.source_id}
-                          </a>
-                        </td>
-                        <td>
-                          <div className="text-break">{stream.title}</div>
-                        </td>
-                        <td>{numeral(stream.size).format('0.00b')}</td>
-                        <td>
-                          <Link to={`/users/${stream.user_id}`}>
-                            #ID {stream.user_id}
-                          </Link>
-                        </td>
-                        <td>
+              <table className="table table-align-right">
+                <thead>
+                  <tr>
+                    <th>id</th>
+                    <th>source_id</th>
+                    <th width="30%">title</th>
+                    <th>size</th>
+                    <th>user</th>
+                    <th>updated date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.props.streams.map(stream => (
+                    <tr key={stream.id.toString()}>
+                      <td>{stream.id}</td>
+                      <td>
+                        <a
+                          className="fix-w-id"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href={`https://drive.google.com/open?id=${
+                            stream.source_id
+                          }`}
+                        >
+                          {stream.source_id}
+                        </a>
+                      </td>
+                      <td>
+                        <div className="multiLineEllipsis multiLineEllipsis-2">
+                          {stream.title}
+                        </div>
+                      </td>
+                      <td>{numeral(stream.size).format('0.00b')}</td>
+                      <td>
+                        <Link to={`/users/${stream.user_id}`}>
+                          #ID {stream.user_id}
+                        </Link>
+                      </td>
+                      <td>
+                        <div className="fix-w-date">
                           <Moment format="YYYY-MM-DD HH:mm:ss">
                             {stream.updated_date}
                           </Moment>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
             <div className="col-sm-12">
               {/*<Pagination />*/}
@@ -119,10 +136,10 @@ class ListStreamPage extends React.Component {
                 nextLabel={'»'}
                 breakLabel={'...'}
                 pageCount={this.props.pagination.total_pages}
-                marginPagesDisplayed={2}
-                pageRangeDisplayed={5}
+                marginPagesDisplayed={this.state.marginPagesDisplayed}
+                pageRangeDisplayed={this.state.pageRangeDisplayed}
                 onPageChange={this.handlePageClick}
-                containerClassName={'pagination pagination-responsive'}
+                containerClassName={'pagination justify-content-end'}
                 activeClassName={'active'}
                 pageClassName={'page-item'}
                 nextClassName={'page-item'}
