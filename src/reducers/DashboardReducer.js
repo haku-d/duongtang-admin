@@ -4,6 +4,7 @@ import numeral from 'numeral'
 const defaultState = {
   today_view: 0,
   today_upload: 0,
+  totay_earn_upload: 0,
   totay_earn: 0,
   today_req_details: []
 }
@@ -20,6 +21,9 @@ export default (state = defaultState, action) => {
         today_view: numeral(view_stats ? view_stats.total_req : 0).format(
           '0,0'
         ),
+        totay_earn_upload: numeral(
+          upload_stats ? upload_stats.total_earn : 0
+        ).format('0,0'),
         today_upload: numeral(upload_stats ? upload_stats.total_req : 0).format(
           '0,0'
         ),

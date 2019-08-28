@@ -193,13 +193,49 @@ body {
 
 .card {
   margin-bottom: 20px;
+  position: relative;
+  transition: all 0.2s linear;
 }
 .card-title {
   margin-top: 0;
-  font-size: 16px;
+  font-size: 14px;
+  margin-bottom: 3px;
 }
-.card-number {
-  font-size: 30px;
+.card-number-body {
+  font-size: 18px;
+}
+.card-body {
+  padding-bottom: 0;
+}
+.card-footer {
+  border: 0;
+  background: none;
+  padding-top: 0;
+  text-align: right;
+  line-height: 1;
+}
+.card-number-foo {
+  font-size: 2rem;
+  margin-right: 2px;
+}
+.card .icons {
+  top: 1rem;
+  right: 1.25rem;
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background-size: 30px 30px;
+  filter: invert(1) brightness(0.75);
+}
+.card:hover {
+  color: #fff;
+  border-color: transparent;
+}
+.card:hover .card-footer {
+  color: #fff;
+}
+.card:hover .icons {
+  filter: invert(1) brightness(1);
 }
 .card-money {
   padding: 15px;
@@ -224,6 +260,30 @@ body {
   .card-money-num h4 {
     font-size: 1.5rem;
   }
+}
+
+.card-green .card-footer {
+  color: #88b04b;
+}
+.card-green:hover {
+  background-color: #88b04b;
+}
+
+.card-orange .card-footer {
+  color: #f2994a;
+}
+.card-orange:hover {
+  background-color: #f2994a;
+}
+
+.card-red {
+  min-height: 112px;
+}
+.card-red .card-footer {
+  color: #eb5757;
+}
+.card-red:hover {
+  background-color: #eb5757;
 }
 
 .btn-zoom {
@@ -283,7 +343,10 @@ body {
   .open-zoom .card {
     margin-top: -50px;
   }
-  .open-zoom .card-number {
+  .open-zoom .card-title {
+    margin-bottom: 30px;
+  }
+  .open-zoom .card-number-foo {
     font-size: 3rem;
   }
 }
@@ -296,13 +359,22 @@ body {
   border: 0;
   color: #fff;
   background: none;
-}
-.open-zoom .card-number {
-  opacity: 0.95;
-  white-space: nowrap;
+  min-height: 100px;
 }
 .open-zoom .card-title {
   font-size: 0.85rem;
+}
+.open-zoom .card-point, .open-zoom .card-number-body,
+.open-zoom .card .icons {
+  display: none;
+}
+.open-zoom .card-footer {
+  text-align: center;
+}
+.open-zoom .card-number-foo {
+  color: #fff;
+  opacity: 0.95;
+  white-space: nowrap;
 }
 
 .form-search {
@@ -458,6 +530,18 @@ body {
 
 .icon-frame-expand {
   background-image: url(../components/media/icon-frame-expand.svg);
+}
+
+.icon-upload {
+  background-image: url(../components/media/icon-upload.svg);
+}
+
+.icon-link {
+  background-image: url(../components/media/icon-link.svg);
+}
+
+.icon-cart {
+  background-image: url(../components/media/icon-cart.svg);
 }
 
 @media (max-width: 800px) {

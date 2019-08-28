@@ -1,11 +1,47 @@
 .card {
   margin-bottom: 20px;
+  position: relative;
+  transition: all 0.2s linear;
   &-title {
     margin-top: 0;
-    font-size: 16px;
+    font-size: 14px;
+    margin-bottom: 3px;
   }
-  &-number {
-    font-size: 30px;
+  &-number-body {
+    font-size: 18px;
+  }
+  &-body {
+    padding-bottom: 0;
+  }
+  &-footer {
+    border: 0;
+    background: none;
+    padding-top: 0;
+    text-align: right;
+    line-height: 1;
+  }
+  &-number-foo {
+    font-size: 2rem;
+    margin-right: 2px;
+  }
+  .icons {
+    top: 1rem;
+    right: 1.25rem;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-size: 30px 30px;
+    filter: invert(1) brightness(0.75);
+  }
+  &:hover {
+    color: #fff;
+    border-color: transparent;
+    .card-footer {
+      color: #fff;
+    }
+    .icons {
+      filter: invert(1) brightness(1);
+    }
   }
   &-money {
     padding: 15px;
@@ -33,6 +69,32 @@
         border-left: 1px solid #ddd;
       }
     }
+  }
+}
+
+.card-green {
+  .card-footer {
+    color: #88b04b;
+  }
+  &:hover {
+    background-color: #88b04b;
+  }
+}
+.card-orange {
+  .card-footer {
+    color: #f2994a;
+  }
+  &:hover {
+    background-color: #f2994a;
+  }
+}
+.card-red {
+  min-height: 112px;
+  .card-footer {
+    color: #eb5757;
+  }
+  &:hover {
+    background-color: #eb5757;
   }
 }
 
@@ -89,7 +151,10 @@
     padding: 0 15%;
     .card {
       margin-top: -50px;
-      &-number {
+      &-title {
+        margin-bottom: 30px;
+      }
+      &-number-foo {
         font-size: 3rem;
       }
     }
@@ -101,12 +166,22 @@
     border: 0;
     color: #fff;
     background: none;
-    &-number {
-      opacity: 0.95;
-      white-space: nowrap;
-    }
+    min-height: 100px;
     &-title {
       font-size: 0.85rem;
+    }
+    &-point,
+    &-number-body,
+    .icons {
+      display: none;
+    }
+    &-footer {
+      text-align: center;
+    }
+    &-number-foo {
+      color: #fff;
+      opacity: 0.95;
+      white-space: nowrap;
     }
   }
 }
