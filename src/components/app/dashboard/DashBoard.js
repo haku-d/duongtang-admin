@@ -59,7 +59,7 @@ class DashBoard extends React.Component {
         <div className={`row ${this.state.isOpen}`}>
           <div className="col-sm-4">
             <Card
-              icon={<i className="icons icon-upload" />}
+              icon={<i className="icons icon-link" />}
               addClass="card card-green"
               title={'Today views'}
               numberBody={this.props.today_view}
@@ -69,7 +69,7 @@ class DashBoard extends React.Component {
           <div className="col-sm-4">
             <Card
               addClass="card card-orange"
-              icon={<i className="icons icon-link" />}
+              icon={<i className="icons icon-upload" />}
               title={'Today uploads'}
               numberBody={this.props.today_upload}
               numberFoo={this.props.totay_earn_upload}
