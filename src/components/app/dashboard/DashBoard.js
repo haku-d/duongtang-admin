@@ -14,7 +14,9 @@ class DashBoard extends React.Component {
     super(props)
     this.state = {
       timer: null,
-      isOpen: ''
+      isOpen: '',
+      isView: 'Today views',
+      isUpload: 'Today uploads'
     }
     this.handleOpen = this.handleOpen.bind(this)
   }
@@ -35,11 +37,15 @@ class DashBoard extends React.Component {
   handleOpen() {
     if (this.state.isOpen === '') {
       this.setState({
-        isOpen: 'open-zoom'
+        isOpen: 'open-zoom',
+        isView: 'Earn views',
+        isUpload: 'Earn uploads'
       })
     } else {
       this.setState({
-        isOpen: ''
+        isOpen: '',
+        isView: 'Today views',
+        isUpload: 'Today uploads'
       })
     }
   }
@@ -61,7 +67,7 @@ class DashBoard extends React.Component {
             <Card
               icon={<i className="icons icon-link" />}
               addClass="card card-green"
-              title={'Today views'}
+              title={this.state.isView}
               numberBody={this.props.today_view}
               numberFoo={this.props.today_view}
             />
@@ -70,7 +76,7 @@ class DashBoard extends React.Component {
             <Card
               addClass="card card-orange"
               icon={<i className="icons icon-upload" />}
-              title={'Today uploads'}
+              title={this.state.isUpload}
               numberBody={this.props.today_upload}
               numberFoo={this.props.totay_earn_upload}
             />
