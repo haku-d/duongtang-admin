@@ -46,6 +46,10 @@
   &-money {
     padding: 15px;
     margin-bottom: 15px;
+    &:hover {
+      color: #4b4b4b;
+      border-color: #ddd;
+    }
     h4 {
       font-size: 0.8rem;
     }
