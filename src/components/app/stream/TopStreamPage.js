@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import BlockUi from 'react-block-ui'
 import numeral from 'numeral'
 import { Link } from 'react-router-dom'
-import Moment from 'react-moment'
 
 import Main from 'components/common/ui/Main'
 import Header from 'components/common/ui/Header'
