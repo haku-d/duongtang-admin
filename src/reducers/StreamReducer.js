@@ -32,3 +32,12 @@ export const getStream = (source_id, page) => {
     })
   }
 }
+
+export const getTopViewedStream = () => {
+  return dispatch => {
+    dispatch({ type: 'LOAD_STREAM_BEGIN' })
+    return client.get('/admin/top-viewed-stream').then(res => {
+      dispatch({ type: 'LOAD_STREAM_COMPLETE', data: res.data })
+    })
+  }
+}

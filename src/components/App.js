@@ -12,6 +12,7 @@ import DetailUserPage from 'components/app/user-management/DetailUserPage'
 import DashBoard from 'components/app/dashboard/DashBoard'
 import ReportEarning from 'components/app/report/Earning'
 import ListStreamPage from 'components/app/stream/ListStreamPage'
+import TopStreamPage from 'components/app/stream/TopStreamPage'
 import { initialize } from 'reducers/AppReducer'
 import Sidebar from 'components/common/ui/Sidebar'
 
@@ -38,6 +39,7 @@ class App extends React.Component {
           <GuestRoute exact path="/account/login" component={LoginPage} />
           <PrivateRoute exact path="/reports" component={ReportEarning} />
           <PrivateRoute exact path="/streams" component={ListStreamPage} />
+          <PrivateRoute exact path="/top-streams" component={TopStreamPage} />
         </Switch>
       </React.Fragment>
     )
