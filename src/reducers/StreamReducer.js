@@ -37,7 +37,23 @@ export const getTopViewedStream = () => {
   return dispatch => {
     dispatch({ type: 'LOAD_STREAM_BEGIN' })
     return client.get('/admin/top-viewed-stream').then(res => {
-      dispatch({ type: 'LOAD_STREAM_COMPLETE', data: res.data })
+      const { items, meta } = res.data
+      const descSort = (a, b) => {
+        if (a.view < b.view) {
+          return 1
+        }
+        if (a.view >= b.view) {
+          return -1
+        }
+        return 0
+      }
+      dispatch({
+        type: 'LOAD_STREAM_COMPLETE',
+        data: {
+          items: items.sort(descSort),
+          meta: meta
+        }
+      })
     })
   }
 }
