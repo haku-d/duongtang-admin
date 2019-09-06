@@ -43,7 +43,7 @@ export default (state = defaultState, action) => {
 
 export function getRequest() {
   return dispatch => {
-    return client.get(`/stats/request`).then(rs => {
+    return client.get(`/admin/stats/request`).then(rs => {
       dispatch({
         type: 'LOAD_TODAY_REQUEST_COMPLETE',
         data: rs.data
@@ -53,7 +53,7 @@ export function getRequest() {
 }
 export function getRequestDetail() {
   return dispatch => {
-    return client.get(`/stats/request-detail`).then(rs => {
+    return client.get(`/admin/stats/request-detail`).then(rs => {
       dispatch({
         type: 'LOAD_TODAY_REQUEST_DETAIL_COMPLETE',
         data: rs.data
