@@ -33,10 +33,10 @@ export const getStream = (source_id, page) => {
   }
 }
 
-export const getTopViewedStream = () => {
+export const getTopViewedStream = page => {
   return dispatch => {
     dispatch({ type: 'LOAD_STREAM_BEGIN' })
-    return client.get('/admin/top-viewed-stream').then(res => {
+    return client.get('/admin/top-viewed-stream', { page }).then(res => {
       const { items, meta } = res.data
       const descSort = (a, b) => {
         if (a.view < b.view) {

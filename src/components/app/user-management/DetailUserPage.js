@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import numeral from 'numeral'
+import Moment from 'react-moment'
 
 import {
   toggleAddBillingModal,
@@ -172,18 +173,24 @@ class DetailUserPage extends React.Component {
           <table className="table table-align-right">
             <thead>
               <tr>
-                <th>Transaction date</th>
+                <th>Date</th>
                 <th>Type</th>
                 <th>Amount</th>
+                <th>Note</th>
               </tr>
             </thead>
             <tbody>
               {transactions.items.length > 0 ? (
                 transactions.items.map((item, index) => (
                   <tr key={index.toString()}>
-                    <td>{item.transaction_datetime}</td>
+                    <td>
+                      <Moment unix format="YYYY-MM-DD HH:mm:ss">
+                        {item.transaction_timestamp / 1000000}
+                      </Moment>
+                    </td>
                     <td>{item.transaction_type}</td>
                     <td>{numeral(item.balance).format('0,0')}</td>
+                    <td>{item.note}</td>
                   </tr>
                 ))
               ) : (

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import BlockUi from 'react-block-ui'
 import numeral from 'numeral'
 import { Link } from 'react-router-dom'
+import ReactPaginate from 'react-paginate'
 
 import Main from 'components/common/ui/Main'
 import Header from 'components/common/ui/Header'
@@ -10,8 +11,17 @@ import Header from 'components/common/ui/Header'
 import { getTopViewedStream } from 'reducers/StreamReducer'
 
 class TopStreamPage extends React.Component {
+  state = {
+    marginPagesDisplayed: 2,
+    pageRangeDisplayed: 5
+  }
+
   componentDidMount() {
     this.props.getStream()
+  }
+
+  handlePageClick = data => {
+    this.props.getStream(data.selected + 1)
   }
 
   render() {
@@ -66,6 +76,28 @@ class TopStreamPage extends React.Component {
                 </tbody>
               </table>
             </div>
+            <div className="col-sm-12">
+              {/*<Pagination />*/}
+              <ReactPaginate
+                previousLabel={'«'}
+                nextLabel={'»'}
+                breakLabel={'...'}
+                pageCount={this.props.pagination.total_pages}
+                marginPagesDisplayed={this.state.marginPagesDisplayed}
+                pageRangeDisplayed={this.state.pageRangeDisplayed}
+                onPageChange={this.handlePageClick}
+                containerClassName={'pagination justify-content-end'}
+                activeClassName={'active'}
+                pageClassName={'page-item'}
+                nextClassName={'page-item'}
+                breakClassName={'page-item'}
+                previousClassName={'page-item'}
+                pageLinkClassName={'page-link'}
+                nextLinkClassName={'page-link'}
+                breakLinkClassName={'page-link'}
+                previousLinkClassName={'page-link'}
+              />
+            </div>
           </div>
         </BlockUi>
       </Main>
@@ -77,7 +109,7 @@ const mapStateToProps = state => {
   return state.stream
 }
 const mapDispatchToProps = dispatch => ({
-  getStream: () => dispatch(getTopViewedStream())
+  getStream: page => dispatch(getTopViewedStream(page))
 })
 
 export default connect(

@@ -212,8 +212,9 @@ export const addBilling = (id, amount, note) => {
           type: 'UPDATE_BILLING_COMPLETED',
           data: {
             balance: amount,
-            transaction_datetime: new Date().toGMTString(),
-            transaction_type: 'DEPOSIT'
+            transaction_timestamp: Date.now() * 1000,
+            transaction_type: 'DEPOSIT',
+            note: note
           }
         })
       }
