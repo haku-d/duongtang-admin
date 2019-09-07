@@ -190,7 +190,7 @@ export const addUser = user => {
 export const getUser = id => {
   return dispatch => {
     dispatch({ type: 'LOAD_USER_BEGIN' })
-    return client.get(`/user-info/${id}`).then(rs => {
+    return client.get(`/admin/user-info/${id}`).then(rs => {
       dispatch({
         type: 'LOAD_USER_COMPLETE'
       })
@@ -206,7 +206,7 @@ export const addBilling = (id, amount, note) => {
       amount: amount,
       note: note
     }
-    return client.post('admin/billing', data).then(rs => {
+    return client.post('/admin/billing', data).then(rs => {
       if (rs.status === 200) {
         dispatch({
           type: 'UPDATE_BILLING_COMPLETED',
@@ -223,7 +223,7 @@ export const addBilling = (id, amount, note) => {
 }
 
 export const getUserInfo = id => {
-  const userReq = client.get(`/user-info/${id}`).then(rs => rs.data)
+  const userReq = client.get(`/admin/user-info/${id}`).then(rs => rs.data)
   const appsReq = client.get(`/admin/user/${id}/apps`).then(rs => rs.data)
   const transactionsReq = client
     .get(`/admin/user/${id}/transactions`)
@@ -265,7 +265,7 @@ export const addApp = (id, streamType, shortDomain) => {
       stream_type: streamType,
       short_domain: shortDomain
     }
-    return client.post('admin/create-user-app', data).then(rs => {
+    return client.post('/admin/create-user-app', data).then(rs => {
       if (rs.status === 200) {
         dispatch({ type: 'ADD_USER_APP_COMPLETED', data: rs.data })
       }

@@ -22,7 +22,7 @@ export default (state = defaultState, action) => {
 export function getWeeklyEarning(days) {
   return dispatch => {
     return client
-      .get(`/report/earning`, {
+      .get(`/admin/report/earning`, {
         days: days
       })
       .then(rs => {
