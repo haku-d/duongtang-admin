@@ -14,7 +14,7 @@ class Client {
 
   _getDefaultOption() {
     return {
-      timeout: 3000
+      timeout: 30000
     }
   }
 

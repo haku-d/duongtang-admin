@@ -77,7 +77,7 @@ class AddUserAppModal extends React.Component {
                 id="js-amount"
                 label={'Short domain'}
                 type={'text'}
-                placeholder="http://go.clgt.vn"
+                placeholder="https://go.clgt.vn"
                 onChange={this.handleShortDomainChanged}
               />
             </React.Fragment>
